@@ -8,12 +8,6 @@
 ##   Created: Oct 20, 2009
 ##
 
-
-##load dynamic library
-##.dll under Windows
-##.so  under UNIX/Linux
-dyn.load( paste("src/Ckmeans.1d.dp", .Platform$dynlib.ext,sep="") )
-
 ##Ckmeans.1d.dp : function which implement optimal one-dimensional clustering
 ## x is one-dimensional input vector
 ## K indicates cluster level

@@ -1,7 +1,7 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimized one-dimensional clustering algorithm
-Version: 1.0
+Version: 1.1
 Date: 2010-10-07
 Author: Joe Song <joemsong@cs.nmsu.edu> and Haizhou Wang
         <hwang@cs.nmsu.edu>
@@ -11,6 +11,6 @@ Description: An alternative way to do one-dimensional clustering. Which
         will gurantee the smallest "within sum of distance square"
 License: LGPL (>= 3)
 LazyLoad: yes
-Packaged: 2010-10-22 20:02:16 UTC; Adam
+Packaged: 2010-10-27 23:24:09 UTC; Adam
 Repository: CRAN
-Date/Publication: 2010-10-26 12:09:45
+Date/Publication: 2010-10-28 08:26:44
