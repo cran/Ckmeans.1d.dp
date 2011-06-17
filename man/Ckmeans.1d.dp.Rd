@@ -8,8 +8,8 @@ Perform optimal distance-based clustering on one-dimensional data.
 Ckmeans.1d.dp(x, k)
 }
 \arguments{
-  \item{x}{ a one-dimensional array containing input data to be clustered}
-  \item{k}{ the number of clusters}
+  \item{x}{ a one-dimensional array containing input data to be clustered.}
+  \item{k}{ the number of clusters.}
 }
 \author{
 	Joe Song <joemsong@cs.nmsu.edu> 

@@ -11,8 +11,7 @@
 ## modelled on print methods in the cluster package
 print.Ckmeans.1d.dp <- function(x, ...)
 {
-    cat("Ckmeans.1d.dp clustering with ", length(x$size), " clusters of sizes ",
-        paste(x$size, collapse=", "), "\n", sep="")
+    cat("Ckmeans.1d.dp clustering with ", length(x$size), " clusters of sizes ",paste(x$size, collapse=", "), "\n", sep="")
     cat("\nCluster means:\n")
     print(x$centers, ...)
     cat("\nClustering vector:\n")
@@ -58,5 +57,5 @@ Ckmeans.1d.dp <- function( x, k )
                    withinss = result$withinss,size = result$size),
 			class = "Ckmeans.1d.dp")
 			
-	return ( print.Ckmeans.1d.dp(r) )
+	return (r)
 }##end of Ckmeans.1d.dp()
