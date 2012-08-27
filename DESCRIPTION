@@ -1,8 +1,8 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal distance-based clustering for one-dimensional data
-Version: 2.2
-Date: 2011-06-17
+Version: 2.3
+Date: 2012-8-27
 Author: Joe Song <joemsong@cs.nmsu.edu> and Haizhou Wang
         <hwang@cs.nmsu.edu>
 Maintainer: Haizhou Wang<hwang@cs.nmsu.edu>
@@ -14,6 +14,6 @@ Description: This package contains a function to cluster
         which does not guarantee optimality.
 License: LGPL (>= 3)
 LazyLoad: yes
-Packaged: 2011-06-18 03:11:17 UTC; Adam
+Packaged: 2012-08-28 03:13:05 UTC; hwang
 Repository: CRAN
-Date/Publication: 2011-06-18 05:22:29
+Date/Publication: 2012-08-28 05:24:23

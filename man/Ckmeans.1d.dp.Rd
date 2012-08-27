@@ -8,8 +8,8 @@ Perform optimal distance-based clustering on one-dimensional data.
 Ckmeans.1d.dp(x, k)
 }
 \arguments{
-  \item{x}{ a one-dimensional array containing input data to be clustered.}
-  \item{k}{ the number of clusters.}
+  \item{x}{ a one-dimensional array containing input data to be clustered}
+  \item{k}{ the number of clusters}
 }
 \author{
 	Joe Song <joemsong@cs.nmsu.edu> 
@@ -27,7 +27,7 @@ Ckmeans.1d.dp(x, k)
 	\item{size}{ The number of points in each cluster.}
 }
 \references{
-	Wang, H. and Song, M. (2010) Ckmeans.1d.dp: optimal k-means clustering in one dimension by dynamic programming. \emph{The R Journal}. (In preparation)
+	Wang, H., & Song, M. (2011) Ckmeans.1d.dp: optimal k-means clustering in one dimension by dynamic programming. \emph{The R Journal}, 3(2), 29. Retrieved from http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf
 }
 
 \examples{

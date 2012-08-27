@@ -1,3 +1,2 @@
 useDynLib(Ckmeans.1d.dp)
 export(Ckmeans.1d.dp)
-export(print.Ckmeans.1d.dp)
