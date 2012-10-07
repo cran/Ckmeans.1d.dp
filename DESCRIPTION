@@ -1,19 +1,19 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal distance-based clustering for one-dimensional data
-Version: 2.4
-Date: 2012-09-02
+Version: 2.5
+Date: 2012-10-07
 Author: Joe Song <joemsong@cs.nmsu.edu> and Haizhou Wang
         <hwang@cs.nmsu.edu>
 Maintainer: Haizhou Wang<hwang@cs.nmsu.edu>
 Depends: R (>= 2.10.0)
-Description: This package contains a function to cluster
-        one-dimensional data optimally using dynamic programming to
-        minimize the sum of squares of within cluster distances.  It
-        provides an alternative to the heuristic k-means algorithm
-        which does not guarantee optimality.
+Description: This package implements a dynamic programming algorithm to
+        cluster one-dimensional data optimally, by minimizing the sum
+        of squares of within-cluster distances.  As an alternative to
+        the heuristic k-means algorithm, the algorithm guarantees
+        optimality and repeatability of clustering.
 License: LGPL (>= 3)
 LazyLoad: yes
-Packaged: 2012-09-02 20:22:20 UTC; hwang
+Packaged: 2012-10-08 05:14:40 UTC; hwang
 Repository: CRAN
-Date/Publication: 2012-09-03 05:08:57
+Date/Publication: 2012-10-08 05:56:33
