@@ -15,14 +15,15 @@ Created: Oct 10, 2010
 using namespace std;
 
 /* data that return by kmeans.1d.dp()*/
-class data{
+class ClusterResult {
 public:
-    vector<int> cluster;  	/*record which cluster each point belongs to*/
+    size_t nClusters;
+    vector<size_t> cluster;  	/*record which cluster each point belongs to*/
     vector<double> centers;	/*record the center of each cluster*/
     vector<double> withinss;/*within sum of distance square of each cluster*/
-    vector<int> size;		/*size of each cluster*/
+    vector<size_t> size;		/*size of each cluster*/
 };
 
 /*one-dimensional cluster algorithm implemented in C*/
 /*x is input one-dimensional vector and K stands for the cluster level*/
-data kmeans_1d_dp( vector<double> x, int K);
+ClusterResult kmeans_1d_dp(const vector<double> & x, const vector<size_t> & Ks);

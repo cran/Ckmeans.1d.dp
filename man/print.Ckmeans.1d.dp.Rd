@@ -13,9 +13,7 @@ Print the result returned by calling Ckmeans.1d.dp
 }
 
 \author{
-	Joe Song \email{joemsong@cs.nmsu.edu}
-	and 
-	Haizhou Wang \email{hwang@cs.nmsu.edu}
+	Joe Song and Haizhou Wang
 }
 
 \value{
@@ -33,9 +31,9 @@ Print the result returned by calling Ckmeans.1d.dp
 \examples{
 
 # Example: clustering data generated from a Gaussian mixture model of two components
-x <- rnorm(50, mean=1, sd=0.3)
-x <- append(x, rnorm(50, sd=0.3) )
-res <- Ckmeans.1d.dp(x, 2)
+x <- rnorm(50, mean=-1, sd=0.3)
+x <- append(x, rnorm(50, mean=1, sd=0.3) )
+res <- Ckmeans.1d.dp(x)
 print(res)
 
 }

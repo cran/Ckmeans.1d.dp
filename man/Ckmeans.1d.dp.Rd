@@ -5,16 +5,14 @@
 Perform optimal \var{k}-means clustering on one-dimensional data.
 }
 \usage{
-Ckmeans.1d.dp(x, k)
+Ckmeans.1d.dp(x, k=c(1,9))
 }
 \arguments{
   \item{x}{ a one-dimensional array containing input data to be clustered.}
-  \item{k}{ the number of clusters.}
+  \item{k}{ the number of clusters, or an array of required minimum and maximum number of clusters. When unspecified, the number of clusters will be estimated to be between 1 and 9 by Bayesian information criterion.}
 }
 \author{
-	Joe Song \email{joemsong@cs.nmsu.edu}
-	and 
-	Haizhou Wang \email{hwang@cs.nmsu.edu}
+	Joe Song and Haizhou Wang
 }
 \details{
 	Distance-based \var{k}-means clustering assigns all elements in the input data in vector \code{x} into \code{k} clusters to minimize the sum of squares of within-cluster distances (\var{withinss}) from each element to its corresponding cluster centre (mean).  The Ckmeans.1d.dp algorithm groups 1-D data given by \code{x} into \code{k} cluster by dynamic programming (Wang and Song, 2011).  It guarantees the optimality of clustering -- the sum of \var{withinss} for each cluster is always the minimum.  In contrast, heuristic \var{k}-means algorithms may be inconsistent or non-optimal from run to run.  
@@ -33,9 +31,9 @@ Ckmeans.1d.dp(x, k)
 \examples{
 
 # Example: clustering data generated from a Gaussian mixture model of two components
-x <- rnorm(50, mean=1, sd=0.3)
-x <- append(x, rnorm(50, sd=0.3) )
-result <- Ckmeans.1d.dp(x, 2)
+x <- rnorm(50, mean=-1, sd=0.3)
+x <- append(x, rnorm(50, mean=1, sd=0.3) )
+result <- Ckmeans.1d.dp(x)
 plot(x, col = result$cluster)
 abline(h=result$centers, col = 1:2, pch = 8, cex=2)
 

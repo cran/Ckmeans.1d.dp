@@ -1,13 +1,17 @@
 /*
-Ckmeans_1d_dp_main.cpp --- wrap function for 
-						   "kmeans_1d_dp()"
-                  
+Ckmeans_1d_dp_main.cpp --- wrapper function for "kmeans_1d_dp()"
+
+Created: Oct 10, 2010
+
   Haizhou Wang
   Computer Science Department
   New Mexico State University
   hwang@cs.nmsu.edu
-				  
-Created: Oct 10, 2010
+
+Modified: 
+  March 20, 2014. Joe Song. Removed parameter int *k from the function.
+    Added "int *Ks" and "int *nK" to provide a range of the number of clusters
+    to search for. Made other changes.
 */
 
 #include "Ckmeans.1d.dp.h"
@@ -17,30 +21,38 @@ Created: Oct 10, 2010
 
 using namespace std;
 
-/*Wrap function to call kmeans_1d_dp()*/
+/*Wrapper function to call kmeans_1d_dp()*/
 extern "C" {
-	void Ckmeans_1d_dp( double *x, int* s, int* k, int* cluster, double* centers, double* withinss, int* size)
+	void Ckmeans_1d_dp(double *x, int* s, int* Ks, int *nK, int* cluster,
+                       double* centers, double* withinss, int* size)
 	{
-		int length = s[0];
-		int level = k[0];
+		size_t length = (size_t) s[0];
+        
 		vector<double> input(length+1);
 		
-		for(int i=1;i<(length+1);i++)
+		for(size_t i=1; i<input.size(); i++) {
 			input[i] = x[i-1];
-			
-		data result;  /*object of class data, used to convey the final result*/
-		
-		/*Call C++ version one-dimensional clustering algorithm*/
-		result = kmeans_1d_dp( input, level);
+        }
 
-		/*Since R doesn't allow return value from C/C++ function, using pointers to give back result*/
-		for(int i=1;i<(length+1);i++)
-			cluster[i-1] = result.cluster[i];
-		for(int i=1;i<(level+1);i++)
-			centers[i-1] = result.centers[i];
-		for(int i=1;i<(level+1);i++)
-			withinss[i-1] = result.withinss[i];
-		for(int i=1;i<(level+1);i++)
-			size[i-1] = result.size[i];
+        vector<size_t> levels(*nK);
+        for (size_t k=0; k<*nK; k++) {
+            levels[k] = Ks[k];
+        }
+
+		ClusterResult result;  // Clustering result
+		
+		// Call C++ version one-dimensional clustering algorithm*/
+        result = kmeans_1d_dp( input, levels );
+		
+        // Since R doesn't allow return value from C/C++ function,
+        // we use input pointers to pass the clustering result back.
+		for(size_t i=1; i <= length; i++)
+			cluster[i-1] = (int) result.cluster[i];
+		for(size_t k=1; k <= result.nClusters; k++)
+			centers[k-1] = result.centers[k];
+		for(size_t k=1; k <= result.nClusters; k++)
+			withinss[k-1] = result.withinss[k];
+		for(size_t k=1; k <= result.nClusters; k++)
+			size[k-1] = (int) result.size[k];
 	}
 }

@@ -1,234 +1,398 @@
 /*
-Ckmeans_1d_dp.cpp -- Performs 1-D k-means by a dynamic programming
-                     approach that is guaranteed to be optimal.
-                  
-  Joe Song
-  Computer Science Department
-  New Mexico State University
-  joemsong@cs.nmsu.edu
-  
-  Haizhou Wang
-  Computer Science Department
-  New Mexico State University
-  hwang@cs.nmsu.edu
-				  
-Created: May 19, 2007
-Updated: September 3, 2009
-Updated: September 6, 2009.  Handle special cases when K is too big or array
-	 contains identical elements.  Added number of clusters selection by the MCLUST package.
-Updated: Oct 6, 2009 by Haizhou Wang Convert this program from R code into C++ code.
-Updated: Oct 20, 2009 by Haizhou Wang, add interface to this function, so that it could be called directly in R
-*/
+ Ckmeans_1d_dp.cpp -- Performs 1-D k-means by a dynamic programming
+ approach that is guaranteed to be optimal.
+ 
+ Joe Song
+ Computer Science Department
+ New Mexico State University
+ joemsong@cs.nmsu.edu
+ 
+ Haizhou Wang
+ Computer Science Department
+ New Mexico State University
+ hwang@cs.nmsu.edu
+ 
+ Created: May 19, 2007
+ Updated: September 3, 2009
+ Updated: September 6, 2009.  Handle special cases when K is too big or array
+    contains identical elements.  Added number of clusters selection by the 
+    MCLUST package.
+ Updated: Oct 6, 2009 by Haizhou Wang Convert this program from R code into 
+    C++ code.
+ Updated: Oct 20, 2009 by Haizhou Wang, add interface to this function, so that 
+    it could be called directly in R
+ 
+ Updated: March 20, 2014. Joe Song. 
+    1.  When the number of clusters is not uniquely specified, the code now
+        automatically select an optimal number of clusters by Bayesian 
+        information criterion.
+    2.  Reduced unnecessary sorting performed on the input string in 
+        kmeans_1d_dp().
+ */
 
 #include "Ckmeans.1d.dp.h"
-#include "R.h" 		// R memory io
-#include "Rmath.h" 	// R math functions
+//#include "R.h" 		// R memory io
+//#include "Rmath.h" 	// R math functions
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <math.h>
-#include <time.h>
+#include <cmath>
+#include <ctime>
 
 using namespace std;
 
-//all vectors in this program is considered starting at position 1, position 0 is not used.
-data kmeans_1d_dp( vector<double> x, int K)
+#ifndef M_PI
+const double M_PI=3.14159265359;
+#endif
+
+void fill_dp_matrix(const vector<double> & x,
+                    vector< vector< double > > & D,
+                    vector< vector< size_t > > & B)
 {
-  // Input:
-  //  x -- a vector of numbers, not necessarily sorted
-  //  K -- the number of clusters expected
+    // NOTE: All vectors in this program is considered starting at position 1,
+    //       position 0 is not used.
 
-  data result;
-  int N = x.size()-1;  //N: is the size of input vector
-
-  vector<double> temp(N);
-  
-  for(int i=0; i<N; i++)
-	temp[i] = x[i+1];	//Initialize vector temp
-
-  sort(temp.begin(), temp.end());
-  temp.resize(unique( temp.begin(), temp.end())-temp.begin() );
-  int vector_size = temp.size();
-
-  if(vector_size < K)//The input array will be clustered to at most N clusters if K > N.
-    K = vector_size;
-
-  if(vector_size > 1) //The case when not all elements are equal.
-  { 
-    vector<int> y(x.size());
-    vector<double> temp_s = x;
-
-    sort(temp_s.begin()+1, temp_s.end());
-	
-    for(int i=1; i<(int)x.size(); i++)
-	for(int j=1; j<(int)x.size(); j++)
-		if( x[i] == temp_s[j] )
-		{	
-			y[i] = j;
-			break;
-		}
-  
-    sort(x.begin()+1, x.end());
-    vector< vector< double> > D( (K+1),vector<double>(N+1));
-    vector< vector< double> > B( (K+1),vector<double>(N+1));
-
-    int cubic = 0;    
-    /*When cubic==1, which means "True", the algorithm runs in cubic time of array length N;
-    otherwise it runs in quadratic time.  The TRUE option is for
-    testing purpose only. */
+    const short cubic = 0;
+    /* When cubic==1 (TRUE), the algorithm runs in cubic time of
+     array length N; otherwise it runs in quadratic time.  The TRUE option is for
+     testing purpose only. */
     
-    for(int i=1;i<=K;i++)
-    {
+    size_t K = D.size() - 1;
+    size_t N = D[0].size() - 1;
+    
+    for(size_t i=1;i<=K;i++) {
         D[i][1] = 0;
         B[i][1] = 1;
     }
     
-    double mean_x1, mean_xj,d;
-    for(int k=1;k<=K;k++)
-    {
-      mean_x1 = x[1] ;
-
-      for(int i=2;i<=N;i++)
-      {
-        if(k == 1) 
-        {
-          if(cubic) 
-          {
-            double sum=0, mean=0;
-			for(int i=1;i<(int)x.size();i++)
-			sum+=x[i];
-			mean = sum/N;
-	
-			for(int i=1;i<(int)x.size();i++)
-			D[1][i] += pow( (x[i] - mean), 2 );          
-            
-          } 
-          else 
-          {
-            D[1][i] = D[1][i-1] + (i-1)/(double)i * pow( (x[i] - mean_x1),2 );
-            mean_x1 = ((i-1) * mean_x1 + x[i])/(double)i;
-          } 
-          
-          B[1][i] = 1;
-          
-        }
-        else 
-        {
-          D[k][i] = -1;
-          d = 0;
-          mean_xj = 0;
-          
-          for(int j=i;j>=1;j--)
-          {
-            
-            if(cubic) 
-            {
-            	double sum=0, mean=0;
-	    	for(int a=j;a<=i;a++)
-			sum+=x[a];
-	    	mean = sum/(i-j+1);
-	
-	    	for(int a=j;a<=i;a++)
-			d += pow( (x[a] - mean), 2 );
-            } 
-            else 
-            {
-              
-              d = d + (i-j)/(double)(i-j+1) * pow( (x[j] - mean_xj),2 );
-              mean_xj = (x[j] + (i-j)*mean_xj)/(double)(i-j+1);
-            }
-            
-            if(D[k][i] == -1) //initialization of D[k,i]
-            { 
-            
-              if(j == 1) 
-              {        
-                D[k][i] = d;
-                B[k][i] = j;
-              } 
-              else 
-              { 
-                D[k][i] = d + D[k-1][j-1];
-                B[k][i] = j;
-              }
-            } 
-            else 
-            {
-              if(j == 1) 
-              {
-                if(d <= D[k][i]) 
-                {
-                  D[k][i] = d;
-                  B[k][i] = j;
-                }
-              } 
-              else 
-              {
-                if(d + D[k-1][j-1] < D[k][i]) 
-                {
-                  D[k][i] = d + D[k-1][j-1];
-                  B[k][i] = j;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    double mean_x1, mean_xj, d;
     
-    //Backtrack to find the clusters of the data points
-    int cluster_right = N;
-    double cluster_left;
+    for(size_t k=1; k<=K; k++) {
+        mean_x1 = x[1] ;
+        
+        for(size_t i=2; i<=N; i++) {
+            if(k == 1) {
+                if(cubic) {
+                    double sum=0, mean=0;
+                    for(size_t i=1; i<x.size(); i++)
+                        sum+=x[i];
+                    mean = sum/N;
+                    
+                    for(size_t i=1; i<x.size(); i++)
+                        D[1][i] += (x[i] - mean) * (x[i] - mean);
+                } else {
+                    D[1][i] = D[1][i-1] + (i-1) / (double) i
+                        * (x[i] - mean_x1) * (x[i] - mean_x1);
+                    mean_x1 = ((i-1) * mean_x1 + x[i]) / (double)i;
+                }
+                
+                B[1][i] = 1;
+                
+            } else {
+                
+                D[k][i] = -1;
+                d = 0;
+                mean_xj = 0;
+                
+                for(size_t j=i; j>=1; j--) {
+                    
+                    if(cubic) {
+                        double sum=0.0, mean=0.0;
+                        for(size_t a=j; a<=i; a++) {
+                            sum+=x[a];
+                        }
+                        
+                        mean = sum/(i-j+1);
+                        
+                        for(size_t a=j;a<=i;a++) {
+                            d += (x[a] - mean) * (x[a] - mean);
+                        }
+                        
+                    } else {
+                        d = d + (i-j) / (double) (i-j+1) * (x[j] - mean_xj)
+                            * (x[j] - mean_xj);
+                        mean_xj = ( x[j] + (i-j)*mean_xj ) / (double)(i-j+1);
+                    }
+                    
+                    if(D[k][i] == -1) { //initialization of D[k,i]
+                        
+                        if(j == 1) {
+                            D[k][i] = d;
+                            B[k][i] = j;
+                        } else {
+                            D[k][i] = d + D[k-1][j-1];
+                            B[k][i] = j;
+                        }
+                        
+                    } else {
+                        if(j == 1) {
+                            if(d <= D[k][i]) {
+                                D[k][i] = d;
+                                B[k][i] = j;
+                            }
+                        } else {
+                            if(d + D[k-1][j-1] < D[k][i]) {
+                                D[k][i] = d + D[k-1][j-1];
+                                B[k][i] = j;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void backtrack(const vector<double> & x, const vector< vector< size_t > > & B,
+               ClusterResult & result)
+{
+    size_t K = B.size() - 1;
+    size_t N = B[0].size() - 1;
+    size_t cluster_right = N;
+    size_t cluster_left;
+    
+    result.nClusters = K;
+    
     result.cluster.resize(N+1);
     result.centers.resize(K+1);
     result.withinss.resize(K+1);
     result.size.resize(K+1);
+    
+    // Backtrack the clusters from the dynamic programming matrix
+    for(size_t k=K; k>=1; k--) {
+        cluster_left = B[k][cluster_right];
+        
+        for(size_t i=cluster_left;i<=cluster_right;i++)
+            result.cluster[i] = k;
+        
+        double sum=0;
+        
+        for(size_t a=cluster_left;a<=cluster_right;a++)
+            sum+=x[a];
+        
+        result.centers[k] = sum/(cluster_right-cluster_left+1);
+        
+        for(size_t a=cluster_left;a<=cluster_right;a++)
+            result.withinss[k] += (x[a] - result.centers[k])
+                * (x[a] - result.centers[k]);
+        
+        result.size[k] = cluster_right - cluster_left + 1;
+        
+        if(k > 1) {
+            cluster_right = cluster_left - 1;
+        }
+    }
+}
 
-	/*Forming final result*/
-    for(int k=K;k>=1;k--)
-    {
-      cluster_left = B[k][cluster_right];
-      
-      for(int i=(int)cluster_left;i<=cluster_right;i++)
-      	result.cluster[i] = k;
+// Choose an optimal number of levels between Kmin and Kmax
+size_t select_levels(const vector<double> & x,
+                     const vector< vector< size_t > > & B,
+                     size_t Kmin, size_t Kmax)
+{
+    if (Kmin == Kmax) {
+        return Kmin;
+    }
+    
+    const string method = "normal"; // "uniform" or "normal"
+    
+    size_t Kopt=Kmin;
+    
+    const size_t base = 1;  // The position of first element in x: 1 or 0.
+    const size_t N = x.size() - base;
+    
+    double maxBIC;
+    
+    for(size_t K=Kmin; K<=Kmax; ++K) {
+        
+        // cout << "K=" << K;
+        
+        vector< vector< size_t > > BK(B.begin(), B.begin()+K+1);
 
-      double sum=0;
-	  
-      for(int a=(int)cluster_left;a<=cluster_right;a++)
-		sum+=x[a];
-		
-      result.centers[k] = sum/(cluster_right-cluster_left+1);
+        ClusterResult result;
+        // Backtrack the matrix to determine boundaries between the bins.
+        backtrack(x, BK, result);
 
-      for(int a=(int)cluster_left;a<=cluster_right;a++)
-      	result.withinss[k] += pow( (x[a] - result.centers[k]), 2 );
-		
-      result.size[k] = cluster_right - (int)cluster_left + 1;
-      
-      if(k > 1) {
-        cluster_right = (int)cluster_left - 1;
-      }
+        size_t indexLeft = base;
+        size_t indexRight;
+        
+        double loglikelihood = 0;
+        double binLeft, binRight;
+        
+        for (size_t k=0; k<K; k++) { // Compute the likelihood
+
+            size_t numPointsInBin = result.size[k+base];
+            
+            indexRight = indexLeft + numPointsInBin - 1;
+            
+            /* Use mid point inbetween two clusters as boundary
+            binLeft = ( indexLeft == base ) ? 
+                x[base] : (x[indexLeft-1] + x[indexLeft]) / 2;
+            
+            binRight = ( indexRight < N-1+base ) ? 
+                (x[indexRight] + x[indexRight+1]) / 2 : x[N-1+base];
+            */
+            
+            if(x[indexLeft] < x[indexRight]) {
+                binLeft = x[indexLeft];
+                binRight = x[indexRight];
+            } else if(x[indexLeft] == x[indexRight]) {
+                binLeft = ( indexLeft == base ) ?
+                    x[base] : (x[indexLeft-1] + x[indexLeft]) / 2;
+                binRight = ( indexRight < N-1+base ) ?
+                    (x[indexRight] + x[indexRight+1]) / 2 : x[N-1+base];
+            } else {
+                // cout << "ERROR: binLeft > binRight" << endl;
+            }
+            
+            double binWidth = binRight - binLeft;
+            
+            if(method == "uniform") {
+            
+                loglikelihood += numPointsInBin * log(numPointsInBin / binWidth / N);
+
+            } else if(method == "normal") {
+
+                double mean = 0;
+                double variance = 0;
+
+                for (size_t i=indexLeft; i<=indexRight; ++i) {
+                    mean += x[i];
+                    variance += x[i] * x[i];
+                }
+                mean /= numPointsInBin;
+
+                if (numPointsInBin > 1) {
+                    variance = (variance - numPointsInBin * mean * mean)
+                        / (numPointsInBin - 1);
+                } else {
+                    variance = 0;
+                }
+                
+                if (variance > 0) {
+                    for (size_t i=indexLeft; i<=indexRight; ++i) {
+                        loglikelihood += - (x[i] - mean) * (x[i] - mean)
+                            / (2.0 * variance);
+                    }
+                    loglikelihood += numPointsInBin
+                        * (log(numPointsInBin / (double) N)
+                           - 0.5 * log ( 2 * M_PI * variance));
+                } else {
+                    loglikelihood += numPointsInBin * log(1.0/binWidth/N);
+                }
+                
+            } else {
+                // cout << "ERROR: Wrong likelihood method" << endl;
+            }
+            
+            indexLeft = indexRight + 1;
+        }
+        
+        double BIC = 0.0;
+        
+        // Compute the Bayesian information criterion
+        if (method == "uniform") {
+            BIC = 2 * loglikelihood - (3 * K - 1) * log((double)N);  // K-1
+        } else if(method == "normal") {
+            BIC = 2 * loglikelihood - (3 * K - 1) * log((double)N);  //(K*3-1)
+        }
+        
+        // cout << ", Loglh=" << loglikelihood << ", BIC=" << BIC << endl;
+        
+        if (K == Kmin) {
+            maxBIC = BIC;
+            Kopt = Kmin;
+        } else {
+            if (BIC > maxBIC) {
+                maxBIC = BIC;
+                Kopt = K;
+            }
+        }
     }
 
-    //restore the original order
-    vector<int> tt = result.cluster;
-    for(int i=1; i<(int)x.size(); i++)
-		result.cluster[i] = tt[ y[i] ];
+    /*
+    if (Kopt == Kmin) {
+        cout << "WARNING: Min number of clusters used. Consider decreasing it!"
+        << endl;
+    } else if(Kopt == Kmax) {
+        cout << "WARNING: Max number of clusters used. Consider increasing it!"
+        << endl;
+    }
+    */
     
-  } else {  //a single cluster that contains all elements
+    return Kopt;
+}
 
-    result.cluster.resize(N+1);
-    result.centers.resize(2);
-    result.withinss.resize(2);
-    result.size.resize(2);
+ClusterResult kmeans_1d_dp(const vector<double> & x, const vector<size_t> & Ks)
+{
+    // Input:
+    //  x -- a vector of numbers, not necessarily sorted
+    //  K -- the number of clusters expected
+    // NOTE: All vectors in this program is considered starting at position 1,
+    //       position 0 is not used.
+ 
+    ClusterResult result;
+    size_t N = x.size() - 1;  // N: is the size of input vector
+    
+    size_t Kmin = * min_element(Ks.begin(), Ks.end());
+    size_t Kmax = * max_element(Ks.begin(), Ks.end());
+    
+    vector<double> x_sorted(x);
+    sort(x_sorted.begin()+1, x_sorted.end());
+    size_t nUnique = unique(x_sorted.begin()+1, x_sorted.end())
+        - (x_sorted.begin()+1);
+    Kmax = nUnique < Kmax ? nUnique : Kmax;
+    
+    if(nUnique > 1) { // The case when not all elements are equal.
+        
+        vector< vector< double > > D( (Kmax+1), vector<double>(N+1) );
+        vector< vector< size_t > > B( (Kmax+1), vector<size_t>(N+1) );
+        
+        // Fill in dynamic programming matrix
+        fill_dp_matrix(x_sorted, D, B);
+        
+        // Choose an optimal number of levels between Kmin and Kmax
+        size_t Kopt = select_levels(x_sorted, B, Kmin, Kmax);
 
-    for(int i=1;i<=N;i++)
-    	result.cluster[i] = N;
-    
-    result.centers[1] =x[1];
-    result.withinss[1] = 0;
-    result.size[1] = N;
-    
-  }
-  return result;
+        if (Kopt < Kmax) { // Reform the dynamic programming matrix D and B
+            B.erase(B.begin()+ Kopt + 1, B.end());
+        }
+        
+        // Backtrack to find the clusters beginning and ending indices
+        backtrack(x_sorted, B, result);
+        
+        // Perform clustering on the original data
+        for(size_t i=1; i < x.size(); i++) {
+            size_t indexLeft = 1;
+            size_t indexRight;
+            
+            for (size_t k=1; k<result.size.size(); k++) {
+                indexRight = indexLeft + result.size[k] - 1;
+                if ( x[i] <= x_sorted[indexRight] ) {
+                    result.cluster[i] = k;
+                    break;
+                }
+                indexLeft = indexRight + 1;
+            }
+        }
+        
+    } else {  //a single cluster that contains all elements
+        
+        result.nClusters = 1;
+        
+        result.cluster.resize(N+1);
+        result.centers.resize(2);
+        result.withinss.resize(2);
+        result.size.resize(2);
+        
+        for(size_t i=1; i<=N; i++) {
+            result.cluster[i] = 1;
+        }
+        
+        result.centers[1] =x[1];
+        result.withinss[1] = 0;
+        result.size[1] = N;
+        
+    }
+    return result;
 }  //end of kmeans_1d_dp()
