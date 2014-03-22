@@ -1,9 +1,9 @@
-f03b1f75fe33cda27a7c6f240f8ab9f8 *DESCRIPTION
+36cf79e1acf81e6336ade146411e727a *DESCRIPTION
 0f204aa677b05a8117419ef6877479b3 *NAMESPACE
 9558b06d78cec56809998b6f638fe9c0 *R/Ckmeans.1d.dp.R
 e2953c213bb2c0538828c042c9393db7 *inst/CITATION
 06e4c2baf422c696bbc28ae202c6a24f *man/Ckmeans.1d.dp.Rd
 2c85c6ef9b8acb9a18c6f0174e5c59eb *man/print.Ckmeans.1d.dp.Rd
-59db02de5d112a1a96535548e6a3f72d *src/Ckmeans.1d.dp.cpp
+fe299f7337216adad3c6b7684a0bbfe1 *src/Ckmeans.1d.dp.cpp
 3e38dee0dbee9f3305721a835c2bc2de *src/Ckmeans.1d.dp.h
 c54f7ea76a54a763bf9ced4bbe569410 *src/Ckmeans.1d.dp_main.cpp

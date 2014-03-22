@@ -253,7 +253,7 @@ size_t select_levels(const std::vector<double> & x,
             
             if(method == "uniform") {
             
-                loglikelihood += numPointsInBin * log(numPointsInBin / binWidth / N);
+                loglikelihood += numPointsInBin * std::log(numPointsInBin / binWidth / N);
 
             } else if(method == "normal") {
 
@@ -279,10 +279,10 @@ size_t select_levels(const std::vector<double> & x,
                             / (2.0 * variance);
                     }
                     loglikelihood += numPointsInBin
-                        * (log(numPointsInBin / (double) N)
-                           - 0.5 * log ( 2 * M_PI * variance));
+                        * (std::log(numPointsInBin / (double) N)
+                           - 0.5 * std::log ( 2 * M_PI * variance));
                 } else {
-                    loglikelihood += numPointsInBin * log(1.0 / binWidth / N);
+                    loglikelihood += numPointsInBin * std::log(1.0 / binWidth / N);
                 }
                 
             } else {
@@ -296,9 +296,9 @@ size_t select_levels(const std::vector<double> & x,
         
         // Compute the Bayesian information criterion
         if (method == "uniform") {
-            BIC = 2 * loglikelihood - (3 * K - 1) * log((double)N);  // K-1
+            BIC = 2 * loglikelihood - (3 * K - 1) * std::log((double)N);  // K-1
         } else if(method == "normal") {
-            BIC = 2 * loglikelihood - (3 * K - 1) * log((double)N);  //(K*3-1)
+            BIC = 2 * loglikelihood - (3 * K - 1) * std::log((double)N);  //(K*3-1)
         }
         
         // cout << ", Loglh=" << loglikelihood << ", BIC=" << BIC << endl;
@@ -330,10 +330,16 @@ size_t select_levels(const std::vector<double> & x,
 template <class ForwardIterator>
 size_t numberOfUnique(ForwardIterator first, ForwardIterator last)
 {
-    size_t nUnique = 1;
-    for (ForwardIterator itr=first+1; itr!=last; ++itr) {
-        if (*itr != *(itr -1)) {
-            nUnique ++;
+    size_t nUnique;
+    
+    if (first == last) {
+        nUnique = 0;
+    } else {
+        nUnique = 1;
+        for (ForwardIterator itr=first+1; itr!=last; ++itr) {
+            if (*itr != *(itr -1)) {
+                nUnique ++;
+            }
         }
     }
     return nUnique;
@@ -355,7 +361,7 @@ kmeans_1d_dp(const std::vector<double> & x, size_t Kmin, size_t Kmax)
     //size_t Kmax = * max_element(Ks.begin(), Ks.end());
     
     std::vector<double> x_sorted(x);
-    sort(x_sorted.begin()+1, x_sorted.end());
+    std::sort(x_sorted.begin()+1, x_sorted.end());
     // size_t nUnique = unique(x_sorted.begin()+1, x_sorted.end())
     //    - (x_sorted.begin()+1);
     
