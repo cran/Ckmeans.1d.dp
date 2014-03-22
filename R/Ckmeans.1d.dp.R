@@ -57,7 +57,8 @@ Ckmeans.1d.dp <- function( x, k=c(1,9) )
 	##force k set to the number of unique number of input.
   if(length(unique(x)) < k.min) {
     
-		print ("Number of clusters is bigger than the unique number of the input vector\n k is set to the number of unique number of input.")
+		cat("Min number of clusters is greater than the unique number of elements in\n",
+        "the input vector, k.min is set to the number of unique number of input.\n")
 		k <- 1:length(unique(x))
   }
 	
@@ -70,7 +71,7 @@ Ckmeans.1d.dp <- function( x, k=c(1,9) )
 	#Call external C++ function
   result <- .C("Ckmeans_1d_dp", PACKAGE="Ckmeans.1d.dp", 
                data=as.double(x), length=as.integer(length(x)), 
-               levels=as.integer(k), n.levels=as.integer(length(k)),  
+               Kmin=as.integer(k.min), Kmax=as.integer(k.max),  
                cluster=as.integer(clusters), centers=as.double(center), 
                withinss=as.double(withinss), size=as.integer(size))
 

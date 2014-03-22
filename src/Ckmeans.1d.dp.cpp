@@ -31,8 +31,7 @@
  */
 
 #include "Ckmeans.1d.dp.h"
-//#include "R.h" 		// R memory io
-//#include "Rmath.h" 	// R math functions
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -40,19 +39,23 @@
 #include <cmath>
 #include <ctime>
 
-using namespace std;
-
 #ifndef M_PI
-const double M_PI=3.14159265359;
+const double M_PI = 3.14159265359;
 #endif
 
-void fill_dp_matrix(const vector<double> & x,
-                    vector< vector< double > > & D,
-                    vector< vector< size_t > > & B)
-{
-    // NOTE: All vectors in this program is considered starting at position 1,
-    //       position 0 is not used.
 
+void fill_dp_matrix(const std::vector<double> & x,
+                    std::vector< std::vector< double > > & D,
+                    std::vector< std::vector< size_t > > & B)
+/*
+ x: One dimension vector to be clustered
+ D: Distance matrix
+ B: Backtrack matrix
+ 
+ NOTE: All vector indices in this program start at position 1,
+       position 0 is not used.
+ */
+{
     const short cubic = 0;
     /* When cubic==1 (TRUE), the algorithm runs in cubic time of
      array length N; otherwise it runs in quadratic time.  The TRUE option is for
@@ -144,7 +147,8 @@ void fill_dp_matrix(const vector<double> & x,
     }
 }
 
-void backtrack(const vector<double> & x, const vector< vector< size_t > > & B,
+void backtrack(const std::vector<double> & x,
+               const std::vector< std::vector< size_t > > & B,
                ClusterResult & result)
 {
     size_t K = B.size() - 1;
@@ -186,15 +190,15 @@ void backtrack(const vector<double> & x, const vector< vector< size_t > > & B,
 }
 
 // Choose an optimal number of levels between Kmin and Kmax
-size_t select_levels(const vector<double> & x,
-                     const vector< vector< size_t > > & B,
+size_t select_levels(const std::vector<double> & x,
+                     const std::vector< std::vector< size_t > > & B,
                      size_t Kmin, size_t Kmax)
 {
     if (Kmin == Kmax) {
         return Kmin;
     }
     
-    const string method = "normal"; // "uniform" or "normal"
+    const std::string method = "normal"; // "uniform" or "normal"
     
     size_t Kopt=Kmin;
     
@@ -203,11 +207,11 @@ size_t select_levels(const vector<double> & x,
     
     double maxBIC;
     
-    for(size_t K=Kmin; K<=Kmax; ++K) {
+    for(size_t K = Kmin; K <= Kmax; ++K) {
         
         // cout << "K=" << K;
         
-        vector< vector< size_t > > BK(B.begin(), B.begin()+K+1);
+        std::vector< std::vector< size_t > > BK(B.begin(), B.begin()+K+1);
 
         ClusterResult result;
         // Backtrack the matrix to determine boundaries between the bins.
@@ -278,7 +282,7 @@ size_t select_levels(const vector<double> & x,
                         * (log(numPointsInBin / (double) N)
                            - 0.5 * log ( 2 * M_PI * variance));
                 } else {
-                    loglikelihood += numPointsInBin * log(1.0/binWidth/N);
+                    loglikelihood += numPointsInBin * log(1.0 / binWidth / N);
                 }
                 
             } else {
@@ -323,7 +327,20 @@ size_t select_levels(const vector<double> & x,
     return Kopt;
 }
 
-ClusterResult kmeans_1d_dp(const vector<double> & x, const vector<size_t> & Ks)
+template <class ForwardIterator>
+size_t numberOfUnique(ForwardIterator first, ForwardIterator last)
+{
+    size_t nUnique = 1;
+    for (ForwardIterator itr=first+1; itr!=last; ++itr) {
+        if (*itr != *(itr -1)) {
+            nUnique ++;
+        }
+    }
+    return nUnique;
+}
+
+ClusterResult
+kmeans_1d_dp(const std::vector<double> & x, size_t Kmin, size_t Kmax)
 {
     // Input:
     //  x -- a vector of numbers, not necessarily sorted
@@ -334,19 +351,22 @@ ClusterResult kmeans_1d_dp(const vector<double> & x, const vector<size_t> & Ks)
     ClusterResult result;
     size_t N = x.size() - 1;  // N: is the size of input vector
     
-    size_t Kmin = * min_element(Ks.begin(), Ks.end());
-    size_t Kmax = * max_element(Ks.begin(), Ks.end());
+    //size_t Kmin = * min_element(Ks.begin(), Ks.end());
+    //size_t Kmax = * max_element(Ks.begin(), Ks.end());
     
-    vector<double> x_sorted(x);
+    std::vector<double> x_sorted(x);
     sort(x_sorted.begin()+1, x_sorted.end());
-    size_t nUnique = unique(x_sorted.begin()+1, x_sorted.end())
-        - (x_sorted.begin()+1);
+    // size_t nUnique = unique(x_sorted.begin()+1, x_sorted.end())
+    //    - (x_sorted.begin()+1);
+    
+    size_t nUnique = numberOfUnique(x_sorted.begin()+1, x_sorted.end());
+    
     Kmax = nUnique < Kmax ? nUnique : Kmax;
     
     if(nUnique > 1) { // The case when not all elements are equal.
         
-        vector< vector< double > > D( (Kmax+1), vector<double>(N+1) );
-        vector< vector< size_t > > B( (Kmax+1), vector<size_t>(N+1) );
+        std::vector< std::vector< double > > D( (Kmax+1), std::vector<double>(N+1) );
+        std::vector< std::vector< size_t > > B( (Kmax+1), std::vector<size_t>(N+1) );
         
         // Fill in dynamic programming matrix
         fill_dp_matrix(x_sorted, D, B);
@@ -376,21 +396,24 @@ ClusterResult kmeans_1d_dp(const vector<double> & x, const vector<size_t> & Ks)
             }
         }
         
-    } else {  //a single cluster that contains all elements
+    } else {  // A single cluster that contains all elements
         
         result.nClusters = 1;
         
+        /*
         result.cluster.resize(N+1);
+        for(size_t i=1; i<=N; i++) {
+            result.cluster[i] = 1;
+        }
+        */
+        result.cluster = std::vector<size_t>(N+1, 1);
+        
         result.centers.resize(2);
         result.withinss.resize(2);
         result.size.resize(2);
         
-        for(size_t i=1; i<=N; i++) {
-            result.cluster[i] = 1;
-        }
-        
-        result.centers[1] =x[1];
-        result.withinss[1] = 0;
+        result.centers[1] = x[1];
+        result.withinss[1] = 0.0;
         result.size[1] = N;
         
     }

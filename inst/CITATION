@@ -1,6 +1,7 @@
 citHeader("To cite package 'Ckmeans.1d.dp' in publications use:")
 
 citEntry(entry="Article",
+  key = "Wang2011Ckmeans",
   title = "Ckmeans.1d.dp: Optimal $k$-means Clustering in One Dimension by Dynamic Programming",
   journal = "The R Journal",
   volume = "3",
