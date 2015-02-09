@@ -1,6 +1,5 @@
-citHeader("To cite package 'Ckmeans.1d.dp' in publications use:")
-
-citEntry(entry="Article",
+bibentry(bibtype="Article",
+  header = "To cite package 'Ckmeans.1d.dp' in publications use:",
   key = "Wang2011Ckmeans",
   title = "Ckmeans.1d.dp: Optimal $k$-means Clustering in One Dimension by Dynamic Programming",
   journal = "The R Journal",
@@ -8,10 +7,7 @@ citEntry(entry="Article",
   number = "2",
   pages = "29--33",
   year = "2011",
-  author =personList(as.person("H. Wang"),
-                     as.person("M. Song")), 
-
+  author = c(person("Haizhou", "Wang"), person("Mingzhou", "Song")),
   url="http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf",
-  
-  textVersion = "Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal k-means clustering in one dimension by dynamic programming. The R Journal 3(2), 29-33. Retrieved from URL http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf" 
+  textVersion = "Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal k-means clustering in one dimension by dynamic programming. The R Journal 3(2), 29-33."
 )
