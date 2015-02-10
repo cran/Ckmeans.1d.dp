@@ -1,5 +1,10 @@
 NEWS 
 
+Version 3.3.1 2015-02-10 
+Changes
+  1. Fixed a problem that prevented Windows compilation (now forced the size_t
+     type to unsigned long in max() function
+
 Version 3.3.0 2015-02-09 
 Changes
   1. Added automated test cases into the package

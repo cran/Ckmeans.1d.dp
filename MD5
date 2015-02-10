@@ -1,11 +1,11 @@
-e1cb2cbb9c31802bbcbfefb792930b0b *DESCRIPTION
+d19b8b411b5ab3269d091acea598667e *DESCRIPTION
 a53d06838a98eb01bb4a1b62592ec2e9 *NAMESPACE
-a042660a9787f30a6cd93df5da94742b *NEWS
+9481030c7928106d62c1b781c6d3f673 *NEWS
 8f393ca936d9e76e2f39945e7037adb8 *R/Ckmeans.1d.dp.R
 235c2a4e13b77aec40c03c3748848ff2 *inst/CITATION
 33e80f0b884485b4ee03ee7fc307a5a2 *man/Ckmeans.1d.dp.Rd
 1c6348a2febbbd0deaa4a7d8c236a05f *man/print.Ckmeans.1d.dp.Rd
-b2488cc5ada3c607e0b83f89f1330f2d *src/Ckmeans.1d.dp.cpp
+cb015a44b972cd9b2f40b320de60e28e *src/Ckmeans.1d.dp.cpp
 3e38dee0dbee9f3305721a835c2bc2de *src/Ckmeans.1d.dp.h
 c54f7ea76a54a763bf9ced4bbe569410 *src/Ckmeans.1d.dp_main.cpp
 d8b9e8cc14962eff5ad3848059c8c690 *tests/testthat.R

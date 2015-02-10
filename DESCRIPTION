@@ -1,8 +1,8 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal k-Means Clustering for One-Dimensional Data
-Version: 3.3.0
-Date: 2015-02-09
+Version: 3.3.1
+Date: 2015-02-10
 Author: Joe Song and Haizhou Wang
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
 Depends: R (>= 2.10.0)
@@ -10,6 +10,6 @@ Description: A dynamic programming algorithm for optimal one-dimensional k-means
 License: LGPL (>= 3)
 NeedsCompilation: yes
 Suggests: testthat
-Packaged: 2015-02-09 17:24:16 UTC; joemsong
+Packaged: 2015-02-10 15:42:21 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2015-02-09 20:04:39
+Date/Publication: 2015-02-11 00:41:47

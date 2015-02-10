@@ -75,7 +75,7 @@ void fill_dp_matrix(const std::vector<double> & x,
     for(size_t k = 1; k <= K; ++k) {
         mean_x1 = x[1];
         
-        for(size_t i = std::max(2ul,k); i <= N; ++i) { // for(size_t i = 2; i <= N; ++i) {
+        for(size_t i = std::max(2ul,(unsigned long)k); i <= N; ++i) { // for(size_t i = 2; i <= N; ++i) {
             if(k == 1) {
                 D[1][i] = D[1][i-1] + (i-1) / (double) i *
                           (x[i] - mean_x1) * (x[i] - mean_x1);
