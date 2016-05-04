@@ -11,7 +11,7 @@ Ckmeans.1d.dp(x, k=c(1,9))
 }
 
 \arguments{
-  \item{x}{a one-dimensional array containing input data to be clustered.}
+  \item{x}{a numeric vector of data to be clustered. The vector cannot contain any \code{NA}.}
   \item{k}{the number of clusters, or an array of required min and max numbers of clusters. The default is \code{c(1,9)}. When a rannge is provided, the number of clusters will be determined within the range by Bayesian information criterion.}
 }
 
@@ -36,17 +36,17 @@ Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in 
 }
 
 \examples{
-# Ex. 1 The number of clusters is provided. 
+# Ex. 1 The number of clusters is provided.
 # Generate data from a Gaussian mixture model of two components
 x <- c(rnorm(50, sd=0.3), rnorm(50, mean=1, sd=0.3))
 # Divide x into 2 clusters
 k <- 2
 result <- Ckmeans.1d.dp(x, k)
-plot(x, col=result$cluster, pch=result$cluster, cex=1.5, 
-     main="Optimal k-means clustering", 
+plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
+     main="Optimal k-means clustering given k",
      sub=paste("Number of clusters given:", k))
 abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
-legend("bottomright", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5)
+legend("bottom", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
 # Ex. 2 The number of clusters is determined by Bayesian information criterion
 # Generate data from a Gaussian mixture model of two components
@@ -54,10 +54,10 @@ x <- c(rnorm(50, mean=-1, sd=0.3), rnorm(50, mean=1, sd=1))
 # Divide x into k clusters, k automatically selected (default: 1~9)
 result <- Ckmeans.1d.dp(x)
 k <- max(result$cluster)
-plot(x, col=result$cluster, pch=result$cluster, cex=1.5, 
-     main="Optimal k-means clustering", 
+plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
+     main="Optimal k-means clustering with k estimated",
      sub=paste("Number of clusters is estimated to be", k))
 abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
-legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5)
+legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
 }
