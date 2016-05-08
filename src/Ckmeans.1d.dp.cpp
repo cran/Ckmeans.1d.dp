@@ -34,11 +34,22 @@
  2.  Speed up the code slightly as suggested by a user (Joe Song)
  3.  Throw exceptions when for fatal errors (Joe Song)
 
- Updated: May 3, 2015
+ Updated: May 3, 2016
  1. Changed from 1-based to 0-based C implementation (MS)
  2. Optimized the code by reducing overhead. See 22% reduction in runtime to
     cluster one million points into two clusters. (MS)
  3. Removed the result class ClusterResult
+
+ Updated: May 7, 2016
+ 1. Substantial runtime reduction. Added code to check for an upper bound
+    for the sum of within cluster square distances. This reduced the runtime
+    by half when clustering 100000 points (from standard normal distribution)
+    into 10 clusters.
+ 2. Eliminated the unnecessary calculation of (n-1) elements in the dynamic
+    programming matrix that are not needed for the final result. This
+    resulted in enormous reduction in run time when the number of cluster
+    is 2: assigning one million points into two clusters took half a
+    a second on iMac with 2.93 GHz Intel Core i7 processor.
  */
 
 #include "Ckmeans.1d.dp.h"
@@ -60,8 +71,10 @@ void fill_dp_matrix(const std::vector<double> & x,
                     std::vector< std::vector< size_t > > & B)
   /*
    x: One dimension vector to be clustered, must be sorted (in any order).
-   D: Distance matrix
-   B: Backtrack matrix
+   D: K x N matrix. D[k][i] is the sum of squares of the distance from each x[i]
+      to its cluster mean when there are exactly x[i] is the last point in
+      cluster k
+   B: K x N backtrack matrix
 
    NOTE: All vector indices in this program start at position 1,
    position 0 is not used.
@@ -81,11 +94,18 @@ void fill_dp_matrix(const std::vector<double> & x,
   for(size_t k = 0; k < K; ++k) {
     mean_x1 = x[0];
 
-    for(size_t i = std::max(1ul,(unsigned long)k); i < N; ++i) { // for(size_t i = 2; i <= N; ++i) {
+    size_t i0;
+    if(k < K-1) {
+      i0 = std::max(1ul,(unsigned long)k);
+    } else { // No need to compute D[K-1][0] ... D[K-1][N-2]
+      i0 = N-1;
+    }
+
+    for(size_t i = i0; i < N; ++i) { // for(size_t i = 2; i <= N; ++i) {
       if(k == 0) {
         D[0][i] = D[0][i-1] + i / (double) (i+1) *
           (x[i] - mean_x1) * (x[i] - mean_x1);
-        mean_x1 = (i * mean_x1 + x[i]) / (double) (i+1);
+        mean_x1 = (i * mean_x1 + x[i]) / (i+1);
 
         B[0][i] = 0;
       } else {
@@ -96,7 +116,7 @@ void fill_dp_matrix(const std::vector<double> & x,
         for(int j=i; j>=k; --j) { // for(size_t j = i; j >= 1; --j) {
           d = d + (i - j) / (double) (i - j + 1) *
             (x[j] - mean_xj) * (x[j] - mean_xj);
-          mean_xj = (x[j] + (i - j) * mean_xj) / (double)(i - j + 1);
+          mean_xj = (x[j] + (i - j) * mean_xj) / (i - j + 1);
 
           if(D[k][i] == -1.0) { //initialization of D[k,i]
             if(j == 0) {
@@ -107,6 +127,12 @@ void fill_dp_matrix(const std::vector<double> & x,
               B[k][i] = j;
             }
           } else {
+            // MS May 7, 2016 Added:
+            // Stop reducing j if putting xj to xi into cluster k
+            //   generates worse d than the best D[k][i] so far.
+            if(d > D[k][i]) break;
+            // To continue, d must be >= current best D[k][i]
+
             if(j == 0) {
               if(d <= D[k][i]) {
                 D[k][i] = d;

@@ -1,4 +1,18 @@
 NEWS
+Version 3.4.0
+  Changes
+  2016-05-07
+  1. Substantial runtime reduction. Added code to check for an upper bound
+     for the sum of within cluster square distances. This reduced the runtime
+     by half when clustering 100000 points (from standard normal distribution)
+     into 10 clusters.
+  2. Eliminated the unnecessary calculation of (n-1) elements in the dynamic
+     programming matrix that are not needed for the final result. This
+     resulted in enormous reduction in run time when the number of cluster
+     is 2: assigning one million points into two clusters took half a
+     a second on iMac with 2.93 GHz Intel Core i7 processor.
+  3. Included a reference to the first description of the dynamic programming
+     solution by Richard Bellman (1973).
 
 Version 3.3.3
   Changes
@@ -14,7 +28,7 @@ Version 3.3.2
      to the number of unique elements in the input vector.
   3. Changed from 1-based to 0-based C implementation.
   4. Optimized the code by reducing overhead. See 22% reduction in runtime to
-     cluster one million points into two clusters.
+     repeatedly cluster seven points into two clusters one million times.
 
 Version 3.3.1 2015-02-10
   Changes
