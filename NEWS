@@ -1,4 +1,16 @@
 NEWS
+Version 3.4.0-1
+  Changes
+  2016-05-19
+  1. Updated DESCRIPTION of the package
+  2. Added a new package-level help document
+  3. Added additional statistics returned from Ckmeans.1d.dp(), including
+     within-cluster, between-cluster, and total sum of squares
+  4. Updated the S3 method print to display within, between, and total sum of
+     squares
+  5. Included more test cases
+  6. Updated help for Ckmeans.1d.dp() and print.Ckmeans.1d.dp()
+
 Version 3.4.0
   Changes
   2016-05-07

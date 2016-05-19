@@ -20,9 +20,7 @@ Ckmeans.1d.dp(x, k=c(1,9))
 }
 
 \details{
-Distance-based \var{k}-means clustering assigns all elements in the input vector \code{x} into \code{k} clusters to minimize the sum of squares of within-cluster distances (\var{withinss}) from each element to its corresponding cluster center (mean). The algorithm was first described by Richard Bellman (1973). When a range is provided for \code{k}, the exact number of clusters will be determined within the range by Bayesian information criterion.  The Ckmeans.1d.dp algorithm groups 1-D data given by \code{x} into \code{k} cluster by dynamic programming (Wang and Song, 2011).  It guarantees the optimality of clustering -- the sum of \var{withinss} for each cluster is always the minimum.  In contrast, heuristic \var{k}-means algorithms may be inconsistent or non-optimal from run to run.
-
-Since version 3.4.0, the runtime of this program has been greatly reduced with two changes. First, an upper bound for the sum of within cluster square distances is checked to reduce the dynamic programming search space. Second, the unnecessary calculation of \eqn{n-1}{n-1} elements in the dynamic programming matrix that do not influence the final result has been eliminated. This led to enormous reduction in runtime when the number of cluster is 2: assigning one million points into two clusters took half a second on iMac with 2.93 GHz Intel Core i7 processor. Overall, the practical runtime of the program has been greatly reduced. Although the asymptotic runtime on \eqn{n}{n} points is still \eqn{O(\max(k)n^2)}{O(max(k) n^2)} for \eqn{k>2}{k>2}, it has been improved to \eqn{O(n\lg n)}{O(n lg(n))} for \eqn{k=2}{k=2}. These improvements were not discussed in (Wang and Song, 2011).
+In contrast to the heuristic \var{k}-means algorithms implemented in function \code{kmeans}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming (Wang and Song, 2011). It minimizes the sum of squares of within-cluster distances (\var{withinss}) from each element to its corresponding cluster center (mean). When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be reproducible and optimal, and its advantage over \var{k}-means in efficiency and accuracy is most pronounced at \var{k=2} or large \var{k}.
 }
 
 \value{
@@ -31,12 +29,13 @@ Since version 3.4.0, the runtime of this program has been greatly reduced with t
 	\item{centers}{a numeric vector of the means for each cluster.}
 	\item{withinss}{a numeric vector of the within-cluster sum of squares for each cluster.}
 	\item{size}{a vector of the number of points in each cluster.}
+	\item{totss}{total sum of squares of the input numbers.}
+	\item{tot.withinss}{total sum of within-cluster distance squares.}
+	\item{betweenss}{between-cluster sum of squares, equal to the sum of squared cluster means weighed by cluster size.}
 }
 
 \references{
 Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
-
-Bellman, R. (1973) A note on cluster analysis and dynamic programming. \emph{Mathematical Biosciences} \bold{18}(3), 311--312.
 }
 
 \examples{

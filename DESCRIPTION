@@ -1,14 +1,14 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal k-Means Clustering for One-Dimensional Data
-Version: 3.4.0
+Version: 3.4.0-1
 Author: Joe Song and Haizhou Wang
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
-Description: A dynamic programming algorithm for optimal one-dimensional k-means clustering. The algorithm minimizes the sum of squares of within-cluster distances. As an alternative to the standard heuristic k-means algorithm, this algorithm guarantees optimality and repeatability.
+Description: A dynamic programming algorithm for optimal one-dimensional k-means clustering. The algorithm minimizes the sum of squares of within-cluster distances. As an alternative to heuristic k-means algorithms, this method guarantees optimality and reproducibility. Its advantage in efficiency and accuracy over k-means is increasingly pronounced as the number of clusters k increases.
 License: LGPL (>= 3)
 NeedsCompilation: yes
 Suggests: testthat
 Depends: R (>= 2.10.0)
-Packaged: 2016-05-07 22:37:56 UTC; joemsong
+Packaged: 2016-05-19 19:01:38 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2016-05-08 15:42:38
+Date/Publication: 2016-05-19 23:22:22
