@@ -2,11 +2,30 @@
 #
 # Joe Song
 # Created: May 3, 2016
-# Updated: May 19, 2016
 
 library(testthat)
 library(Ckmeans.1d.dp)
 context("Checking on several examples")
+
+test_that("Weighted input", {
+
+  x <- c(-1, 2, 4, 5, 6)
+  y <- c( 4, 3, 1, 1, 1)
+
+  result <- Ckmeans.1d.dp(x, 3, y)
+  expect_equal(result$size, c(4,3,3))
+  expect_equal(result$cluster, c(1,2,3,3,3))
+  expect_equal(result$centers, c(-1, 2, 5))
+  expect_equal(result$withinss, c(0,0,2))
+
+  x <- c(-.9, 1, 1.1, 1.9, 2, 2.1)
+  y <- c( 3,  1,   2,   2, 1, 1)
+  result <- Ckmeans.1d.dp(x, c(1,6), y)
+  expect_equal(result$size, c(3,3,4))
+  expect_equal(result$centers, c(-0.9, (1+2.2)/3, (1.9*2+2+2.1)/4))
+
+})
+
 
 test_that("Given the number of clusters", {
 

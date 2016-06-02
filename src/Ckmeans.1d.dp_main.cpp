@@ -17,32 +17,32 @@
  */
 
 #include "Ckmeans.1d.dp.h"
-#include <vector>
-#include "R.h" 		// R memory io
-#include "Rmath.h" 	// R math functions
 
 /*Wrapper function to call kmeans_1d_dp()*/
 extern "C" {
   /*
-   x: One dimensional array containing input data to be clustered.
-   s: Size of the one dimensional array.
-   minK: Minimum cluster level.
-   maxK: Maximum cluster level.
-   cluster:  A list of cluster IDs for each point in x.
-   centers:  A list of centers for each cluster.
-   withinss: A list of within-cluster sum of squares for each cluster.
-   size:     A list of sizes of each cluster.
+   x: An array containing input data to be clustered.
+   length: length of the one dimensional array.
+   minK: Minimum number of clusters.
+   maxK: Maximum number of clusters.
+   cluster:  An array of cluster IDs for each point in x.
+   centers:  An array of centers for each cluster.
+   withinss: An array of within-cluster sum of squares for each cluster.
+   size:     An array of sizes of each cluster.
    */
 
-  void Ckmeans_1d_dp(double *x, int* s, int* minK, int *maxK, int* cluster,
+  void Ckmeans_1d_dp(double *x, int* length, double *y, int * ylength,
+                     int* minK, int *maxK, int* cluster,
                      double* centers, double* withinss, int* size)
   {
     // Call C++ version one-dimensional clustering algorithm*/
-    kmeans_1d_dp(x, (size_t)*s, (size_t)(*minK), (size_t)(*maxK), cluster,
-                 centers, withinss, size);
+    if(*ylength != *length) { y = 0; }
+
+    kmeans_1d_dp(x, (size_t)*length, y, (size_t)(*minK), (size_t)(*maxK),
+                 cluster, centers, withinss, size);
 
     // Change the cluster numbering from 0-based to 1-based
-    for(size_t i=0; i<*s; ++i) {
+    for(size_t i=0; i< *length; ++i) {
       cluster[i] ++;
     }
   }

@@ -7,6 +7,8 @@
 ##
 ##   Created: Oct 20, 2009
 ##
+## Modified:
+#    May 17, 2016. MS
 
 ## print method for Ckmeans.1d.dp object
 print.Ckmeans.1d.dp <- function(x, ...)
@@ -41,7 +43,7 @@ print.Ckmeans.1d.dp <- function(x, ...)
 ##Ckmeans.1d.dp : function which implement optimal one-dimensional clustering
 ## x is one-dimensional input vector
 ## k indicates cluster level
-Ckmeans.1d.dp <- function( x, k=c(1,9) )
+Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
 {
   if(is.null(k)) {
     k <- 1: min( 9, length(x) )
@@ -87,6 +89,7 @@ Ckmeans.1d.dp <- function( x, k=c(1,9) )
   #Call external C++ function
   result <- .C("Ckmeans_1d_dp", PACKAGE="Ckmeans.1d.dp",
                data=as.double(x), length=as.integer(length(x)),
+               weight=as.double(y), weight_length=as.integer(length(y)),
                Kmin=as.integer(k.min), Kmax=as.integer(k.max),
                cluster=as.integer(clusters), centers=as.double(center),
                withinss=as.double(withinss), size=as.integer(size))
@@ -101,7 +104,13 @@ Ckmeans.1d.dp <- function( x, k=c(1,9) )
     }
   }
 
-  totss <- sum(scale(x, scale=FALSE)^2)
+  if(length(y) == length(x) && sum(y) != 0) {
+    totss <- sum(y * (x - sum(x * y) / sum(y))^2)
+  } else {
+    # totss <- sum(scale(x, scale=FALSE)^2) scale function is VERY SLOW!
+    totss <- sum((x - sum(x) / length(x))^2)
+  }
+
   tot.withinss <- sum(result$withinss[1:k.opt])
   betweenss <- totss - tot.withinss
   r <- structure(list(cluster = result$cluster, centers = result$centers[1:k.opt],
