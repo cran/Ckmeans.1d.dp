@@ -20,7 +20,7 @@ The space complexity is \eqn{O(kn)}{O(kn)}.
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 3.4.6\cr
+Version: \tab 3.4.6-1\cr
 Initial version: \tab 1.0\cr
 Initial date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3) \cr

@@ -57,6 +57,11 @@
 
  Updated: May 21, 2016
  1. Moved the weighted solutions to new files. They will be updated separately
+
+ Updated: 2016-08-28
+ 1. Removed usage of lambda functions in C++ code for compatibility with
+    older versions of C++ compilers.
+ 2. Shifted the values of x by median to improve numerical stability.
  */
 
 #include "Ckmeans.1d.dp.h"
@@ -181,13 +186,16 @@ void fill_dp_matrix(const std::vector<double> & x,
 
   std::vector<double> sum_x(N), sum_x_sq(N);
 
+  double shift = x[N/2]; // median. used to shift the values of x to
+  //  improve numerical stability
+
   for(int i = 0; i < N; ++i) {
     if(i == 0) {
-      sum_x[0] = x[0];
-      sum_x_sq[0] = x[0] * x[0];
+      sum_x[0] = x[0] - shift;
+      sum_x_sq[0] = (x[0] - shift) * (x[0] - shift);
     } else {
-      sum_x[i] = sum_x[i-1] + x[i];
-      sum_x_sq[i] = sum_x_sq[i-1] + x[i] * x[i];
+      sum_x[i] = sum_x[i-1] + x[i] - shift;
+      sum_x_sq[i] = sum_x_sq[i-1] + (x[i] - shift) * (x[i] - shift);
     }
 
     // Initialize for k = 0
@@ -299,21 +307,36 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
   auto is_equally_weighted(true);
 
   std::vector<size_t> order(N);
-  std::size_t n(0);
-  std::generate(order.begin(), order.end(), [&]{ return n++; });
 
-  //  sort dimension k of X in increasing order
-  std::sort(order.begin(), order.end(),
-            [&](size_t i1, size_t i2) { return x[i1] < x[i2]; } );
+  //Number generation using lambda function, not supported by all g++:
+  //std::size_t n(0);
+  //std::generate(order.begin(), order.end(), [&]{ return n++; });
 
-  for(auto i=0; i<order.size(); ++i) {
+  for(size_t i=0; i<order.size(); ++i) {
+    order[i] = i;
+  }
+
+  // Sort the index of x in increasing order of x
+  // Sorting using lambda function, not supported by all g++ versions:
+  // std::sort(order.begin(), order.end(),
+  //          [&](size_t i1, size_t i2) { return x[i1] < x[i2]; } );
+
+  struct CompareIndex {
+    const double * m_x;
+    CompareIndex(const double * x) : m_x(x) {}
+    bool operator() (size_t i, size_t j) { return (m_x[i] < m_x[j]);}
+  } compi(x);
+
+  std::sort(order.begin(), order.end(), compi);
+
+  for(size_t i=0; i<order.size(); ++i) {
     x_sorted[i] = x[order[i]];
   }
 
   // check to see if unequal weight is provided
   if(y != NULL) {
     is_equally_weighted = true;
-    for(auto i=1; i<N; ++i) {
+    for(size_t i=1; i<N; ++i) {
       if(y[i] != y[i-1]) {
         is_equally_weighted = false;
         break;
@@ -323,7 +346,7 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
 
   if(! is_equally_weighted) {
     y_sorted.resize(N);
-    for(auto i=0; i<order.size(); ++i) {
+    for(size_t i=0; i<order.size(); ++i) {
       y_sorted[i] = y[order[i]];
     }
   }

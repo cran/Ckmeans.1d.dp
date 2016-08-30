@@ -1,7 +1,7 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal and Fast Univariate k-Means Clustering
-Version: 3.4.6
+Version: 3.4.6-1
 Author: Joe Song and Haizhou Wang
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
 Description: A fast dynamic programming algorithm for optimal univariate k-means clustering. The algorithm minimizes the sum of squares of within-cluster distances. As an alternative to heuristic k-means algorithms, this method guarantees optimality and reproducibility. Its advantage in efficiency and accuracy over heuristic k-means clustering is increasingly pronounced as the number of clusters k increases.
@@ -9,6 +9,6 @@ License: LGPL (>= 3)
 NeedsCompilation: yes
 Suggests: testthat
 Depends: R (>= 2.10.0)
-Packaged: 2016-06-02 02:22:19 UTC; joemsong
+Packaged: 2016-08-28 19:58:05 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2016-06-02 05:50:25
+Date/Publication: 2016-08-30 07:47:58

@@ -1,12 +1,12 @@
-197dd847b632b3eee6e48374c0f71189 *DESCRIPTION
+6fb3834adfa0bc1e976f6a3ba2f95f18 *DESCRIPTION
 c13b02f39a9d9ccc1d62ebf9b6179c75 *NAMESPACE
-145e997b71a7556b0bd3ee498f1cacb3 *NEWS
+6ca05ccd66ff70048f2402f3a62396c5 *NEWS
 600ab5ddad08efd0199e050e30b4781f *R/Ckmeans.1d.dp.R
 235c2a4e13b77aec40c03c3748848ff2 *inst/CITATION
-9e5b425694287e5984da5092c443d699 *man/Ckmeans.1d.dp-package.Rd
+af6bbae414ff91b704ccfd3a0067db10 *man/Ckmeans.1d.dp-package.Rd
 9f40e1e35523fc53848296fbdb36485b *man/Ckmeans.1d.dp.Rd
 c71309b404b58d441411946a44a78557 *man/print.Ckmeans.1d.dp.Rd
-48ff543ec349af0bdbaabc06e58bc316 *src/Ckmeans.1d.dp.cpp
+bce4a1d748d943de93cc14d57aa9a862 *src/Ckmeans.1d.dp.cpp
 39ea771032788c1d8107f62e6660c2eb *src/Ckmeans.1d.dp.h
 8f0d5b6508f81267385fe8cb7e72bb87 *src/Ckmeans.1d.dp_main.cpp
 e3d3cb360fbfdb3c6974e14eb5f09870 *src/Makevars

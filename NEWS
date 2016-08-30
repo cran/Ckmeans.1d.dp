@@ -1,9 +1,16 @@
 NEWS
 
+Version 3.4.6-1
+  Changes
+  2016-08-28
+  1. Removed usage of lambda functions in C++ code for compatibility with
+     older versions of C++ compilers.
+  2. Shifted the values of x by median to improve numerical stability.
+
 Version 3.4.6
   Changes
   2016-05-25
-  1. Implemented an O(kn lg n) algorithm, speeding up the program greatly
+  1. Implemented an O(kn lg n) algorithm, speeding up the program greatly.
 
 Version 3.4.5
   Changes
@@ -27,8 +34,8 @@ Version 3.4.4
 Version 3.4.3
   Changes
   2016-05-15
-  1. Upgraded to support c++11
-  2. Introduced optimal k-means clustering for weighted data
+  1. Upgraded to support c++11.
+  2. Introduced optimal k-means clustering for weighted data.
 
 Version 3.4.2
   Changes
