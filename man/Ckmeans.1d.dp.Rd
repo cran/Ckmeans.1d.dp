@@ -23,7 +23,7 @@ Ckmeans.1d.dp(x, k=c(1,9), y=1)
 }
 
 \details{
-In contrast to the heuristic \var{k}-means algorithms implemented in function \code{kmeans}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming (Wang and Song, 2011). It minimizes the total of within-cluster sums of squared distances (\var{withinss}) between each element and its corresponding cluster mean. When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be optimal and reproducible, and its advantage in efficiency and accuracy over heuristic \var{k}-means methods become increasingly evident as k increases.
+In contrast to the heuristic \var{k}-means algorithms implemented in function \code{\link{kmeans}}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming (Wang and Song, 2011). It minimizes the total of within-cluster sums of squared distances (\var{withinss}) between each element and its corresponding cluster mean. When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be optimal and reproducible, and its advantage in efficiency and accuracy over heuristic \var{k}-means methods become increasingly evident as k increases.
 }
 
 \value{
@@ -46,6 +46,10 @@ In contrast to the heuristic \var{k}-means algorithms implemented in function \c
 
 \references{
 Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
+}
+
+\seealso{
+  The \code{\link{kmeans}} function in package \pkg{\link{stats}} that implements several heuristic \eqn{k}{k}-means algorithms.
 }
 
 \examples{
@@ -81,12 +85,12 @@ y1 <- abs(sin(2*t[n1]) + 0.1*rnorm(length(n1)))
 y2 <- abs(sin(0.5*t[n2]) + 0.1*rnorm(length(n2)))
 y <- c(y1, y2)
 
-w <- y * 2 # exp((y - min(y)))
-
-res <- Ckmeans.1d.dp(t, k=c(5), w)
-plot(t, y, main = "Time course segmentation", col=res$cluster,
-     pch=res$cluster, xlab="time", ylab="intensity", type="h")
+w <- y^8
+res <- Ckmeans.1d.dp(t, k=c(1:10), w)
+plot(t, w, main = "Time course segmentation", col=res$cluster,
+     pch=res$cluster, xlab="Time t", ylab="Transformed intensity w", type="h")
 abline(v=res$centers, col="chocolate", lty="dashed")
-text(res$centers, max(y) * .95, cex=1.5, font=2,
+text(res$centers, max(w) * .95, cex=0.75, font=2,
      paste(round(res$size / sum(res$size) * 100, 2), "/100"))
+
 }

@@ -2,4 +2,5 @@
 useDynLib(Ckmeans.1d.dp)
 export(Ckmeans.1d.dp)
 export(print.Ckmeans.1d.dp)
+export(ahist)
 S3method(print, Ckmeans.1d.dp)

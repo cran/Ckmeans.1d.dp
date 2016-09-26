@@ -1,5 +1,11 @@
 NEWS
 
+Version 3.4.6-2
+  Changes
+  2016-09-25
+  1. Introduced a new function ahist() to generate adaptive histograms
+     corresponding to the optimal univariate k-means clustering
+
 Version 3.4.6-1
   Changes
   2016-08-28

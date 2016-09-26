@@ -9,6 +9,26 @@
 ##
 ## Modified:
 #    May 17, 2016. MS
+#    September 25, 2016. MS. Introduced function ahist()
+
+ahist <- function(
+  x, k=c(1,9), plot = TRUE, xlab = deparse(substitute(x)),
+  main = paste("Adaptive histogram of", deparse(substitute(x))),
+  ...)
+  # adaptive histogram
+{
+  xd <- Ckmeans.1d.dp(x, k=k)$cluster
+  breaks <- sapply(1:(max(xd)-1), function(l) (max(x[xd==l]) + min(x[xd==l+1]))/2)
+  h <- graphics::hist(x, breaks=c(min(x), breaks, max(x)), plot=FALSE,
+                      warn.unused=FALSE, ...)
+  h$xname <- deparse(substitute(x))
+  if(plot) {
+    graphics::plot(h, main=main, xlab=xlab, ...)
+    invisible(h)
+  } else {
+    return(h)
+  }
+}
 
 ## print method for Ckmeans.1d.dp object
 print.Ckmeans.1d.dp <- function(x, ...)

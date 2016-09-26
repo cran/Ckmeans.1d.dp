@@ -1,14 +1,24 @@
 Package: Ckmeans.1d.dp
 Type: Package
+Version: 3.4.6-2
+Date: 2016-09-25
 Title: Optimal and Fast Univariate k-Means Clustering
-Version: 3.4.6-1
-Author: Joe Song and Haizhou Wang
+Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
+		     email = "joemsong@cs.nmsu.edu"),
+	      person("Haizhou", "Wang", role = "aut"))
+Author: Joe Song [aut, cre], Haizhou Wang [aut]
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
-Description: A fast dynamic programming algorithm for optimal univariate k-means clustering. The algorithm minimizes the sum of squares of within-cluster distances. As an alternative to heuristic k-means algorithms, this method guarantees optimality and reproducibility. Its advantage in efficiency and accuracy over heuristic k-means clustering is increasingly pronounced as the number of clusters k increases.
+Description: A dynamic programming algorithm for optimal one-dimensional
+ k-means clustering. The algorithm minimizes the sum of squares of
+ within-cluster distances. As an alternative to heuristic k-means algorithms,
+ this method guarantees optimality and reproducibility. Its advantage in
+ efficiency and accuracy over k-means is increasingly pronounced as the
+ number of clusters k increases.
 License: LGPL (>= 3)
 NeedsCompilation: yes
 Suggests: testthat
 Depends: R (>= 2.10.0)
-Packaged: 2016-08-28 19:58:05 UTC; joemsong
+LazyData: true
+Packaged: 2016-09-25 19:50:13 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2016-08-30 07:47:58
+Date/Publication: 2016-09-26 00:51:35
