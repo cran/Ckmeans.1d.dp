@@ -11,25 +11,6 @@
 #    May 17, 2016. MS
 #    September 25, 2016. MS. Introduced function ahist()
 
-ahist <- function(
-  x, k=c(1,9), plot = TRUE, xlab = deparse(substitute(x)),
-  main = paste("Adaptive histogram of", deparse(substitute(x))),
-  ...)
-  # adaptive histogram
-{
-  xd <- Ckmeans.1d.dp(x, k=k)$cluster
-  breaks <- sapply(1:(max(xd)-1), function(l) (max(x[xd==l]) + min(x[xd==l+1]))/2)
-  h <- graphics::hist(x, breaks=c(min(x), breaks, max(x)), plot=FALSE,
-                      warn.unused=FALSE, ...)
-  h$xname <- deparse(substitute(x))
-  if(plot) {
-    graphics::plot(h, main=main, xlab=xlab, ...)
-    invisible(h)
-  } else {
-    return(h)
-  }
-}
-
 ## print method for Ckmeans.1d.dp object
 print.Ckmeans.1d.dp <- function(x, ...)
 {
@@ -67,6 +48,8 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
 {
   if(is.null(k)) {
     k <- 1: min( 9, length(x) )
+  } else {
+    k <- as.integer(ceiling(k))
   }
 
   if(length(k) > 1) {
@@ -135,7 +118,8 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
   betweenss <- totss - tot.withinss
   r <- structure(list(cluster = result$cluster, centers = result$centers[1:k.opt],
                       withinss = result$withinss[1:k.opt], size = result$size[1:k.opt],
-                      totss = totss, tot.withinss = tot.withinss, betweenss = betweenss),
+                      totss = totss, tot.withinss = tot.withinss, betweenss = betweenss,
+                      xname=deparse(substitute(x)), yname=deparse(substitute(y))),
                  class = "Ckmeans.1d.dp")
 
   return( r )

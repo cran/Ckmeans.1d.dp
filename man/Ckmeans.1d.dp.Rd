@@ -54,11 +54,12 @@ Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in 
 
 \examples{
 # Ex. 1 The number of clusters is provided.
-# Generate data from a Gaussian mixture model of two components
-x <- c(rnorm(50, sd=0.3), rnorm(50, mean=1, sd=0.3))
-# Divide x into 2 clusters
-k <- 2
+# Generate data from a Gaussian mixture model of three components
+x <- c(rnorm(50, sd=0.3), rnorm(50, mean=1, sd=0.3), rnorm(50, mean=2, sd=0.3))
+# Divide x into 3 clusters
+k <- 3
 result <- Ckmeans.1d.dp(x, k)
+plot(result)
 plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
      main="Optimal k-means clustering given k",
      sub=paste("Number of clusters given:", k))
@@ -66,10 +67,11 @@ abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
 legend("bottom", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
 # Ex. 2 The number of clusters is determined by Bayesian information criterion
-# Generate data from a Gaussian mixture model of two components
-x <- c(rnorm(50, mean=-1, sd=0.3), rnorm(50, mean=1, sd=1))
+# Generate data from a Gaussian mixture model of three components
+x <- c(rnorm(50, mean=-1, sd=0.3), rnorm(50, mean=1, sd=1), rnorm(50, mean=2, sd=0.4))
 # Divide x into k clusters, k automatically selected (default: 1~9)
 result <- Ckmeans.1d.dp(x)
+plot(result)
 k <- max(result$cluster)
 plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
      main="Optimal k-means clustering with k estimated",
@@ -87,6 +89,7 @@ y <- c(y1, y2)
 
 w <- y^8
 res <- Ckmeans.1d.dp(t, k=c(1:10), w)
+plot(res)
 plot(t, w, main = "Time course segmentation", col=res$cluster,
      pch=res$cluster, xlab="Time t", ylab="Transformed intensity w", type="h")
 abline(v=res$centers, col="chocolate", lty="dashed")

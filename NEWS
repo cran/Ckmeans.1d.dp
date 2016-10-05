@@ -1,10 +1,29 @@
 NEWS
 
+Version 3.4.6-3
+  Changes
+  2016-10-03
+  1. Updated examples in Ckmeans.1d.dp() manual
+
+  Changes
+  2016-10-01
+  1. Added a new function plot() to visualize the clusters.
+
+  2016-09-30
+  1. Updated examples of ahist().
+  2. Added sticks to ahist() to show the original input data.
+
+  2016-09-27
+  1. Fixed ahist() when there is only a single bin detected.
+  2. Made ahist() run much faster than the previous version.
+  3. Updated previous examples and added more examples to illustrate
+     the use of ahist() better.
+
 Version 3.4.6-2
   Changes
   2016-09-25
   1. Introduced a new function ahist() to generate adaptive histograms
-     corresponding to the optimal univariate k-means clustering
+     corresponding to the optimal univariate k-means clustering.
 
 Version 3.4.6-1
   Changes
