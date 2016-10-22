@@ -19,7 +19,7 @@ Richard Bellman (1973) first described a general dynamic programming strategy fo
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 3.4.6-3\cr
+Version: \tab 3.4.6-4\cr
 Initial version: \tab 1.0\cr
 Initial date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3) \cr

@@ -42,6 +42,11 @@ In contrast to the heuristic \var{k}-means algorithms implemented in function \c
 	\item{tot.withinss}{total sum of within-cluster squared distances between each element and its cluster mean. This statistic is minimized given the number of clusters.}
 
 	\item{betweenss}{sum of squared distances between each cluster mean and sample mean weighed by cluster size. This statistic is maximized given the number of clusters.}
+
+	\item{xname}{a character string. The actual name of the \code{x} argument.}
+
+	\item{yname}{a character string. The actual name of the \code{y} argument.}
+
 }
 
 \references{

@@ -43,9 +43,10 @@ The maximum ratio of between-cluster sum of squares to total sum of squares is p
 }
 
 \examples{
-# Example: clustering data generated from a Gaussian mixture model of two components
-x <- rnorm(50, mean=-1, sd=0.3)
-x <- append(x, rnorm(50, mean=1, sd=0.3) )
+# Example: clustering data generated from a Gaussian
+#          mixture model of two components
+x <- c(rnorm(15, mean=-1, sd=0.3),
+       rnorm(15, mean=1, sd=0.3))
 res <- Ckmeans.1d.dp(x)
 print(res)
 }

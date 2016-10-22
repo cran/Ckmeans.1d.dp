@@ -1,5 +1,32 @@
 NEWS
 
+Version 3.4.6-4
+  Changes
+  2016-10-21
+  1. Added an equal bin width histogram example to contrast with ahist()
+  function.
+
+  2016-10-16
+  1. Moved ahist() function from visualize.R to a new R file ahist.R.
+
+  2016-10-15
+  1. Added a breaks argument to ahist() so as use default graphics::hist() but
+     with the capacity to add sticks to the histogram generated.
+  2. Added a skip.empty.bin.color argument to ahist() to gain more control over
+     colors of the histogram bars.
+
+  2016-10-12
+  1. Added a data argument to ahist() to provide raw data for visualization.
+  2. Allow x to ahist() to be an object of the class "Ckmeans.1d.dp" to avoid
+     recomputing the clustering if it has already been done. This requires the
+     data for clustering to be provided via the data argument.
+
+  2016-10-11
+  1. Added an argument add.sticks=TRUE to ahist() to turn on or off the sticks
+  just above the horizontal axis.
+  2. Added an argument style to ahist() for different styles of adaptive
+  histogram.
+
 Version 3.4.6-3
   Changes
   2016-10-03

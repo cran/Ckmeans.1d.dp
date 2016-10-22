@@ -12,6 +12,7 @@
 
 #include <cstddef> // For size_t
 #include <vector>
+#include <string>
 
 /* One-dimensional cluster algorithm implemented in C++ */
 /* x is input one-dimensional vector and

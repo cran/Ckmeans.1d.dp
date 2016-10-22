@@ -1,7 +1,7 @@
 Package: Ckmeans.1d.dp
 Type: Package
-Version: 3.4.6-3
-Date: 2016-10-04
+Version: 3.4.6-4
+Date: 2016-10-21
 Title: Optimal and Fast Univariate k-Means Clustering
 Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
 		     email = "joemsong@cs.nmsu.edu"),
@@ -19,6 +19,6 @@ NeedsCompilation: yes
 Suggests: testthat
 Depends: R (>= 2.10.0)
 LazyData: true
-Packaged: 2016-10-05 03:19:39 UTC; joemsong
+Packaged: 2016-10-21 20:55:53 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2016-10-05 09:29:38
+Date/Publication: 2016-10-22 12:17:15
