@@ -2,7 +2,7 @@
 //
 // Joe Song
 // Created: May 21, 2016. Extracted from Ckmeans.1d.dp.cpp
-
+// Modified: Dec 4, 2016. Fixed an error in calculating mean_x1
 #include "Ckmeans.1d.dp.h"
 
 #include <algorithm>
@@ -94,7 +94,7 @@ void fill_weighted_dp_matrix(const std::vector<double> & x,
         double distance = x[i] - mean_x1;
         S[0][i] = S[0][i-1] + y[i] * distance * distance * sum_of_weight_x1
           / (sum_of_weight_x1 + y[i]);
-        mean_x1 = (sum_of_weight_x1 * mean_x1 + x[i])
+        mean_x1 = (sum_of_weight_x1 * mean_x1 + y[i] * x[i])
           / (sum_of_weight_x1 + y[i]);
         sum_of_weight_x1 += y[i];
 

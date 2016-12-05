@@ -23,7 +23,7 @@ Ckmeans.1d.dp(x, k=c(1,9), y=1)
 }
 
 \details{
-In contrast to the heuristic \var{k}-means algorithms implemented in function \code{\link{kmeans}}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming (Wang and Song, 2011). It minimizes the total of within-cluster sums of squared distances (\var{withinss}) between each element and its corresponding cluster mean. When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be optimal and reproducible, and its advantage in efficiency and accuracy over heuristic \var{k}-means methods become increasingly evident as k increases.
+In contrast to the heuristic \var{k}-means algorithms implemented in function \code{\link{kmeans}}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming (Wang and Song, 2011). It minimizes the total of within-cluster sums of squared distances (\var{withinss}) between each element and its corresponding cluster mean. When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be optimal and reproducible, and its advantage in efficiency and accuracy over heuristic \var{k}-means methods becomes increasingly evident as \var{k} increases.
 }
 
 \value{
@@ -50,7 +50,7 @@ In contrast to the heuristic \var{k}-means algorithms implemented in function \c
 }
 
 \references{
-Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
+Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
 }
 
 \seealso{
@@ -85,20 +85,23 @@ abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
 legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
 # Ex. 3 Segmenting a time course using weighted k-means
-t <- seq(0, 2*pi*2, length=250)
-n1 <- 1:125
-n2 <- 126:250
-y1 <- abs(sin(2*t[n1]) + 0.1*rnorm(length(n1)))
+n <- 160
+t <- seq(0, 2*pi*2, length=n)
+n1 <- 1:(n/2)
+n2 <- (max(n1)+1):n
+y1 <- abs(sin(1.5*t[n1]) + 0.1*rnorm(length(n1)))
 y2 <- abs(sin(0.5*t[n2]) + 0.1*rnorm(length(n2)))
 y <- c(y1, y2)
 
-w <- y^8
+w <- y^8 # stress the peaks
 res <- Ckmeans.1d.dp(t, k=c(1:10), w)
 plot(res)
-plot(t, w, main = "Time course segmentation", col=res$cluster,
-     pch=res$cluster, xlab="Time t", ylab="Transformed intensity w", type="h")
+plot(t, w, main = "Time course segmentation",
+     col=res$cluster, pch=res$cluster,
+     xlab="Time t", ylab="Transformed intensity w",
+     type="h")
 abline(v=res$centers, col="chocolate", lty="dashed")
-text(res$centers, max(w) * .95, cex=0.75, font=2,
+text(res$centers, max(w) * .95, cex=0.5, font=2,
      paste(round(res$size / sum(res$size) * 100, 2), "/100"))
 
 }

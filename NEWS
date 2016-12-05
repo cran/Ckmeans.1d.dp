@@ -1,10 +1,27 @@
 NEWS
 
+Version 3.4.6-5
+  Changes
+  2016-12-04
+  1. Expanded the vignette of adaptive histograms to a tutorial.
+  2. Expanded the vignette of optimal univariate k-means clustering to a tutorial.
+  3. Update the time course example in Ckmeans.1d.dp function.
+  4. Fixed a bug in the dynamic programming solution to optimal *weighted*
+     clustering. This bug affected the first weighted cluster. The code that
+     contains this bug was not used for non-weighted fast optimal clustering.
+     If no weight vector is provided when calling Ckmeans.1d.dp, the clustering
+     result will be the same and remains correct.
+
+  2016-10-22
+  1. Added a vignette to visualize examples of adaptive histograms.
+  2. Added a vignette to visualize examples of optimal univariate k-means
+  clustering.
+
 Version 3.4.6-4
   Changes
   2016-10-21
-  1. Added an equal bin width histogram example to contrast with ahist()
-  function.
+  1. Added an equal bin width histogram example to contrast with the adaptive
+  histogram.
 
   2016-10-16
   1. Moved ahist() function from visualize.R to a new R file ahist.R.
@@ -67,7 +84,7 @@ Version 3.4.6
 Version 3.4.5
   Changes
   2016-05-22
-  1. s[j,i] is now computed in constant time now based on pre-computed
+  1. s[j,i] is now computed in constant time based on pre-computed
      sums of input x and its squares from 0 to i.
 
 Version 3.4.4
@@ -80,20 +97,20 @@ Version 3.4.4
 
   2016-05-18
   1. Now Ckmeans.1d.dp() function returns "totss", "tot.withinss", and
-     "betweenss" statistics to summarize the optimal clustering obtained
-  2. print.Ckmeans.1d.dp() print out the above statistics
+     "betweenss" statistics to summarize the optimal clustering obtained.
+  2. print.Ckmeans.1d.dp() print out the above statistics.
 
 Version 3.4.3
   Changes
   2016-05-15
-  1. Upgraded to support c++11.
-  2. Introduced optimal k-means clustering for weighted data.
+  1. Upgraded to support c++11
+  2. Introduced optimal k-means clustering for weighted data
 
 Version 3.4.2
   Changes
   2016-05-14
   1. Implemented backward filling of the dynamic programming matrix to
-     utlize lower bounds for the optimal cluster boundary. This step
+     utilize lower bounds for the optimal cluster boundary. This step
      substantially reduced the runtime by half (two or more times faster).
 
   2016-05-07
@@ -160,4 +177,4 @@ Version 3.02 2014-03-24 and earlier
   Changes
   1. The program now automatically determines the number of clusters from a
      given range.
-  2. The program is optimized further speedup.
+  2. The code is optimized for further speedup.
