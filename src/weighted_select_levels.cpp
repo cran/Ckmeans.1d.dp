@@ -97,7 +97,9 @@ size_t select_levels_weighted(
     double loglikelihood = 0;
     double binLeft, binRight;
 
-    double totalweight = std::accumulate(begin(weights), end(weights), 0, std::plus<double>());
+    // double totalweight = std::accumulate(begin(weights), end(weights), 0, std::plus<double>());
+
+    double totalweight = std::accumulate(weights.begin(), weights.end(), 0, std::plus<double>());
 
     for (size_t k = 0; k < K; ++k) { // Compute the likelihood
 

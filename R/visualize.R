@@ -13,7 +13,8 @@ plot.Ckmeans.1d.dp <-
     ck <- x
     if(is.null(xlab)) xlab <- ck$xname
     if(is.null(ylab)) ylab <- ifelse(ck$yname=="1", "Weight", ck$yname)
-    if(is.null(main)) main <- paste("Optimal k-means clustering of", ck$xname)
+    if(is.null(main)) main <- paste("Optimal", ifelse(ck$yname=="1", "", "weighted"),
+                                    "univariate clustering of", ck$xname)
     if(is.null(sub)) sub=paste("n =", length(ck$cluster))
     if(is.null(col.clusters)) col.clusters <- seq_along(x$size)
 

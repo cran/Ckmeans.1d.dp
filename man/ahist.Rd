@@ -2,13 +2,15 @@
 \alias{ahist}
 \title{Adaptive Histograms}
 \description{
-Generate or plot histograms adaptive to patterns in univariate data. The number and widths of histogram bins are automatically calculated based on an optimal \var{k}-means clustering of input data. Thus the bins are unlikely of equal width.
+Generate or plot histograms adaptive to patterns in univariate data. The number and widths of histogram bins are automatically calculated based on an optimal univariate clustering of input data. Thus the bins are unlikely of equal width.
 }
 
 \usage{
-ahist(x, k = c(1,9), breaks=NULL, data=NULL, plot = TRUE,
-      xlab = deparse(substitute(x)), main = NULL,
-      col = NULL, lwd = graphics::par("lwd"),
+ahist(x, k = c(1,9), breaks=NULL, data=NULL, weight=1,
+      plot = TRUE, xlab = deparse(substitute(x)),
+      wlab = deparse(substitute(weight)),
+      main = NULL, col = "lavender", border = graphics::par("fg"),
+      lwd = graphics::par("lwd"),
       col.stick = "gray", lwd.stick = 1, add.sticks=TRUE,
       style = c("discontinuous", "midpoints"),
       skip.empty.bin.color=TRUE,
@@ -28,13 +30,19 @@ If \code{x} is an object of class \code{"Ckmeans.1d.dp"}, the clustering informa
 
   \item{data}{a numeric vector. If \code{x} is an object of class \code{"Ckmeans.1d.dp"}, the data argument must be provided. If \code{x} is a numeric vector, this argument is ignored.}
 
+  \item{weight}{a value of 1 to specify equal weights or a numeric vector of unequal weights for each element. The default weight is one. It is highly recommended to use positive (instead of zero) weights to account for the influence of every element. The weights have a strong impact on the clustering result.}
+
  \item{plot}{a logical. If \code{TRUE}, the histogram will be plotted.}
 
  \item{xlab}{a character string. The x-axis label for the plot.}
 
+ \item{wlab}{a character string. The weight-axis label for the plot. It is the vertical axis to the right of the plot.}
+
  \item{main}{a character string. The title for the plot.}
 
  \item{col}{a character string. The fill color of the histogram bars.}
+
+ \item{border}{a character string. The color of the histogram bar borders.}
 
  \item{lwd}{a numeric value. The line width of the border of the histogram bars}
 
@@ -92,7 +100,6 @@ ahist(x, k=9, col="lavender", col.stick="salmon",
       sub=paste("n =", length(x)), lwd=2,
       main="Example 2. Gaussian mixture model with 3 components\n(on average 3 bins per component)")
 
-
 # Example 3: The DNase data frame has 176 rows and 3 columns of
 #   data obtained during development of an ELISA assay for the
 #   recombinant protein DNase in rat serum.
@@ -113,4 +120,16 @@ ahist(DNase$density, breaks="Sturges", col="palegreen",
       add.sticks=TRUE, col.stick="darkgreen",
       main="Example 4. Elisa assay of DNase in rat serum\n(Equal width bins)",
       xlab="Optical density of protein DNase")
+
+# Example 5: Weighted adatpive histograms
+
+x <- sort(c(rnorm(40, mean=-2, sd=0.3),
+       rnorm(45, mean=2, sd=0.1),
+       rnorm(70, mean=4, sd=0.2)))
+
+y <- (1 + sin(0.10 * seq_along(x))) * (x-1)^2
+
+ahist(x, weight=y, sub=paste("n =", length(x)),
+      col.stick="forestgreen", lwd.stick=0.25, lwd=2,
+      main="Example 5. Weighted adaptive histogram")
 }

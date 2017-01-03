@@ -19,7 +19,7 @@ result <- Ckmeans.1d.dp(x)
 plot(result)
 k <- max(result$cluster)
 plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
-     main="Optimal k-means clustering with k estimated",
+     main="Optimal univariate clustering with k estimated",
      sub=paste("Number of clusters is estimated to be", k))
 abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
 legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")

@@ -1,15 +1,15 @@
 ---
-title: "Tutorial: Optimal univariate $k$-means clustering"
+title: "Tutorial: Optimal univariate clustering"
 author: "Joe Song and Haizhou Wang"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial: Optimal univariate k-means clustering}
+  %\VignetteIndexEntry{Tutorial: Optimal univariate clustering}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-This tutorial illustrates applications of optimal univariate $k$-means clustering function ```Ckmeans.1d.dp```. It clusters univariate data given the number of clusters $k$. It can estimate $k$ if not provided. It can also perform optimal weighted clustering when a weight vector is provided with the input univariate data. Weighted clustering can be used to analyze 1-D signals such as time series data. The corresponding clusters obtained from weighted clustering can be the basis for optimal time course segmentation or optimal peak calling. 
+This tutorial illustrates applications of optimal univariate clustering function ```Ckmeans.1d.dp```. It clusters univariate data given the number of clusters $k$. It can estimate $k$ if not provided. It can also perform optimal weighted clustering when a weight vector is provided with the input univariate data. Weighted clustering can be used to analyze 1-D signals such as time series data. The corresponding clusters obtained from weighted clustering can be the basis for optimal time course segmentation or optimal peak calling. 
 
 ## 1. Cluster univariate data given the number of clusters $k$
 
@@ -45,7 +45,7 @@ result <- Ckmeans.1d.dp(x)
 plot(result)
 k <- max(result$cluster)
 plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
-     main="Optimal k-means clustering with k estimated",
+     main="Optimal univariate clustering with k estimated",
      sub=paste("Number of clusters is estimated to be", k))
 abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
 legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
@@ -55,7 +55,7 @@ legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
 ### Example 3.
 
-We segment a time course to identify peaks using weighted $k$-means. The input data is the time stamp of obtaining each intensity measurement; the weight is the signal intensity.
+We segment a time course to identify peaks using weighted clustering. The input data is the time stamp of obtaining each intensity measurement; the weight is the signal intensity.
 
 ```{r, fig.height=4, fig.width=7}
 require(Ckmeans.1d.dp)

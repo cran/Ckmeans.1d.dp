@@ -90,8 +90,8 @@ inline double ssq(const size_t j, const size_t i,
 }
 
 void fill_row_k(int imin, int imax, int k,
-            std::vector<std::vector<double>> & S,
-            std::vector<std::vector<size_t>> & J,
+            std::vector< std::vector<double> > & S,
+            std::vector< std::vector<size_t> > & J,
             const std::vector<double> & sum_x,
             const std::vector<double> & sum_x_sq)
 {
@@ -290,6 +290,12 @@ size_t numberOfUnique(ForwardIterator first, ForwardIterator last)
   return nUnique;
 }
 
+static const double * px;
+bool compi(size_t i, size_t j)
+{
+  return px[i] < px[j];
+}
+
 void kmeans_1d_dp(const double *x, const size_t N, const double *y,
                   size_t Kmin, size_t Kmax,
                   int* cluster, double* centers,
@@ -304,7 +310,7 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
   std::vector<double> x_sorted(N);
 
   std::vector<double> y_sorted;
-  auto is_equally_weighted(true);
+  bool is_equally_weighted = true;
 
   std::vector<size_t> order(N);
 
@@ -316,17 +322,24 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
     order[i] = i;
   }
 
+  // Option 1.
   // Sort the index of x in increasing order of x
   // Sorting using lambda function, not supported by all g++ versions:
   // std::sort(order.begin(), order.end(),
   //          [&](size_t i1, size_t i2) { return x[i1] < x[i2]; } );
 
+  /* Option 2. The following is not supported by C++98:
   struct CompareIndex {
     const double * m_x;
     CompareIndex(const double * x) : m_x(x) {}
     bool operator() (size_t i, size_t j) { return (m_x[i] < m_x[j]);}
   } compi(x);
 
+  std::sort(order.begin(), order.end(), compi);
+  */
+
+  // Option 3:
+  px = x;
   std::sort(order.begin(), order.end(), compi);
 
   for(size_t i=0; i<order.size(); ++i) {

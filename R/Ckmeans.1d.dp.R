@@ -70,17 +70,22 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
   ##Check to see if cluster level bigger than the unique number of the input vector
   ##If k is bigger than the unique number of the input vector,
   ##force k set to the number of unique number of input.
-  if(n.unique < k.min) {
-    warning("Min number of clusters is greater than the unique number of elements in\n",
-            "the input vector, both k.min and k.max are set to the number of\n",
-            "unique number of input values.\n")
-    k.min <- n.unique
-    k.max <- n.unique
-  } else if (n.unique >= k.min && n.unique < k.max) {
-    warning("Max number of clusters is greater than the unique number of\n",
-            "elements in the input vector, and k.max is set to the number of\n",
-            "unique number of input values.\n")
-    k.max <- n.unique
+
+  if(n.unique == 0) {
+    warning(paste("Input vector", deparse(substitute(x)), "is empty!\n"))
+  } else {
+    if(n.unique < k.min) {
+      warning("Min number of clusters is greater than the unique number of elements in\n",
+              "the input vector, both k.min and k.max are set to the number of\n",
+              "unique number of input values.\n")
+      k.min <- n.unique
+      k.max <- n.unique
+    } else if (n.unique >= k.min && n.unique < k.max) {
+      warning("Max number of clusters is greater than the unique number of\n",
+              "elements in the input vector, and k.max is set to the number of\n",
+              "unique number of input values.\n")
+      k.max <- n.unique
+    }
   }
 
   ##Form data which will be passed to external C++ function.
@@ -97,13 +102,19 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
                cluster=as.integer(clusters), centers=as.double(center),
                withinss=as.double(withinss), size=as.integer(size))
 
-  k.opt <- length(unique(result$cluster))
+  if(length(result$cluster) > 0) {
+    k.opt <- max(result$cluster) # length(unique(result$cluster))
+  } else {
+    k.opt <- 0
+  }
 
-  if(k.min < k.max) {
-    if (k.opt == k.min && k.min != 1) {
-      warning("Min number of clusters used. Consider decreasing it!\n")
-    } else if(k.opt == k.max && k.max != length(x)) {
-      warning("Max number of clusters used. Consider increasing it!\n")
+  if(n.unique > 0) {
+    if(k.min < k.max) {
+      if (k.opt == k.min && k.min != 1) {
+        warning("Min number of clusters used. Consider decreasing k!\n")
+      } else if(k.opt == k.max && k.max != length(x)) {
+        warning("Max number of clusters used. Consider increasing k!\n")
+      }
     }
   }
 

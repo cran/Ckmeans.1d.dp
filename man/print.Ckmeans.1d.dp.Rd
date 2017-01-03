@@ -1,8 +1,8 @@
 \name{print.Ckmeans.1d.dp}
 \alias{print.Ckmeans.1d.dp}
-\title{Print Results from Ckmeans.1d.dp}
+\title{Print Optimal Univariate Clustering Results}
 \description{
-Print the result returned from Ckmeans.1d.dp
+Print optimal univariate clustering results obtained from \code{Ckmeans.1d.dp}.
 }
 \usage{
 \method{print}{Ckmeans.1d.dp}(x, \dots)

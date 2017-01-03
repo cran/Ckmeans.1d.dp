@@ -1,9 +1,9 @@
 \name{Ckmeans.1d.dp}
 \alias{Ckmeans.1d.dp}
-\title{Optimal and Fast Univariate \var{k}-Means Clustering}
+\title{Optimal and Fast Univariate Clustering}
 
 \description{
-Perform optimal and fast univariate \var{k}-means clustering by dynamic programming and divide-and-conquer.
+Perform optimal and fast univariate clustering by dynamic programming and divide-and-conquer.
 }
 
 \usage{
@@ -66,7 +66,7 @@ k <- 3
 result <- Ckmeans.1d.dp(x, k)
 plot(result)
 plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
-     main="Optimal k-means clustering given k",
+     main="Optimal univariate clustering given k",
      sub=paste("Number of clusters given:", k))
 abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
 legend("bottom", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
@@ -79,12 +79,12 @@ result <- Ckmeans.1d.dp(x)
 plot(result)
 k <- max(result$cluster)
 plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
-     main="Optimal k-means clustering with k estimated",
+     main="Optimal univariate clustering with k estimated",
      sub=paste("Number of clusters is estimated to be", k))
 abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
 legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
-# Ex. 3 Segmenting a time course using weighted k-means
+# Ex. 3 Segmenting a time course using optimal weighted univariate clustering
 n <- 160
 t <- seq(0, 2*pi*2, length=n)
 n1 <- 1:(n/2)

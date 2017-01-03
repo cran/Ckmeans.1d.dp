@@ -1,5 +1,23 @@
 NEWS
 
+Version 3.4.6-6
+  Changes
+  2017-01-02
+  1. Changed package title to "Optimal and Fast Univariate Clustering"
+
+  2016-12-27
+  1. When the input vector x is empty, function Ckmeans.1d.dp now generates a
+     warning message instead of stops on error.
+  2. Print out appropriate warning messages when input x does not have an
+     appropriate type. ahist.R is modified.
+
+  2016-12-19
+  1. Revised the comparison function in sorting so that the code can be
+     compiled by C++98, as requested by a user.
+
+  2016-12-06
+  1. Expanded the ahist() function to support weighted adaptive histogram
+
 Version 3.4.6-5
   Changes
   2016-12-04

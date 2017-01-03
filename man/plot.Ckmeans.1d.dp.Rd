@@ -1,6 +1,6 @@
 \name{plot.Ckmeans.1d.dp}
 \alias{plot.Ckmeans.1d.dp}
-\title{Plot Optimal Univariate \var{k}-Means Clustering Results}
+\title{Plot Optimal Univariate Clustering Results}
 \description{
 Plot optimal univariate clustering results returned from \code{Ckmeans.1d.dp}.
 }
