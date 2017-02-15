@@ -1,16 +1,29 @@
 NEWS
 
-Version 3.4.6-6
+Version 4.0.0
   Changes
+  2017-02-11
+  1. Removed some examples for future use.
+
+Version 3.4.15
+  1. Minor changes.
+
+Version 3.4.14
+  Changes
+  2017-01-03
+  1. Minor changes in documentation files.
+
   2017-01-02
-  1. Changed package title to "Optimal and Fast Univariate Clustering"
+  1. Changed package title to "Optimal and Fast Univariate Clustering".
 
   2016-12-27
   1. When the input vector x is empty, function Ckmeans.1d.dp now generates a
-     warning message instead of stops on error.
+     warning message instead of stops on error. Ckmeans.1d.dp.R is modified.
   2. Print out appropriate warning messages when input x does not have an
      appropriate type. ahist.R is modified.
 
+Version 3.4.13
+  Changes
   2016-12-19
   1. Revised the comparison function in sorting so that the code can be
      compiled by C++98, as requested by a user.
@@ -18,25 +31,16 @@ Version 3.4.6-6
   2016-12-06
   1. Expanded the ahist() function to support weighted adaptive histogram
 
-Version 3.4.6-5
-  Changes
   2016-12-04
   1. Expanded the vignette of adaptive histograms to a tutorial.
   2. Expanded the vignette of optimal univariate k-means clustering to a tutorial.
-  3. Update the time course example in Ckmeans.1d.dp function.
-  4. Fixed a bug in the dynamic programming solution to optimal *weighted*
-     clustering. This bug affected the first weighted cluster. The code that
-     contains this bug was not used for non-weighted fast optimal clustering.
-     If no weight vector is provided when calling Ckmeans.1d.dp, the clustering
-     result will be the same and remains correct.
+  3. Update the time course example in Ckmeans.1d.dp function
 
   2016-10-22
   1. Added a vignette to visualize examples of adaptive histograms.
   2. Added a vignette to visualize examples of optimal univariate k-means
   clustering.
 
-Version 3.4.6-4
-  Changes
   2016-10-21
   1. Added an equal bin width histogram example to contrast with the adaptive
   histogram.
@@ -62,14 +66,10 @@ Version 3.4.6-4
   2. Added an argument style to ahist() for different styles of adaptive
   histogram.
 
-Version 3.4.6-3
-  Changes
-  2016-10-03
-  1. Updated examples in Ckmeans.1d.dp() manual
-
-  Changes
   2016-10-01
   1. Added a new function plot() to visualize the clusters.
+  2. Added a new function plotBIC() to show the Bayesian information criterion
+  as a function of number of clusters.
 
   2016-09-30
   1. Updated examples of ahist().
@@ -81,18 +81,55 @@ Version 3.4.6-3
   3. Updated previous examples and added more examples to illustrate
      the use of ahist() better.
 
-Version 3.4.6-2
-  Changes
   2016-09-25
   1. Introduced a new function ahist() to generate adaptive histograms
      corresponding to the optimal univariate k-means clustering.
 
-Version 3.4.6-1
+  2016-09-24
+  1. Known issue: loglinear option may generate optimal clustering different
+     from linear and quadratic.
+  2. The default k estimation method is updated. Updated number of cluster k
+     estimation. The main difference is when there are duplicates in the data.
+     Otherwise, the estimated k would be the same with previous versions. Added
+     an argument estimate.k in fiction Ckmeans.1d.dp() to use the BIC method in
+     version 3.4.12 or earlier to estimated k for compatibility.
+
+Version 3.4.12
   Changes
-  2016-08-28
-  1. Removed usage of lambda functions in C++ code for compatibility with
-     older versions of C++ compilers.
-  2. Shifted the values of x by median to improve numerical stability.
+  2016-08-20
+  1. The weighted univariate k-means now runs in O(kn), down from O(kn^2).
+     This is a result of integrating weighted and unweighted k-means
+     clustering into a unified dynamic programming function without sacrificing
+     performance. This also fixed a bug in the previous loglinear-time weighted
+     k-means implementation.
+
+Version 3.4.9
+  Changes
+  2016-07-19
+  1. If the input array is already sorted, sorting is not performed again.
+  2. Added an option method to select either the linear or loglinear algorithm.
+
+  2016-07-16
+  1. Implemented linear recursive algorithm based on the method described in
+  (Aggarwal et al., 1987)
+
+Version 3.4.8
+  Changes
+  2016-06-01
+  1. Implemented an iterative O(nlgn+kn) algorithm. This version completely
+     eliminates the involved divide-and-conquer strategy reported in the
+     literature and further reduced the overhead.
+
+     This implementation was later determined to be incorrect.
+
+Version 3.4.7
+  Changes
+  2016-05-30
+  1. Implemented an O(nlgn+kn) algorithm combining divide-and-conquer and
+     dynamic programming. The space is still O(kn). The runtime is now practical
+     for very large sample sizes for any number of clusters.
+
+     This implementation was later determined to be incorrect.
 
 Version 3.4.6
   Changes

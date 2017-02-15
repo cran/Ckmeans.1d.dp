@@ -8,6 +8,13 @@ Plot optimal univariate clustering results returned from \code{Ckmeans.1d.dp}.
 \method{plot}{Ckmeans.1d.dp}(x, xlab=NULL, ylab=NULL, main=NULL,
       sub=NULL, col.clusters=NULL, \dots)
 }
+%(x, xlab=ck$xname,
+%     ylab=ifelse(x$yname=="1", "Weight", x$yname),
+%     main="Optimal univariate clustering of", x$xname),
+%     sub=paste("n =", length(x$cluster)),
+%     col.clusters=seq_along(x$size),
+%     \dots)
+
 \arguments{
   \item{x}{an object of class \code{Ckmeans.1d.dp} returned by \code{\link{Ckmeans.1d.dp}}.}
 
@@ -46,6 +53,7 @@ The function visualizes the input data as sticks whose heights are the weights. 
 x <- c(rnorm(50, mean=-1, sd=0.3),
        rnorm(50, mean=1, sd=0.3),
        rnorm(50, mean=3, sd=0.3))
+
 res <- Ckmeans.1d.dp(x)
 plot(res)
 

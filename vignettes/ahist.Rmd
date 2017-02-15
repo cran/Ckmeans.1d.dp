@@ -75,3 +75,17 @@ ahist(DNase$density, breaks="Sturges", col="palegreen",
       main="Example 3. Elisa assay of DNase in rat serum\nRegular histogram (equal bin width)",
       xlab="Optical density of protein DNase")
 ```
+
+## Example 4. Repetitive data
+
+Cluster data with repetitive elements:
+```{r, fig.show='hold', fig.width=6}
+x <- c(1,1,1,1, 3,4,4, 6,6,6)
+ahist(x, k=c(2,4), col="gray",
+      lwd=2, lwd.stick=6, col.stick="chocolate",
+      main="Example 4. Adaptive histogram of repetitive elements")
+ahist(x, breaks=3, col="lightgreen",
+      lwd=2, lwd.stick=6, col.stick="forestgreen",
+      main="Example 4. Regular histogram")
+
+```

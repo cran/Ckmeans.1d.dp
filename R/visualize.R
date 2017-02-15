@@ -6,15 +6,46 @@
 #   Oct 12, 2016. Revised ahist().
 #   Oct 16, 2016. Moved ahist() function to a new R file ahist.R
 
+plotBIC <-
+  function(ck, xlab="Number of clusters k",
+           ylab = "BIC/n", type="b",
+           sub=paste("n =", length(ck$cluster)),
+           main="Bayesian information criterion\n(normalized by sample size)",
+           ...)
+  {
+    if(length(ck$BIC)>0) {
+      n <- length(ck$cluster)
+      k <- as.numeric(sub("k=", "", names(ck$BIC)))
+      graphics::plot(k, ck$BIC/n, xlab=xlab, ylab=ylab,
+                     type=type, sub=sub, main=main, ...)
+
+      if(length(ck$BIC)>1) {
+        kstar <- length(ck$size)
+        graphics::abline(v=kstar, lty="dashed")
+        graphics::text(kstar, min(ck$BIC)/n,
+             paste(" k*=", kstar), font=2, adj=0)
+      }
+    }
+    invisible(ck)
+  }
+
 plot.Ckmeans.1d.dp <-
   function(x, xlab=NULL, ylab=NULL, main=NULL,
            sub=NULL, col.clusters=NULL, ...)
+    # function(ck, xlab=ck$xname,
+    #          ylab=ifelse(ck$yname=="1", "Weight", ck$yname),
+    #          main=paste("Optimal k-means clustering of", ck$xname),
+    #          sub=paste("n =", length(ck$cluster)),
+    #          col.clusters=seq_along(ck$size),
+    #          ...)
   {
     ck <- x
     if(is.null(xlab)) xlab <- ck$xname
     if(is.null(ylab)) ylab <- ifelse(ck$yname=="1", "Weight", ck$yname)
-    if(is.null(main)) main <- paste("Optimal", ifelse(ck$yname=="1", "", "weighted"),
-                                    "univariate clustering of", ck$xname)
+    if(is.null(main)) main <- paste("Optimal",
+                                    ifelse(ck$yname=="1", "univariate",
+                                           "weighted univariate"),
+                                    "clustering of", ck$xname)
     if(is.null(sub)) sub=paste("n =", length(ck$cluster))
     if(is.null(col.clusters)) col.clusters <- seq_along(x$size)
 

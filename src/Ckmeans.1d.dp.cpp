@@ -1,7 +1,23 @@
-/*
- Ckmeans_1d_dp.cpp -- Performs 1-D k-means by a dynamic programming
- approach that is guaranteed to be optimal.
+/* Ckmeans_1d_dp.cpp -- Performs 1-D k-means by a dynamic programming
+ * approach that is guaranteed to be optimal.
+ *
+ * Copyright (C) 2010-2016 Mingzhou Song and Haizhou Wang
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+/*
  Joe Song
  Computer Science Department
  New Mexico State University
@@ -32,7 +48,7 @@
  Updated: February 8, 2015.
  1.  Cleaned up the code by removing commented sections (Haizhou Wang)
  2.  Speed up the code slightly as suggested by a user (Joe Song)
- 3.  Throw exceptions when for fatal errors (Joe Song)
+ 3.  Throw exceptions for fatal errors (Joe Song)
 
  Updated: May 3, 2016
  1. Changed from 1-based to 0-based C implementation (MS)
@@ -58,10 +74,26 @@
  Updated: May 21, 2016
  1. Moved the weighted solutions to new files. They will be updated separately
 
- Updated: 2016-08-28
- 1. Removed usage of lambda functions in C++ code for compatibility with
-    older versions of C++ compilers.
- 2. Shifted the values of x by median to improve numerical stability.
+ Updated: May 26, 2016
+ 1. Implemented log-linear algorithm and tested successfully
+
+ Updated: May 29, 2016
+ 1. Implemented linear algorithm but have bugs
+
+ Updated: May 30, 2016
+ 1. Debugged the linear algorithm and tested successfully on all examples
+ 2. Added new test cases in the C++ testing project
+
+ Updated: July 19, 2016.
+ 1. If the input array is already sorted, not sorting
+ is performed.
+
+ Updated: August 20, 2016
+ 1. The weighted univariate k-means now runs in O(kn), down from O(kn^2).
+ This is a result of integrating weighted and unweighted k-means
+ clustering into a unified dynamic programming function without sacrificing
+ performance.
+
  */
 
 #include "Ckmeans.1d.dp.h"
@@ -71,206 +103,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-// #define DEBUG
-
-inline double ssq(const size_t j, const size_t i,
-                  const std::vector<double> & sum_x,
-                  const std::vector<double> & sum_x_sq)
-{
-  double sji;
-  if(j > 0) {
-    double muji = (sum_x[i] - sum_x[j-1]) / (i - j + 1);
-    sji = sum_x_sq[i] - sum_x_sq[j-1] - (i - j + 1) * muji * muji;
-  } else {
-    sji = sum_x_sq[i] - sum_x[i] * sum_x[i] / (i+1);
-  }
-  sji = (sji < 0) ? 0 : sji;
-  return sji;
-}
-
-void fill_row_k(int imin, int imax, int k,
-            std::vector< std::vector<double> > & S,
-            std::vector< std::vector<size_t> > & J,
-            const std::vector<double> & sum_x,
-            const std::vector<double> & sum_x_sq)
-{
-  if(imin > imax) {
-    return;
-  }
-
-  const int N = S[0].size();
-
-  int i = (imin + imax) / 2;
-
-#ifdef DEBUG
-  std::cout << std::endl << "  i=" << i << ":" << std::endl;
-#endif
-
-  // Initialization of S[k][i]:
-  S[k][i] = S[k - 1][i - 1];
-  J[k][i] = i;
-
-  int jlow=k; // the lower end for j
-
-  if(imin > k) {
-    jlow = std::max(jlow, (int)J[k][imin-1]);
-  }
-  jlow = std::max(jlow, (int)J[k-1][i]);
-
-  int jhigh = i - 1; // the upper end for j
-  if(imax < N-1) {
-    jhigh = std::min(jhigh, (int)J[k][imax+1]);
-  }
-
-#ifdef DEBUG
-  std::cout << "    j-=" << jlow << ", j+=" << jhigh << ":" << std::endl;
-#endif
-
-  for(int j=jhigh; j>=jlow; --j) {
-
-    // compute s(j,i)
-    double sji = ssq(j, i, sum_x, sum_x_sq);
-
-    // MS May 11, 2016 Added:
-    if(sji + S[k-1][jlow-1] >= S[k][i]) break;
-
-    // Examine the lower bound of the cluster border
-    // compute s(jlow, i)
-    double sjlowi = ssq(jlow, i, sum_x, sum_x_sq);
-
-    double SSQ_jlow = sjlowi + S[k-1][jlow-1];
-
-    if(SSQ_jlow < S[k][i]) {
-      // shrink the lower bound
-      S[k][i] = SSQ_jlow;
-      J[k][i] = jlow;
-    }
-    jlow ++;
-
-    double SSQ_j = sji + S[k - 1][j - 1];
-    if(SSQ_j < S[k][i]) {
-      S[k][i] = SSQ_j;
-      J[k][i] = j;
-    }
-  }
-
-#ifdef DEBUG
-  std::cout << std::endl << // " k=" << k << ": " <<
-    "\t" << S[k][i] << "\t" << J[k][i];
-#endif
-#ifdef DEBUG
-  std::cout << std::endl;
-#endif
-
-  fill_row_k(imin, i-1, k, S, J, sum_x, sum_x_sq);
-  fill_row_k(i+1, imax, k, S, J, sum_x, sum_x_sq);
-
-}
-
-void fill_dp_matrix(const std::vector<double> & x,
-                    std::vector< std::vector< double > > & S,
-                    std::vector< std::vector< size_t > > & J)
-  /*
-   x: One dimension vector to be clustered, must be sorted (in any order).
-   S: K x N matrix. S[k][i] is the sum of squares of the distance from
-   each x[i] to its cluster mean when there are exactly x[i] is the
-   last point in cluster k
-   J: K x N backtrack matrix
-
-   NOTE: All vector indices in this program start at position 0
-   */
-{
-  const int K = S.size();
-  const int N = S[0].size();
-
-  std::vector<double> sum_x(N), sum_x_sq(N);
-
-  double shift = x[N/2]; // median. used to shift the values of x to
-  //  improve numerical stability
-
-  for(int i = 0; i < N; ++i) {
-    if(i == 0) {
-      sum_x[0] = x[0] - shift;
-      sum_x_sq[0] = (x[0] - shift) * (x[0] - shift);
-    } else {
-      sum_x[i] = sum_x[i-1] + x[i] - shift;
-      sum_x_sq[i] = sum_x_sq[i-1] + (x[i] - shift) * (x[i] - shift);
-    }
-
-    // Initialize for k = 0
-    S[0][i] = ssq(0, i, sum_x, sum_x_sq);
-    J[0][i] = 0;
-  }
-
-  for(int k = 1; k < K; ++k) {
-    int imin;
-    if(k < K - 1) {
-      imin = std::max((size_t)1, (size_t)k);
-    } else {
-      // No need to compute S[K-1][0] ... S[K-1][N-2]
-      imin = N-1;
-    }
-
-#ifdef DEBUG
-    std::cout << std::endl << "k=" << k << ":";
-#endif
-    fill_row_k(imin, N-1, k, S, J, sum_x, sum_x_sq);
-  }
-}
-
-void backtrack(const std::vector<double> & x,
-               const std::vector< std::vector< size_t > > & J,
-               int* cluster, double* centers, double* withinss, int* count)
-{
-  const size_t K = J.size();
-  const size_t N = J[0].size();
-  size_t cluster_right = N-1;
-  size_t cluster_left;
-
-  // Backtrack the clusters from the dynamic programming matrix
-  for(int k = K-1; k >= 0; --k) {
-    cluster_left = J[k][cluster_right];
-
-    for(size_t i = cluster_left; i <= cluster_right; ++i)
-      cluster[i] = k;
-
-    double sum = 0.0;
-
-    for(size_t i = cluster_left; i <= cluster_right; ++i)
-      sum += x[i];
-
-    centers[k] = sum / (cluster_right-cluster_left+1);
-
-    for(size_t i = cluster_left; i <= cluster_right; ++i)
-      withinss[k] += (x[i] - centers[k]) * (x[i] - centers[k]);
-
-    count[k] = cluster_right - cluster_left + 1;
-
-    if(k > 0) {
-      cluster_right = cluster_left - 1;
-    }
-  }
-}
-
-void backtrack(const std::vector<double> & x,
-               const std::vector< std::vector< size_t > > & J,
-               std::vector<size_t> & count)
-{
-  const size_t K = J.size();
-  const size_t N = J[0].size();
-  size_t cluster_right = N-1;
-  size_t cluster_left;
-
-  // Backtrack the clusters from the dynamic programming matrix
-  for(int k = K-1; k >= 0; --k) {
-    cluster_left = J[k][cluster_right];
-    count[k] = cluster_right - cluster_left + 1;
-    if(k > 0) {
-      cluster_right = cluster_left - 1;
-    }
-  }
-}
+#include <cassert>
+#include <cstring>
 
 template <class ForwardIterator>
 size_t numberOfUnique(ForwardIterator first, ForwardIterator last)
@@ -299,18 +133,15 @@ bool compi(size_t i, size_t j)
 void kmeans_1d_dp(const double *x, const size_t N, const double *y,
                   size_t Kmin, size_t Kmax,
                   int* cluster, double* centers,
-                  double* withinss, int* size)
+                  double* withinss, int* size, double* BIC,
+                  const std::string & estimate_k,
+                  const std::string & method)
 {
   // Input:
   //  x -- an array of double precision numbers, not necessarily sorted
   //  Kmin -- the minimum number of clusters expected
   //  Kmax -- the maximum number of clusters expected
   // NOTE: All vectors in this program is considered starting at position 0.
-
-  std::vector<double> x_sorted(N);
-
-  std::vector<double> y_sorted;
-  bool is_equally_weighted = true;
 
   std::vector<size_t> order(N);
 
@@ -322,28 +153,44 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
     order[i] = i;
   }
 
-  // Option 1.
-  // Sort the index of x in increasing order of x
-  // Sorting using lambda function, not supported by all g++ versions:
-  // std::sort(order.begin(), order.end(),
-  //          [&](size_t i1, size_t i2) { return x[i1] < x[i2]; } );
+  bool is_sorted(true);
+  for(size_t i=0; i<N-1; ++i) {
+    if(x[i] > x[i+1]) {
+      is_sorted = false;
+      break;
+    }
+  }
 
-  /* Option 2. The following is not supported by C++98:
-  struct CompareIndex {
-    const double * m_x;
-    CompareIndex(const double * x) : m_x(x) {}
-    bool operator() (size_t i, size_t j) { return (m_x[i] < m_x[j]);}
-  } compi(x);
+  std::vector<double> x_sorted(x, x+N);
 
-  std::sort(order.begin(), order.end(), compi);
-  */
+  std::vector<double> y_sorted;
+  bool is_equally_weighted = true;
 
-  // Option 3:
-  px = x;
-  std::sort(order.begin(), order.end(), compi);
+  if(! is_sorted) {
+    // Sort the index of x in increasing order of x
 
-  for(size_t i=0; i<order.size(); ++i) {
-    x_sorted[i] = x[order[i]];
+    // Option 1.
+    // Sorting using lambda function, not supported by all g++ versions:
+    // std::sort(order.begin(), order.end(),
+    //           [&](size_t i1, size_t i2) { return x[i1] < x[i2]; } );
+
+    /* Option 2. The following is not supported by C++98:
+    struct CompareIndex {
+      const double * m_x;
+      CompareIndex(const double * x) : m_x(x) {}
+      bool operator() (size_t i, size_t j) { return (m_x[i] < m_x[j]);}
+    } compi(x);
+
+    std::sort(order.begin(), order.end(), compi);
+    */
+
+    // Option 3:
+    px = x;
+    std::sort(order.begin(), order.end(), compi);
+
+    for(size_t i=0ul; i<order.size(); ++i) {
+      x_sorted[i] = x[order[i]];
+    }
   }
 
   // check to see if unequal weight is provided
@@ -370,26 +217,29 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
 
   if(nUnique > 1) { // The case when not all elements are equal.
 
-    std::vector< std::vector< double > > S( Kmax, std::vector<double>(N) );
+    std::vector< std::vector< ldouble > > S( Kmax, std::vector<ldouble>(N) );
     std::vector< std::vector< size_t > > J( Kmax, std::vector<size_t>(N) );
 
     size_t Kopt;
 
+    fill_dp_matrix(x_sorted, y_sorted, S, J, method);
+
     // Fill in dynamic programming matrix
     if(is_equally_weighted) {
-
-      fill_dp_matrix(x_sorted, S, J);
-
       // Choose an optimal number of levels between Kmin and Kmax
-      Kopt = select_levels(x_sorted, J, Kmin, Kmax);
-
+      if(estimate_k=="BIC") {
+        Kopt = select_levels(x_sorted, J, Kmin, Kmax, BIC);
+      } else {
+        Kopt = select_levels_3_4_12(x_sorted, J, Kmin, Kmax, BIC);
+      }
     } else {
-      fill_weighted_dp_matrix(x_sorted, y_sorted, S, J);
-
+      if(estimate_k=="BIC") {
       // Choose an optimal number of levels between Kmin and Kmax
-      Kopt = select_levels_weighted(x_sorted, y_sorted, J, Kmin, Kmax);
+        Kopt = select_levels_weighted(x_sorted, y_sorted, J, Kmin, Kmax, BIC);
+      } else {
+        Kopt = select_levels_weighted_3_4_12(x_sorted, y_sorted, J, Kmin, Kmax, BIC);
+      }
     }
-
 
     if (Kopt < Kmax) { // Reform the dynamic programming matrix S and J
       J.erase(J.begin() + Kopt, J.end());
@@ -400,8 +250,14 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
     // Backtrack to find the clusters beginning and ending indices
     if(is_equally_weighted) {
       backtrack(x_sorted, J, &cluster_sorted[0], centers, withinss, size);
+
+#ifdef DEBUG
+      std::cout << "backtrack done." << std::endl;
+#endif
+
     } else {
-      backtrack_weighted(x_sorted, y_sorted, J, &cluster_sorted[0], centers, withinss, size);
+      backtrack_weighted(x_sorted, y_sorted, J, &cluster_sorted[0],
+                         centers, withinss, size);
     }
 
     for(size_t i = 0; i < N; ++i) {

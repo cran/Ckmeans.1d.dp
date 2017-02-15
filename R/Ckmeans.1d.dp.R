@@ -15,6 +15,12 @@
 print.Ckmeans.1d.dp <- function(x, ...)
 {
   with(x, {
+    cat("\nCluster means:\n")
+    print(centers, ...)
+    cat("\nCluster index associated with each element:\n")
+    print(cluster, ...)
+    cat("\nWithin-cluster sum of squares:\n")
+    print(withinss, ...)
     if(length(size) > 1) {
       cat("Ckmeans.1d.dp returns", length(size), "optimal clusters of sizes",
           paste(size, collapse=", "), "\n")
@@ -28,12 +34,6 @@ print.Ckmeans.1d.dp <- function(x, ...)
     } else {
       cat("Ckmeans.1d.dp returns one cluster containing all elements.\n")
     }
-    cat("\nCluster means:\n")
-    print(centers, ...)
-    cat("\nCluster index associated with each element:\n")
-    print(cluster, ...)
-    cat("\nWithin-cluster sum of squares:\n")
-    print(withinss, ...)
   })
 
   cat("\nAvailable components:\n")
@@ -44,8 +44,13 @@ print.Ckmeans.1d.dp <- function(x, ...)
 ##Ckmeans.1d.dp : function which implement optimal one-dimensional clustering
 ## x is one-dimensional input vector
 ## k indicates cluster level
-Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
+Ckmeans.1d.dp <- function( x, k=c(1,9), y=1,
+                           method=c("linear", "loglinear", "quadratic"),
+                           estimate.k=c("BIC", "BIC 3.4.12") )
 {
+  method <- match.arg(method)
+  estimate.k <- match.arg(estimate.k)
+
   if(is.null(k)) {
     k <- 1: min( 9, length(x) )
   } else {
@@ -93,6 +98,7 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
   center <- vector("double", k.max)
   withinss <- vector("double", k.max)
   size <- vector("integer", k.max)
+  BIC <- vector("double", k.max-k.min+1)
 
   #Call external C++ function
   result <- .C("Ckmeans_1d_dp", PACKAGE="Ckmeans.1d.dp",
@@ -100,7 +106,10 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
                weight=as.double(y), weight_length=as.integer(length(y)),
                Kmin=as.integer(k.min), Kmax=as.integer(k.max),
                cluster=as.integer(clusters), centers=as.double(center),
-               withinss=as.double(withinss), size=as.integer(size))
+               withinss=as.double(withinss), size=as.integer(size),
+               BIC=as.double(BIC),
+               estimate.k=as.character(estimate.k),
+               method=as.character(method))
 
   if(length(result$cluster) > 0) {
     k.opt <- max(result$cluster) # length(unique(result$cluster))
@@ -119,19 +128,26 @@ Ckmeans.1d.dp <- function( x, k=c(1,9), y=1 )# y=rep(1, length(x)))
   }
 
   if(length(y) == length(x) && sum(y) != 0) {
-    totss <- sum(y * (x - sum(x * y) / sum(y))^2)
+    totss <- sum(y * (x - sum(as.numeric(x * y)) / sum(y))^2)
   } else {
     # totss <- sum(scale(x, scale=FALSE)^2) scale function is VERY SLOW!
-    totss <- sum((x - sum(x) / length(x))^2)
+    totss <- sum((x - sum(as.numeric(x)) / length(x))^2)
   }
 
   tot.withinss <- sum(result$withinss[1:k.opt])
   betweenss <- totss - tot.withinss
-  r <- structure(list(cluster = result$cluster, centers = result$centers[1:k.opt],
-                      withinss = result$withinss[1:k.opt], size = result$size[1:k.opt],
-                      totss = totss, tot.withinss = tot.withinss, betweenss = betweenss,
-                      xname=deparse(substitute(x)), yname=deparse(substitute(y))),
-                 class = "Ckmeans.1d.dp")
+  BIC <- result$BIC
+  names(BIC) <- paste0("k=", k.min : k.max)
+
+  r <- structure(
+    list(
+      cluster = result$cluster, centers = result$centers[1:k.opt],
+      withinss = result$withinss[1:k.opt], size = result$size[1:k.opt],
+      totss = totss, tot.withinss = tot.withinss, betweenss = betweenss,
+      BIC = BIC, xname=deparse(substitute(x)),
+      yname=deparse(substitute(y))
+    ),
+    class = "Ckmeans.1d.dp")
 
   return( r )
 } ##end of Ckmeans.1d.dp()

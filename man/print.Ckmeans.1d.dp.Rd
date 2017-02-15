@@ -9,7 +9,7 @@ Print optimal univariate clustering results obtained from \code{Ckmeans.1d.dp}.
 }
 \arguments{
   \item{x}{object returned by calling Ckmeans.1d.dp.}
-  \item{...}{ignored arguments.}
+  \item{...}{arguments passed to \code{\link{print}} function.}
 }
 
 \author{
