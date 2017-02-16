@@ -133,7 +133,7 @@ inline void fill_even_positions
 
     ldouble sjimin(ssq(jmax, i, sum_x, sum_x_sq, sum_w));
 
-    for(++ r; js[r]<=jmax && r < n; r++) {
+    for(++ r; r < n && js[r]<=jmax; r++) {
 
       const size_t & jabs = js[r];
 

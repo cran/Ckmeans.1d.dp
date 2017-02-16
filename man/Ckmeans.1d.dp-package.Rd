@@ -20,7 +20,7 @@ This package provides a powerful alternative to heuristic clustering algorithms 
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 4.0.0\cr
+Version: \tab 4.0.1\cr
 Initial release version: \tab 1.0\cr
 Initial release date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3)}

@@ -34,9 +34,9 @@ In contrast to the heuristic \var{k}-means algorithms implemented in function \c
 
 The Bayesian information criterion (BIC) method to select optimal \code{k} is updated to deal with duplicates in the data. Otherwise, the estimated k would be the same with previous versions. Set \code{estimate.k="BIC"} to use the lastest method; use \code{estimate.k="BIC 3.4.12"} to use the BIC method in version 3.4.12 or earlier to estimated \code{k} from the given range. This option is effective only when a range for \code{k} is provided.
 
-\code{method} specifies one of three options to speed up the original dynamic programming taking a runtime cubic in sample size \var{n}. The default \code{"linear"} option, giving a total runtime of \var{O(n lg n + kn)} or \var{O(kn)} (if \code{x} is already sorted in ascending order) is the fastest option but uses the most memory (still \var{O(kn)}); the \code{"loglinear"} option, with a runtime of \var{O(kn lg n)}, is slightly slower but uses the least memory; the slowest \code{"quadratic"} option, with a runtime of \var{O(kn^2)}, is provided for the purpose of testing on small data sets.
+\code{method} specifies one of three options to speed up the original dynamic programming taking a runtime cubic in sample size \var{n}. The default \code{"linear"} option, giving a total runtime of \eqn{O(n \lg n + kn)}{O(n lg n + kn)} or \eqn{O(kn)}{O(kn)} (if \code{x} is already sorted in ascending order) is the fastest option but uses the most memory (still \eqn{O(kn)}{O(kn)}); the \code{"loglinear"} option, with a runtime of \eqn{O(kn \lg n)}{O(kn lg n)}, is slightly slower but uses the least memory; the slowest \code{"quadratic"} option, with a runtime of \eqn{O(kn^2)}{O(kn^2)}, is provided for the purpose of testing on small data sets.
 
-When the sample size \var{n} is too large to create two \var{k x n} dynamic programming matrices in memory, we recommend the heuristic solutions impelmented in the \code{\link{kmeans}} function in package \pkg{\link{stats}}.
+When the sample size \var{n} is too large to create two \eqn{k \times n}{k x n} dynamic programming matrices in memory, we recommend the heuristic solutions impelmented in the \code{\link{kmeans}} function in package \pkg{\link{stats}}.
 }
 
 \value{

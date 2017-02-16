@@ -1,5 +1,12 @@
 NEWS
 
+Version 4.0.1
+  Changes
+  2017-02-16
+  1. Fixed a warning message in the use of ‘R_registerRoutines’ and
+     ‘R_useDynamicSymbols’.
+  2. Fixed a memory leak issue: invalid read of size 8.
+
 Version 4.0.0
   Changes
   2017-02-11

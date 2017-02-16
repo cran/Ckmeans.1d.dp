@@ -77,13 +77,13 @@ extern "C" {
 static const
   R_CMethodDef cMethods[] = {
     {"Ckmeans_1d_dp",  (DL_FUNC) & Ckmeans_1d_dp, 13},
-    NULL
+    {NULL}
   };
 
 static const
   R_CallMethodDef callMethods[] = {
     {"Ckmeans_1d_dp", (DL_FUNC) & Ckmeans_1d_dp, 13},
-    NULL };
+    {NULL} };
 
 void R_init_Ckmeans_1d_dp(DllInfo *info)
 {
