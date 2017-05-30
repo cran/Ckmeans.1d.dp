@@ -5,27 +5,31 @@
 Optimal and Fast Univariate Clustering
 }
 \description{
+This package provides a fast dynamic programming algorithmic framework to achieve optimal univariate \eqn{k}{k}-means, \eqn{k}{k}-median, and \eqn{k}{k}-segments clustering.
+
 The Ckmeans.1d.dp algorithm clusters univariate data given by a numeric vector \eqn{x}{x} into \eqn{k}{k} groups by dynamic programming (Wang and Song, 2011). It guarantees the optimality of clustering---the total of within-cluster sums of squares is always the minimum given the number of clusters \eqn{k}{k}. In contrast, heuristic univariate clustering algorithms may be non-optimal or inconsistent from run to run. As unequal non-negative weights are supported for each point, the algorithm can also segment a time course using the time points as input and the values at each time point as weight. Utilizing the optimal clusters, a function can generate histograms adaptive to patterns in data. This method is numerically stable.
 
-Apart from the time for sorting \eqn{x}{x}, the algorithm, now covering both unweighted and weighted univariate clustering problems, takes a runtime of \eqn{O(kn)}{O(kn)}, linear in both sample size \eqn{n}{n} and the number of clusters \eqn{k}{k}, first introduced into version 3.4.9 (not released) on July 16, 2016, using a new divide-and-conquer strategy integrating a previous theoretical result on matrix search from (Aggarwal et al., 1987) and a novel in-place space reduction method. Earlier a major speedup was introduced since version 3.4.6 using a divide-and-conquer strategy in dynamic programming to reduce the runtime from \eqn{O(kn^2)}{O(kn^2)} down to \eqn{O(kn\lg n)}{O(kn lg n)}. The runtime of both fast algorithms is comparable to heuristic \eqn{k}{k}-means.
+Apart from the time for sorting \eqn{x}{x}, the algorithm, now covering both unweighted and weighted univariate clustering problems, takes a runtime of \eqn{O(kn)}{O(kn)}, linear in both sample size \eqn{n}{n} and the number of clusters \eqn{k}{k}. The new approach was first introduced into version 3.4.9 (not publicly released) on July 16, 2016, using a new divide-and-conquer strategy integrating a previous theoretical result on matrix search (Aggarwal et al., 1987) and a novel in-place search space reduction method. Earlier versions since 3.4.6 used a divide-and-conquer strategy in dynamic programming to reduce the runtime from \eqn{O(kn^2)}{O(kn^2)} down to \eqn{O(kn\lg n)}{O(kn lg n)}. Both fast algorithms take runtime comparable to heuristic \eqn{k}{k}-means.
 
 Richard Bellman (1973) first described a general dynamic programming strategy for solving univariate clustering problems with additive optimality measures. The strategy, however, did not address any specific characteristics of the \eqn{k}{k}-means problem and its implied general algorithm will have a time complexity of \eqn{O(kn^3)}{O(kn^3)} on an input of \eqn{n}{n} points.
 
 The space complexity in all cases is \eqn{O(kn)}{O(kn)}.
 
 This package provides a powerful alternative to heuristic clustering algorithms and also new functionality for weighted clustering, segmentation, and peak calling with guaranteed optimality. It is practical for Ckmeans.1d.dp to cluster millions of sample points with optional weights in seconds using a single processor on a not very recent desktop computer.
+
+Third parties have ported various versions of this package to MATLAB, JavaScript, Python, Ruby, SAS, and Scala.
 }
 
 \details{
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 4.0.1\cr
+Version: \tab 4.2.0\cr
 Initial release version: \tab 1.0\cr
 Initial release date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3)}
 
-The most important function of this package is \code{\link{Ckmeans.1d.dp}} that implements optimal univariate clustering either weighted or unweighted. It also contains an adaptive histogram function \code{\link{ahist}}, a plot function \code{\link{plot.Ckmeans.1d.dp}} and a print function \code{\link{print.Ckmeans.1d.dp}}.
+The most important function of this package is \code{\link{Ckmeans.1d.dp}} that implements optimal univariate clustering either weighted or unweighted. It also contains an adaptive histogram function \code{\link{ahist}}, plotting functions \code{\link{plot.Ckmeans.1d.dp}} and \code{\link{plotBIC}}, and a print function \code{\link{print.Ckmeans.1d.dp}}.
 }
 
 \seealso{
@@ -58,7 +62,10 @@ Aggarwal, A., Klawe, M. M., Moran, S., Shor, P., and Wilber, R. (1987) Geometric
 Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
 }
 
-\keyword{package cluster}
+\keyword{ package }
+\keyword{ cluster }
+\keyword{ univar }
+
 
 
 

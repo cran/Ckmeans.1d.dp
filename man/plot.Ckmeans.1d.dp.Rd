@@ -1,11 +1,17 @@
 \name{plot.Ckmeans.1d.dp}
 \alias{plot.Ckmeans.1d.dp}
+\alias{plot.Ckmedian.1d.dp}
+\alias{plot.Cksegs.1d.dp}
 \title{Plot Optimal Univariate Clustering Results}
 \description{
 Plot optimal univariate clustering results returned from \code{Ckmeans.1d.dp}.
 }
 \usage{
 \method{plot}{Ckmeans.1d.dp}(x, xlab=NULL, ylab=NULL, main=NULL,
+      sub=NULL, col.clusters=NULL, \dots)
+\method{plot}{Ckmedian.1d.dp}(x, xlab=NULL, ylab=NULL, main=NULL,
+      sub=NULL, col.clusters=NULL, \dots)
+\method{plot}{Cksegs.1d.dp}(x, xlab=NULL, ylab=NULL, main=NULL,
       sub=NULL, col.clusters=NULL, \dots)
 }
 %(x, xlab=ck$xname,
@@ -16,7 +22,7 @@ Plot optimal univariate clustering results returned from \code{Ckmeans.1d.dp}.
 %     \dots)
 
 \arguments{
-  \item{x}{an object of class \code{Ckmeans.1d.dp} returned by \code{\link{Ckmeans.1d.dp}}.}
+  \item{x}{an object of class as returned by \code{\link{Ckmeans.1d.dp}}, \code{\link{Ckmedian.1d.dp}}, or \code{\link{Cksegs.1d.dp}}.}
 
  \item{xlab}{a character string. The x-axis label for the plot.}
 
@@ -36,11 +42,14 @@ Plot optimal univariate clustering results returned from \code{Ckmeans.1d.dp}.
 }
 
 \details{
-The function visualizes the input data as sticks whose heights are the weights. It uses different colors to indicate optimal \var{k}-means clusters.
+The functions \code{plot.Ckmeans.1d.dp} and \code{plot.Ckmedian.1d.dp} visualize the input data as sticks whose heights are the weights. They use different colors to indicate clusters.
+
+The function \code{plot.Cksegs.1d.dp} shows segments as horizontal lines from the univariate
+segmentation results obtained from function \code{Cksegs.1d.dp}. It uses different colors to indicate segments.
 }
 
 \value{
-	An object of class "\code{Ckmeans.1d.dp}" defined in \code{\link{Ckmeans.1d.dp}}.
+	An object of class "\code{Ckmeans.1d.dp}", "\code{Ckmedian.1d.dp}", or "\code{Cksegs.1d.dp}" defined in \code{\link{Ckmeans.1d.dp}}.
 }
 
 \references{
@@ -60,4 +69,18 @@ plot(res)
 y <- (rnorm(length(x)))^2
 res <- Ckmeans.1d.dp(x, y=y)
 plot(res)
+
+res <- Ckmedian.1d.dp(x)
+plot(res)
+
+y <- x^3
+res <- Cksegs.1d.dp(y, x=x)
+plot(res, lwd=2)
+
 }
+
+\keyword{ univar }
+\keyword{ cluster }
+\keyword{ hplot }
+\keyword{ distribution }
+

@@ -5,11 +5,14 @@
 Plot Bayesian information criterion (BIC) as a function of the number of clusters obtained from optimal univariate clustering results returned from \code{Ckmeans.1d.dp}. The BIC normalized by sample size (BIC/n) is shown.
 }
 \usage{
-plotBIC(ck, xlab="Number of clusters k",
-        ylab = "BIC/n", type="b",
-        sub=paste("n =", length(ck$cluster)),
-        main="Bayesian information criterion\n(normalized by sample size)",
-        ...)
+plotBIC(
+  ck, xlab="Number of clusters k",
+  ylab = "BIC/n", type="b",
+  sub=paste("n =", length(ck$cluster)),
+  main=paste("Bayesian information criterion",
+             "(normalized by sample size)", sep="\n"),
+  ...
+)
 }
 
 \arguments{
@@ -45,7 +48,8 @@ The function visualizes the input data as sticks whose heights are the weights. 
 }
 
 \examples{
-# Example: clustering data generated from a Gaussian mixture model of two components
+# Example: clustering data generated from a Gaussian mixture
+#          model of two components
 x <- rnorm(50, mean=-1, sd=0.3)
 x <- append(x, rnorm(50, mean=1, sd=0.3) )
 res <- Ckmeans.1d.dp(x)
@@ -55,3 +59,7 @@ y <- (rnorm(length(x)))^2
 res <- Ckmeans.1d.dp(x, y=y)
 plotBIC(res)
 }
+
+\keyword{ univar }
+\keyword{ cluster }
+\keyword{ hplot }

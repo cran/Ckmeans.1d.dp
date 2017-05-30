@@ -133,9 +133,11 @@ bool compi(size_t i, size_t j)
 void kmeans_1d_dp(const double *x, const size_t N, const double *y,
                   size_t Kmin, size_t Kmax,
                   int* cluster, double* centers,
-                  double* withinss, int* size, double* BIC,
+                  double* withinss, double *size, // int* size,
+                  double* BIC,
                   const std::string & estimate_k,
-                  const std::string & method)
+                  const std::string & method,
+                  const enum DISSIMILARITY criterion)
 {
   // Input:
   //  x -- an array of double precision numbers, not necessarily sorted
@@ -175,14 +177,14 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
     //           [&](size_t i1, size_t i2) { return x[i1] < x[i2]; } );
 
     /* Option 2. The following is not supported by C++98:
-    struct CompareIndex {
-      const double * m_x;
-      CompareIndex(const double * x) : m_x(x) {}
-      bool operator() (size_t i, size_t j) { return (m_x[i] < m_x[j]);}
-    } compi(x);
+     struct CompareIndex {
+     const double * m_x;
+     CompareIndex(const double * x) : m_x(x) {}
+     bool operator() (size_t i, size_t j) { return (m_x[i] < m_x[j]);}
+     } compi(x);
 
-    std::sort(order.begin(), order.end(), compi);
-    */
+     std::sort(order.begin(), order.end(), compi);
+     */
 
     // Option 3:
     px = x;
@@ -222,7 +224,7 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
 
     size_t Kopt;
 
-    fill_dp_matrix(x_sorted, y_sorted, S, J, method);
+    fill_dp_matrix(x_sorted, y_sorted, S, J, method, criterion);
 
     // Fill in dynamic programming matrix
     if(is_equally_weighted) {
@@ -232,12 +234,25 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
       } else {
         Kopt = select_levels_3_4_12(x_sorted, J, Kmin, Kmax, BIC);
       }
+
     } else {
-      if(estimate_k=="BIC") {
-      // Choose an optimal number of levels between Kmin and Kmax
-        Kopt = select_levels_weighted(x_sorted, y_sorted, J, Kmin, Kmax, BIC);
-      } else {
-        Kopt = select_levels_weighted_3_4_12(x_sorted, y_sorted, J, Kmin, Kmax, BIC);
+
+      switch(criterion) {
+      case L2Y:
+        if(estimate_k=="BIC") {
+          Kopt = select_levels(y_sorted, J, Kmin, Kmax, BIC);
+        } else {
+          Kopt = select_levels_3_4_12(y_sorted, J, Kmin, Kmax, BIC);
+        }
+        break;
+
+      default:
+        if(estimate_k=="BIC") {
+          // Choose an optimal number of levels between Kmin and Kmax
+          Kopt = select_levels_weighted(x_sorted, y_sorted, J, Kmin, Kmax, BIC);
+        } else {
+          Kopt = select_levels_weighted_3_4_12(x_sorted, y_sorted, J, Kmin, Kmax, BIC);
+        }
       }
     }
 
@@ -248,17 +263,22 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
     std::vector<int> cluster_sorted(N);
 
     // Backtrack to find the clusters beginning and ending indices
-    if(is_equally_weighted) {
-      backtrack(x_sorted, J, &cluster_sorted[0], centers, withinss, size);
-
-#ifdef DEBUG
-      std::cout << "backtrack done." << std::endl;
-#endif
+    if(is_equally_weighted && criterion == L1) {
+        backtrack_L1(x_sorted, J, &cluster_sorted[0], centers, withinss, size);
+    } else if (is_equally_weighted && criterion == L2) {
+        backtrack(x_sorted, J, &cluster_sorted[0], centers, withinss, size);
+    } else if(criterion == L2Y) {
+      backtrack_L2Y(x_sorted, y_sorted, J, &cluster_sorted[0],
+                    centers, withinss, size);
 
     } else {
       backtrack_weighted(x_sorted, y_sorted, J, &cluster_sorted[0],
                          centers, withinss, size);
     }
+
+#ifdef DEBUG
+    std::cout << "backtrack done." << std::endl;
+#endif
 
     for(size_t i = 0; i < N; ++i) {
       // Obtain clustering on data in the original order

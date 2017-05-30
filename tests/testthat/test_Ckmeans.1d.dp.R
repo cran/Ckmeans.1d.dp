@@ -5,7 +5,7 @@
 
 library(testthat)
 library(Ckmeans.1d.dp)
-context("Checking on several examples")
+context("Ckmeans.1d.dp")
 
 test_methods <- c("linear", "loglinear", "quadratic")
 

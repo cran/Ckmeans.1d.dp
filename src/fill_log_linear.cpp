@@ -32,7 +32,9 @@ void fill_row_q_log_linear(int imin, int imax, int q,
                            std::vector< std::vector<size_t> > & J,
                            const std::vector<ldouble> & sum_x,
                            const std::vector<ldouble> & sum_x_sq,
-                           const std::vector<ldouble> & sum_w)
+                           const std::vector<ldouble> & sum_w,
+                           const std::vector<ldouble> & sum_w_sq,
+                           const enum DISSIMILARITY criterion)
 {
   if(imin > imax) {
     return;
@@ -78,7 +80,9 @@ void fill_row_q_log_linear(int imin, int imax, int q,
 
     // Examine the lower bound of the cluster border
     // compute s(jlow, i)
-    ldouble sjlowi = ssq(jlow, i, sum_x, sum_x_sq, sum_w);
+    ldouble sjlowi =
+      dissimilarity(criterion, jlow, i, sum_x, sum_x_sq, sum_w, sum_w_sq);
+      // ssq(jlow, i, sum_x, sum_x_sq, sum_w);
 
     ldouble SSQ_jlow = sjlowi + S[q-1][jlow-1];
 
@@ -106,11 +110,13 @@ void fill_row_q_log_linear(int imin, int imax, int q,
   jmax = (int)J[q][i];
 
   fill_row_q_log_linear(imin, i-1, q, jmin, jmax,
-                        S, J, sum_x, sum_x_sq, sum_w);
+                        S, J, sum_x, sum_x_sq, sum_w,
+                        sum_w_sq, criterion);
 
   jmin = (int)J[q][i];
   jmax = (imax < N-1) ? (int)J[q][imax+1] : imax;
   fill_row_q_log_linear(i+1, imax, q, jmin, jmax,
-                        S, J, sum_x, sum_x_sq, sum_w);
+                        S, J, sum_x, sum_x_sq, sum_w,
+                        sum_w_sq, criterion);
 
 }

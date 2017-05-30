@@ -221,7 +221,7 @@ size_t select_levels_3_4_13(const std::vector<double> & x,
     size_t indexLeft = 0;
     size_t indexRight;
 
-    double loglikelihood = 0;
+    long double loglikelihood = 0;
 
     for (size_t k = 0; k < K; ++k) { // Compute the likelihood
 
@@ -246,7 +246,7 @@ size_t select_levels_3_4_13(const std::vector<double> & x,
       indexLeft = indexRight + 1;
     }
 
-    double BIC = 0.0;
+    long double BIC = 0.0;
 
     // Compute the Bayesian information criterion
     BIC = 2 * loglikelihood - (3 * K - 1) * std::log((double)N);  //(K*3-1)
@@ -285,7 +285,7 @@ size_t select_levels_3_4_12(const std::vector<double> & x,
   const size_t base = 0;  // The position of first element in x: 1 or 0.
   const size_t N = x.size() - base;
 
-  double maxBIC(0);
+  long double maxBIC(0);
 
   for(size_t K = Kmin; K <= Kmax; ++K) {
 
@@ -298,7 +298,7 @@ size_t select_levels_3_4_12(const std::vector<double> & x,
     size_t indexLeft = base;
     size_t indexRight;
 
-    double loglikelihood = 0;
+    long double loglikelihood = 0;
     double binLeft, binRight;
 
     for (size_t k = 0; k < K; ++k) { // Compute the likelihood

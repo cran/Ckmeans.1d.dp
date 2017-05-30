@@ -34,7 +34,9 @@ void fill_row_q(int imin, int imax, int q,
                 std::vector< std::vector<size_t> > & J,
                 const std::vector<ldouble> & sum_x,
                 const std::vector<ldouble> & sum_x_sq,
-                const std::vector<ldouble> & sum_w)
+                const std::vector<ldouble> & sum_w,
+                const std::vector<ldouble> & sum_w_sq,
+                const enum DISSIMILARITY criterion)
 {
   // Assumption: each cluster must have at least one point.
   for(int i=imin; i<=imax; ++i) {
@@ -42,7 +44,11 @@ void fill_row_q(int imin, int imax, int q,
     J[q][i] = i;
     int jmin = std::max(q, (int)J[q-1][i]);
     for(int j=i-1; j>=jmin; --j) {
-      ldouble Sj(S[q-1][j-1] + ssq(j, i, sum_x, sum_x_sq, sum_w));
+      ldouble Sj(S[q-1][j-1] +
+        dissimilarity(criterion, j, i, sum_x, sum_x_sq, sum_w, sum_w_sq)
+                   // ssq(j, i, sum_x, sum_x_sq, sum_w)
+      );
+
       if(Sj < S[q][i]) {
         S[q][i] = Sj;
         J[q][i] = j;

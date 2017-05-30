@@ -1,10 +1,49 @@
 NEWS
 
+Version 4.2.0
+  Changes
+  2017-05-29
+  1. Increased log likelihood calculation to long double
+     precision in C++ function weighted_select_levels.cpp.
+  2. Replaced std::accumulate() function by for-loop addition in
+     C++ function weighted_select_levels.cpp. This resolved a
+     numerical overflow issue when the weight values are large.
+  3. Now R function plotBIC() automatically adjusts the "k*="
+     text position, so that the text label is placed entirely
+     within the BIC curve area and will not extend into the
+     figure margin.
+  4. The cluster size has been changed from integer to double to
+     accomodate weighted cluster size in both R and C++ code.
+  5. Force any weight vector to be equal weight in new R
+     function Ckmedian.1d.dp.
+  6. Introduced S3 methods print and plot for Ckmedian.1d.dp
+     and Cksegs.1d.dp objects.
+
+  2017-03-18
+  1. Introduced Cksegs.1d.dp() function for k-segments clustering
+     of y with or without x. Only method="quadratic" guarantees
+     optimality.
+
+  2. Expanded k-median clustering to work with all possible
+     methods. Only unweighted solution guarantees optimality.
+
+Version 4.1.0
+  Changes
+  2017-03-02
+  1. Introduced function Ckmedian.1d.dp() for k-median unweighted
+     clustering.
+
+Version 4.0.2
+  Changes
+  2017-02-16
+  1. Fixed symbol encoding used in NEWS.
+  2. Updated documentation.
+
 Version 4.0.1
   Changes
   2017-02-16
-  1. Fixed a warning message in the use of ‘R_registerRoutines’ and
-     ‘R_useDynamicSymbols’.
+  1. Fixed a warning message in the use of 'R_registerRoutines' and
+     'R_useDynamicSymbols'.
   2. Fixed a memory leak issue: invalid read of size 8.
 
 Version 4.0.0

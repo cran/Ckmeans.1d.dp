@@ -1,11 +1,16 @@
 \name{print.Ckmeans.1d.dp}
 \alias{print.Ckmeans.1d.dp}
+\alias{print.Ckmedian.1d.dp}
+\alias{print.Cksegs.1d.dp}
+
 \title{Print Optimal Univariate Clustering Results}
 \description{
 Print optimal univariate clustering results obtained from \code{Ckmeans.1d.dp}.
 }
 \usage{
 \method{print}{Ckmeans.1d.dp}(x, \dots)
+\method{print}{Ckmedian.1d.dp}(x, \dots)
+\method{print}{Cksegs.1d.dp}(x, \dots)
 }
 \arguments{
   \item{x}{object returned by calling Ckmeans.1d.dp.}
@@ -17,25 +22,11 @@ Print optimal univariate clustering results obtained from \code{Ckmeans.1d.dp}.
 }
 
 \details{
-The maximum ratio of between-cluster sum of squares to total sum of squares is printed unless all input elements are zero. The ratio is an indicator of maximum achievable clustering quality given the number of clusters: 100\% for a perfect clustering and 0\% for no cluster patterns.
+Function \code{print.Ckmeans.1d.dp} prints the maximum ratio of between-cluster sum of squares to total sum of squares unless all input elements are zero. The ratio is an indicator of maximum achievable clustering quality given the number of clusters: 100\% for a perfect clustering and 0\% for no cluster patterns.
 }
 
 \value{
-	An object of class "\code{Ckmeans.1d.dp}" which has a \code{print} method and is a list with components:
-
-	\item{cluster}{a vector of clusters assigned to each element in \code{x}. Each cluster is indexed by an integer from 1 to \code{k}.}
-
-	\item{centers}{a numeric vector of the (weighted) means for each cluster.}
-
-	\item{withinss}{a numeric vector of the (weighted) within-cluster sum of squares for each cluster.}
-
-	\item{size}{a vector of the (weighted) number of elements in each cluster.}
-
-	\item{totss}{total sum of squared distances between each element and the sample mean. This statistic is not dependent on the clustering result.}
-
-	\item{tot.withinss}{total sum of within-cluster squared distances between each element and its cluster mean. This statistic is minimized given the number of clusters.}
-
-	\item{betweenss}{sum of squared distances between each cluster mean and sample mean weighed by cluster size. This statistic is maximized given the number of clusters.}
+	An object of class "\code{Ckmeans.1d.dp}", "\code{Ckmedian.1d.dp}", or "\code{Cksegs.1d.dp}" as defined in \code{\link{Ckmeans.1d.dp}}.
 }
 
 \references{
@@ -49,4 +40,22 @@ x <- c(rnorm(15, mean=-1, sd=0.3),
        rnorm(15, mean=1, sd=0.3))
 res <- Ckmeans.1d.dp(x)
 print(res)
+
+res <- Ckmedian.1d.dp(x)
+print(res)
+
+y <- (rnorm(length(x)))^2
+res <- Ckmeans.1d.dp(x, y=y)
+print(res)
+
+res <- Ckmedian.1d.dp(x)
+print(res)
+
+y <- x^3
+res <- Cksegs.1d.dp(y, x=x)
+print(res, lwd=2)
 }
+
+\keyword{ univar }
+\keyword{ cluster }
+\keyword{ print }

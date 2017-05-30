@@ -45,7 +45,9 @@ void reduce_in_place(int imin, int imax, int istep, int q,
                      const std::vector< std::vector<size_t> > & J,
                      const std::vector<ldouble> & sum_x,
                      const std::vector<ldouble> & sum_x_sq,
-                     const std::vector<ldouble> & sum_w)
+                     const std::vector<ldouble> & sum_w,
+                     const std::vector<ldouble> & sum_w_sq,
+                     const enum DISSIMILARITY criterion)
 {
   int N = (imax - imin) / istep + 1;
 
@@ -67,10 +69,14 @@ void reduce_in_place(int imin, int imax, int istep, int q,
 
     int i = (imin + p * istep);
     size_t j = (js_red[right]);
-    ldouble Sl = (S[q-1][j-1] + ssq(j, i, sum_x, sum_x_sq, sum_w));
+    ldouble Sl = (S[q-1][j-1] +
+      dissimilarity(criterion, j, i, sum_x, sum_x_sq, sum_w, sum_w_sq));
+      // ssq(j, i, sum_x, sum_x_sq, sum_w));
 
     size_t jplus1 = (js_red[right+1]);
-    ldouble Slplus1 = (S[q-1][jplus1-1] + ssq(jplus1, i, sum_x, sum_x_sq, sum_w));
+    ldouble Slplus1 = (S[q-1][jplus1-1] +
+      dissimilarity(criterion, jplus1, i, sum_x, sum_x_sq, sum_w, sum_w_sq));
+      // ssq(jplus1, i, sum_x, sum_x_sq, sum_w));
 
     if(Sl < Slplus1 && p < N-1) {
       js_red[ ++ left ] = j; // i += istep;
@@ -106,7 +112,9 @@ inline void fill_even_positions
    std::vector< std::vector<size_t> > & J,
    const std::vector<ldouble> & sum_x,
    const std::vector<ldouble> & sum_x_sq,
-   const std::vector<ldouble> & sum_w)
+   const std::vector<ldouble> & sum_w,
+   const std::vector<ldouble> & sum_w_sq,
+   const enum DISSIMILARITY criterion)
 {
   // Derive j for even rows (0-based)
   size_t n = (js.size());
@@ -122,7 +130,9 @@ inline void fill_even_positions
     }
 
     // Initialize S[q][i] and J[q][i]
-    S[q][i] = S[q-1][js[r]-1] + ssq(js[r], i, sum_x, sum_x_sq, sum_w);
+    S[q][i] = S[q-1][js[r]-1] +
+      dissimilarity(criterion, js[r], i, sum_x, sum_x_sq, sum_w, sum_w_sq);
+      // ssq(js[r], i, sum_x, sum_x_sq, sum_w);
     J[q][i] = js[r]; // rmin
 
     // Look for minimum S upto jmax within js
@@ -131,7 +141,10 @@ inline void fill_even_positions
 
     int jmax = std::min((int)jh, (int)i);
 
-    ldouble sjimin(ssq(jmax, i, sum_x, sum_x_sq, sum_w));
+    ldouble sjimin(
+        dissimilarity(criterion, jmax, i, sum_x, sum_x_sq, sum_w, sum_w_sq)
+        // ssq(jmax, i, sum_x, sum_x_sq, sum_w)
+      );
 
     for(++ r; r < n && js[r]<=jmax; r++) {
 
@@ -141,7 +154,9 @@ inline void fill_even_positions
 
       if(jabs < J[q-1][i]) continue;
 
-      ldouble s = (ssq(jabs, i, sum_x, sum_x_sq, sum_w));
+      ldouble s =
+        dissimilarity(criterion, jabs, i, sum_x, sum_x_sq, sum_w, sum_w_sq);
+        // (ssq(jabs, i, sum_x, sum_x_sq, sum_w));
       ldouble Sj = (S[q-1][jabs-1] + s);
 
       if(Sj <= S[q][i]) {
@@ -165,7 +180,9 @@ inline void find_min_from_candidates
    std::vector< std::vector<size_t> > & J,
    const std::vector<ldouble> & sum_x,
    const std::vector<ldouble> & sum_x_sq,
-   const std::vector<ldouble> & sum_w)
+   const std::vector<ldouble> & sum_w,
+   const std::vector<ldouble> & sum_w_sq,
+   const enum DISSIMILARITY criterion)
 {
   size_t rmin_prev = (0);
 
@@ -174,7 +191,9 @@ inline void find_min_from_candidates
     size_t rmin = (rmin_prev);
 
     // Initialization of S[q][i] and J[q][i]
-    S[q][i] = S[q-1][js[rmin] - 1] + ssq(js[rmin], i, sum_x, sum_x_sq, sum_w);
+    S[q][i] = S[q-1][js[rmin] - 1] +
+      dissimilarity(criterion, js[rmin], i, sum_x, sum_x_sq, sum_w, sum_w_sq);
+      // ssq(js[rmin], i, sum_x, sum_x_sq, sum_w);
     J[q][i] = js[rmin];
 
     for(size_t r = (rmin+1); r<js.size(); ++r) {
@@ -184,7 +203,9 @@ inline void find_min_from_candidates
       if(j_abs < J[q-1][i]) continue;
       if(j_abs > i) break;
 
-      ldouble Sj = (S[q-1][j_abs - 1] + ssq(j_abs, i, sum_x, sum_x_sq, sum_w));
+      ldouble Sj = (S[q-1][j_abs - 1] +
+        dissimilarity(criterion, j_abs, i, sum_x, sum_x_sq, sum_w, sum_w_sq));
+        // ssq(j_abs, i, sum_x, sum_x_sq, sum_w));
       if(Sj <= S[q][i]) {
         S[q][i] = Sj;
         J[q][i] = js[r];
@@ -201,7 +222,9 @@ void SMAWK
    std::vector< std::vector<size_t> > & J,
    const std::vector<ldouble> & sum_x,
    const std::vector<ldouble> & sum_x_sq,
-   const std::vector<ldouble> & sum_w)
+   const std::vector<ldouble> & sum_w,
+   const std::vector<ldouble> & sum_w_sq,
+   const enum DISSIMILARITY criterion)
 {
 #ifdef DEBUG_REDUCE
   std::cout << "i:" << '[' << imin << ',' << imax << ']' << '+' << istep
@@ -210,8 +233,10 @@ void SMAWK
 
   if(imax - imin <= 0 * istep) { // base case only one element left
 
-    find_min_from_candidates(imin, imax, istep, q, js,
-                             S, J, sum_x, sum_x_sq, sum_w);
+    find_min_from_candidates(
+      imin, imax, istep, q, js, S, J, sum_x, sum_x_sq, sum_w,
+      sum_w_sq, criterion
+    );
 
   } else {
 
@@ -229,7 +254,8 @@ void SMAWK
     std::vector<size_t> js_odd;
 
     reduce_in_place(imin, imax, istep, q, js, js_odd,
-                    S, J, sum_x, sum_x_sq, sum_w);
+                    S, J, sum_x, sum_x_sq, sum_w,
+                    sum_w_sq, criterion);
 
     int istepx2 = (istep << 1);
     int imin_odd = (imin + istep);
@@ -237,7 +263,8 @@ void SMAWK
 
     // Recursion on odd rows (0-based):
     SMAWK(imin_odd, imax_odd, istepx2,
-          q, js_odd, S, J, sum_x, sum_x_sq, sum_w);
+          q, js_odd, S, J, sum_x, sum_x_sq, sum_w,
+          sum_w_sq, criterion);
 
 #ifdef DEBUG // _REDUCE
     std::cout << "js_odd (reduced):";
@@ -255,7 +282,8 @@ void SMAWK
 #endif
 
     fill_even_positions(imin, imax, istep, q, js,
-                        S, J, sum_x, sum_x_sq, sum_w);
+                        S, J, sum_x, sum_x_sq, sum_w,
+                        sum_w_sq, criterion);
   }
 }
 
@@ -264,7 +292,9 @@ void fill_row_q_SMAWK(int imin, int imax, int q,
                       std::vector< std::vector<size_t> > & J,
                       const std::vector<ldouble> & sum_x,
                       const std::vector<ldouble> & sum_x_sq,
-                      const std::vector<ldouble> & sum_w)
+                      const std::vector<ldouble> & sum_w,
+                      const std::vector<ldouble> & sum_w_sq,
+                      const enum DISSIMILARITY criterion)
 {
   // Assumption: each cluster must have at least one point.
 
@@ -272,5 +302,5 @@ void fill_row_q_SMAWK(int imin, int imax, int q,
   int abs = (q);
   std::generate(js.begin(), js.end(), [&] { return abs++; } );
 
-  SMAWK(imin, imax, 1, q, js, S, J, sum_x, sum_x_sq, sum_w);
+  SMAWK(imin, imax, 1, q, js, S, J, sum_x, sum_x_sq, sum_w, sum_w_sq, criterion);
 }

@@ -88,7 +88,7 @@ size_t select_levels_weighted(
 
   size_t Kopt = Kmin;
 
-  double maxBIC(0.0);
+  long double maxBIC(0.0);
 
   std::vector<double> lambda(Kmax);
   std::vector<double> mu(Kmax);
@@ -104,8 +104,16 @@ size_t select_levels_weighted(
     // Backtrack the matrix to determine boundaries between the bins.
     backtrack_weighted(x, y, J, counts, weights, (int)K);
 
-    // double totalweight = std::accumulate(begin(weights), end(weights), 0, std::plus<double>());
-    double totalweight = std::accumulate(weights.begin(), weights.end(), 0, std::plus<double>());
+      
+    // double totalweight = std::accumulate(weights.begin(), weights.begin() + K, 0, std::plus<double>());
+          
+    double totalweight;
+
+    totalweight = 0;
+    for(size_t k=0; k<K; k++) {
+      totalweight += weights[k];
+    }
+    
 
     size_t indexLeft = 0;
     size_t indexRight;
@@ -146,17 +154,18 @@ size_t select_levels_weighted(
       indexLeft = indexRight + 1;
     }
 
-    double loglikelihood = 0;
+    long double loglikelihood = 0;
 
     for (size_t i=0; i<N; ++i) {
-      double L=0;
+      long double L=0;
       for (size_t k = 0; k < K; ++k) {
         L += coeff[k] * std::exp(- (x[i] - mu[k]) * (x[i] - mu[k]) / (2.0 * sigma2[k]));
       }
       loglikelihood += y[i] * std::log(L);
     }
 
-    double & bic = BIC[K-Kmin];
+    // double & bic = BIC[K-Kmin];
+    long double bic;
 
     // Compute the Bayesian information criterion
     bic = 2 * loglikelihood - (3 * K - 1) * std::log(totalweight);  //(K*3-1)
@@ -172,6 +181,8 @@ size_t select_levels_weighted(
         Kopt = K;
       }
     }
+
+    BIC[K-Kmin] = (double)bic;
   }
   return Kopt;
 }

@@ -30,69 +30,58 @@
 #include <vector>
 #include <string>
 
-// typedef long double ldouble;
-typedef double ldouble;
+#include "within_cluster.h"
 
-inline ldouble ssq(
-    const size_t j, const size_t i,
-    const std::vector<ldouble> & sum_x, // running sum of xi
-    const std::vector<ldouble> & sum_x_sq, // running sum of xi^2
-    const std::vector<ldouble> & sum_w  // running sum of weights
-)
-{
-  ldouble sji(0.0);
+void fill_dp_matrix(
+    const std::vector<double> & x,
+    const std::vector<double> & w,
+    std::vector< std::vector< ldouble > > & S,
+    std::vector< std::vector< size_t > > & J,
+    const std::string & method,
+    const enum DISSIMILARITY criterion);
 
-  if(sum_w.empty()) { // equally weighted version
-    if(j >= i) {
-      sji = 0.0;
-    } else if(j > 0) {
-      ldouble muji = (sum_x[i] - sum_x[j-1]) / (i - j + 1);
-      sji = sum_x_sq[i] - sum_x_sq[j-1] - (i - j + 1) * muji * muji;
-    } else {
-      sji = sum_x_sq[i] - sum_x[i] * sum_x[i] / (i+1);
-    }
-  } else { // unequally weighted version
-    if(sum_w[j] >= sum_w[i]) {
-      sji = 0.0;
-    } else if(j > 0) {
-      ldouble muji = (sum_x[i] - sum_x[j-1]) / (sum_w[i] - sum_w[j-1]);
-      sji = sum_x_sq[i] - sum_x_sq[j-1] - (sum_w[i] - sum_w[j-1]) * muji * muji;
-    } else {
-      sji = sum_x_sq[i] - sum_x[i] * sum_x[i] / sum_w[i];
-    }
-  }
+void backtrack(
+    const std::vector<double> & x,
+    const std::vector< std::vector< size_t > > & J,
+    int* cluster, double* centers, double* withinss,
+    double* count /*int* count*/);
 
-  sji = (sji < 0) ? 0 : sji;
-  return sji;
-}
+void backtrack_L1(
+    const std::vector<double> & x,
+    const std::vector< std::vector< size_t > > & J,
+    int* cluster, double* centers, double* withinss,
+    double* count /*int* count*/);
 
-void fill_dp_matrix(const std::vector<double> & x,
-                    const std::vector<double> & w,
-                    std::vector< std::vector< ldouble > > & S,
-                    std::vector< std::vector< size_t > > & J,
-                    const std::string & method);
+void backtrack(
+    const std::vector<double> & x,
+    const std::vector< std::vector< size_t > > & J,
+    std::vector<size_t> & count);
 
-void backtrack(const std::vector<double> & x,
-               const std::vector< std::vector< size_t > > & J,
-               int* cluster, double* centers, double* withinss, int* count);
+void backtrack_L2Y(
+    const std::vector<double> & x, const std::vector<double> & y,
+    const std::vector< std::vector< size_t > > & J,
+    int* cluster, double* centers, double* withinss,
+    double* count /*int* count*/);
 
-void backtrack(const std::vector<double> & x,
-               const std::vector< std::vector< size_t > > & J,
-               std::vector<size_t> & count);
+void fill_row_q_SMAWK(
+    int imin, int imax, int q,
+    std::vector< std::vector<ldouble> > & S,
+    std::vector< std::vector<size_t> > & J,
+    const std::vector<ldouble> & sum_x,
+    const std::vector<ldouble> & sum_x_sq,
+    const std::vector<ldouble> & sum_w,
+    const std::vector<ldouble> & sum_w_sq,
+    const enum DISSIMILARITY criterion);
 
-void fill_row_q_SMAWK(int imin, int imax, int q,
-                      std::vector< std::vector<ldouble> > & S,
-                      std::vector< std::vector<size_t> > & J,
-                      const std::vector<ldouble> & sum_x,
-                      const std::vector<ldouble> & sum_x_sq,
-                      const std::vector<ldouble> & sum_w);
-
-void fill_row_q(int imin, int imax, int q,
-                std::vector< std::vector<ldouble> > & S,
-                std::vector< std::vector<size_t> > & J,
-                const std::vector<ldouble> & sum_x,
-                const std::vector<ldouble> & sum_x_sq,
-                const std::vector<ldouble> & sum_w);
+void fill_row_q(
+    int imin, int imax, int q,
+    std::vector< std::vector<ldouble> > & S,
+    std::vector< std::vector<size_t> > & J,
+    const std::vector<ldouble> & sum_x,
+    const std::vector<ldouble> & sum_x_sq,
+    const std::vector<ldouble> & sum_w,
+    const std::vector<ldouble> & sum_w_sq,
+    const enum DISSIMILARITY criterion);
 
 
 void fill_row_q_log_linear(
@@ -101,7 +90,10 @@ void fill_row_q_log_linear(
     std::vector< std::vector<size_t> > & J,
     const std::vector<ldouble> & sum_x,
     const std::vector<ldouble> & sum_x_sq,
-    const std::vector<ldouble> & sum_w);
+    const std::vector<ldouble> & sum_w,
+    const std::vector<ldouble> & sum_w_sq,
+    const enum DISSIMILARITY criterion
+);
 
 /* One-dimensional cluster algorithm implemented in C++ */
 /* x is input one-dimensional vector and
@@ -111,9 +103,11 @@ void kmeans_1d_dp(
     const double * y,
     size_t Kmin, size_t Kmax,
     int* cluster, double* centers,
-    double* withinss, int* size, double* BIC,
+    double* withinss, double * size, // int* size,
+    double* BIC,
     const std::string & estimate_k,
-    const std::string & method);
+    const std::string & method,
+    const enum DISSIMILARITY criterion);
 
 
 void backtrack(
@@ -146,7 +140,8 @@ void backtrack_weighted(
 void backtrack_weighted(
     const std::vector<double> & x, const std::vector<double> & y,
     const std::vector< std::vector< size_t > > & J,
-    int* cluster, double* centers, double* withinss, int* weights);
+    int* cluster, double* centers, double* withinss,
+    double* weights /*int* weights*/);
 
 size_t select_levels_weighted(
     const std::vector<double> & x, const std::vector<double> & y,

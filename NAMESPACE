@@ -2,9 +2,25 @@
 #exportPattern("^[[:alpha:]]+")
 useDynLib(Ckmeans.1d.dp)
 export(Ckmeans.1d.dp)
+export(Ckmedian.1d.dp)
+export(Cksegs.1d.dp)
 export(ahist)
 export(plotBIC)
+
 export(print.Ckmeans.1d.dp)
 S3method(print, Ckmeans.1d.dp)
+
 export(plot.Ckmeans.1d.dp)
 S3method(plot, Ckmeans.1d.dp)
+
+export(print.Ckmedian.1d.dp)
+S3method(print, Ckmedian.1d.dp)
+
+export(plot.Ckmedian.1d.dp)
+S3method(plot, Ckmedian.1d.dp)
+
+export(print.Cksegs.1d.dp)
+S3method(print, Cksegs.1d.dp)
+
+export(plot.Cksegs.1d.dp)
+S3method(plot, Cksegs.1d.dp)
