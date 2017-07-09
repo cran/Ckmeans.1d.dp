@@ -1,31 +1,32 @@
 Package: Ckmeans.1d.dp
 Type: Package
-Version: 4.2.0
-Date: 2017-05-29
+Version: 4.2.1
+Date: 2017-07-07
 Title: Optimal and Fast Univariate Clustering
 Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
 		     email = "joemsong@cs.nmsu.edu"),
 	      person("Haizhou", "Wang", role = "aut"))
 Author: Joe Song [aut, cre], Haizhou Wang [aut]
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
-Description: A fast dynamic programming algorithmic framework to
- achieve optimal univariate k-means, k-median, and k-segments
- clustering. Minimizing the sum of respective within-cluster
- distances, the algorithms guarantee optimality and
- reproducibility. Their advantage over heuristic clustering
- algorithms in efficiency and accuracy is increasingly pronounced
- as the number of clusters k increases. Weighted k-means and
- unweighted k-segments algorithms can also optimally segment time
- series and perform peak calling. An auxiliary function generates
- histograms that are adaptive to patterns in data. This package
- provides a powerful alternative to heuristic methods for
- univariate data analysis.
+Description: Fast optimal univariate clustering and segementation
+ by dynamic programming. Three types of problem including
+ univariate k-means, k-median, and k-segments are solved with
+ guaranteed optimality and reproducibility. The core algorithm
+ minimizes the sum of within-cluster distances using respective
+ metrics. Its advantage over heuristic clustering algorithms in
+ efficiency and accuracy is increasingly pronounced as the
+ number of clusters k increases. Weighted k-means and unweighted
+ k-segments algorithms can also optimally segment time series
+ and perform peak calling. An auxiliary function generates
+ histograms that are adaptive to patterns in data. In contrast to
+ heuristic methods, this package provides a powerful set of tools
+ for univariate data analysis with guaranteed optimality.
 License: LGPL (>= 3)
 NeedsCompilation: yes
 Suggests: testthat, knitr, rmarkdown
 Depends: R (>= 2.10.0)
 LazyData: true
 VignetteBuilder: knitr
-Packaged: 2017-05-30 03:36:19 UTC; joemsong
+Packaged: 2017-07-08 06:04:27 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2017-05-30 05:51:09 UTC
+Date/Publication: 2017-07-09 06:24:02 UTC

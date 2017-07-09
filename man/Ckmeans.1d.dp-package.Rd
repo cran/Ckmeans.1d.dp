@@ -5,7 +5,7 @@
 Optimal and Fast Univariate Clustering
 }
 \description{
-This package provides a fast dynamic programming algorithmic framework to achieve optimal univariate \eqn{k}{k}-means, \eqn{k}{k}-median, and \eqn{k}{k}-segments clustering.
+This package provides fast optimal univariate clustering and segementation by dynamic programming. Three types of problem including univariate \eqn{k}{k}-means, \eqn{k}{k}-median, and \eqn{k}{k}-segments are solved with guaranteed optimality and reproducibility. The core algorithm minimizes the sum of within-cluster distances using respective metrics. Its advantage over heuristic clustering algorithms in efficiency and accuracy is increasingly pronounced as the number of clusters k increases. Weighted k-means and unweighted k-segments algorithms can also optimally segment time series and perform peak calling. An auxiliary function generates histograms that are adaptive to patterns in data. In contrast to heuristic methods, this package provides a powerful set of tools for univariate data analysis with guaranteed optimality.
 
 The Ckmeans.1d.dp algorithm clusters univariate data given by a numeric vector \eqn{x}{x} into \eqn{k}{k} groups by dynamic programming (Wang and Song, 2011). It guarantees the optimality of clustering---the total of within-cluster sums of squares is always the minimum given the number of clusters \eqn{k}{k}. In contrast, heuristic univariate clustering algorithms may be non-optimal or inconsistent from run to run. As unequal non-negative weights are supported for each point, the algorithm can also segment a time course using the time points as input and the values at each time point as weight. Utilizing the optimal clusters, a function can generate histograms adaptive to patterns in data. This method is numerically stable.
 
@@ -17,14 +17,14 @@ The space complexity in all cases is \eqn{O(kn)}{O(kn)}.
 
 This package provides a powerful alternative to heuristic clustering algorithms and also new functionality for weighted clustering, segmentation, and peak calling with guaranteed optimality. It is practical for Ckmeans.1d.dp to cluster millions of sample points with optional weights in seconds using a single processor on a not very recent desktop computer.
 
-Third parties have ported various versions of this package to MATLAB, JavaScript, Python, Ruby, SAS, and Scala.
+Third parties have ported various versions of this package to JavaScript, MATLAB, Python, Ruby, SAS, and Scala.
 }
 
 \details{
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 4.2.0\cr
+Version: \tab 4.2.1\cr
 Initial release version: \tab 1.0\cr
 Initial release date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3)}

@@ -1,0 +1,29 @@
+---
+title: "Tutorial: Linear weight scaling in cluster analysis"
+author: "Joe Song"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial: Linear weight scaling in cluster analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The function ```Ckmeans.1d.dp()``` can perform optimal weighted univariate $k$-means clustering. The weights can be an indication of sample size, certainty, or signal intensity dependent on the application. The relative values of weights are consequential on clustering. The absolute values of weights can also have an impact on the number of clusters when it must be estimated.
+
+### The linear scale of weights strongly affects the estimated number of clusters
+
+When the number of clusters must be estimated, the linear scale of weights heavily influences the estimated number of clusters $k$. The reason is that linear scaling leads to a nonlinear effect in the calculation of the Bayesian information criterion. A large scale will promote more clusters to be used.
+
+Here is a guideline on how to scale the weights:
+
+* If weights are the numbers of repeated observations at each data point, they should be used as is and not linearly scaled.
+
+* If the weights are not related to sample size but are some measure of emphasis, they should be scaled to sum up to the observed sample size of the entire data set.
+
+* If the weights sum up to one, it implies that the sample size of the data set is one. In this case, the number of clusters may be severely underestimated.
+
+### Linear weight scaling is uninfluential when the number of clusters is given
+
+When an exact number of clusters $k$ is given by the user, linear weight scaling does not influence cluster analysis in theory. The clustering results are expected to be identical for any linear scaling of weights. However, a large numerical weight can cause overflow and thus should be linearly scaled down to a more tractable range.
+

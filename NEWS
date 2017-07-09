@@ -1,5 +1,11 @@
 NEWS
 
+Version 4.2.1
+  Changes
+  2017-06-10
+  1. Added a new vignette "Tutorial: Linear weight scaling in cluster analysis".
+  2. Re-organized manuals and updated documentation.
+
 Version 4.2.0
   Changes
   2017-05-29
