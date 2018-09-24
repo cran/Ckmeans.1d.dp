@@ -1,6 +1,7 @@
-#importFrom("graphics", "par", "plot", "segments")
+importFrom(Rcpp, evalCpp)
+useDynLib(Ckmeans.1d.dp, .registration = TRUE)
+
 #exportPattern("^[[:alpha:]]+")
-useDynLib(Ckmeans.1d.dp)
 export(Ckmeans.1d.dp)
 export(Ckmedian.1d.dp)
 export(Cksegs.1d.dp)
@@ -24,3 +25,4 @@ S3method(print, Cksegs.1d.dp)
 
 export(plot.Cksegs.1d.dp)
 S3method(plot, Cksegs.1d.dp)
+

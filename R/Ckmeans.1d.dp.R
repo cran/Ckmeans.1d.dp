@@ -12,6 +12,8 @@
 ## Modified:
 #    May 17, 2016. MS
 #    September 25, 2016. MS. Introduced function ahist()
+#    September 21, 2018. Joe Song. Changed from C to Rcpp interface
+
 
 ##Ckmeans.1d.dp : function which implement optimal one-dimensional clustering
 ## x is one-dimensional input vector
@@ -69,37 +71,73 @@ cluster.1d.dp <- function( x, k, y, method, estimate.k, criterion, xname, yname 
 
   #Call external C++ function
   if(criterion == "L2") {
-    result <- .C("Ckmeans_1d_dp", PACKAGE="Ckmeans.1d.dp",
-                 data=as.double(x), length=as.integer(length(x)),
-                 weight=as.double(y), weight_length=as.integer(length(y)),
-                 Kmin=as.integer(k.min), Kmax=as.integer(k.max),
-                 cluster=as.integer(clusters), centers=as.double(center),
-                 withinss=as.double(withinss), size=as.double(size), # size=as.integer(size),
-                 BIC=as.double(BIC),
-                 estimate.k=as.character(estimate.k),
-                 method=as.character(method))
+
+    # result <- .C("Ckmeans_1d_dp", PACKAGE="Ckmeans.1d.dp",
+    #              data=as.double(x), length=as.integer(length(x)),
+    #              weight=as.double(y), weight_length=as.integer(length(y)),
+    #              Kmin=as.integer(k.min), Kmax=as.integer(k.max),
+    #              cluster=as.integer(clusters), centers=as.double(center),
+    #              withinss=as.double(withinss), size=as.double(size), # size=as.integer(size),
+    #              BIC=as.double(BIC),
+    #              estimate.k=as.character(estimate.k),
+    #              method=as.character(method))
+
+    result <- Ckmeans_1d_dp(
+                 as.double(x), as.integer(length(x)),
+                 as.double(y), as.integer(length(y)),
+                 as.integer(k.min), as.integer(k.max),
+                 as.integer(clusters), as.double(center),
+                 as.double(withinss), as.double(size), # size=as.integer(size),
+                 as.double(BIC),
+                 estimate.k,
+                 method)
+
     class <- "Ckmeans.1d.dp"
   } else if (criterion == "L1") {
-    result <- .C("Ckmedian_1d_dp", PACKAGE="Ckmeans.1d.dp",
-                 data=as.double(x), length=as.integer(length(x)),
-                 weight=as.double(y), weight_length=as.integer(length(y)),
-                 Kmin=as.integer(k.min), Kmax=as.integer(k.max),
-                 cluster=as.integer(clusters), centers=as.double(center),
-                 withinss=as.double(withinss), size=as.double(size), # size=as.integer(size),
-                 BIC=as.double(BIC),
-                 estimate.k=as.character(estimate.k),
-                 method=as.character(method))
+
+    # result <- .C("Ckmedian_1d_dp", PACKAGE="Ckmeans.1d.dp",
+    #              data=as.double(x), length=as.integer(length(x)),
+    #              weight=as.double(y), weight_length=as.integer(length(y)),
+    #              Kmin=as.integer(k.min), Kmax=as.integer(k.max),
+    #              cluster=as.integer(clusters), centers=as.double(center),
+    #              withinss=as.double(withinss), size=as.double(size), # size=as.integer(size),
+    #              BIC=as.double(BIC),
+    #              estimate.k=as.character(estimate.k),
+    #              method=as.character(method))
+
+    result <- Ckmedian_1d_dp(
+      as.double(x), as.integer(length(x)),
+      as.double(y), as.integer(length(y)),
+      as.integer(k.min), as.integer(k.max),
+      as.integer(clusters), as.double(center),
+      as.double(withinss), as.double(size), # size=as.integer(size),
+      as.double(BIC),
+      estimate.k,
+      method)
+
     class <- "Ckmedian.1d.dp"
   } else if(criterion == "L2Y") {
-    result <- .C("Cksegs_1d_dp", PACKAGE="Ckmeans.1d.dp",
-                 data=as.double(x), length=as.integer(length(x)),
-                 weight=as.double(y), weight_length=as.integer(length(y)),
-                 Kmin=as.integer(k.min), Kmax=as.integer(k.max),
-                 cluster=as.integer(clusters), centers=as.double(center),
-                 withinss=as.double(withinss), size=as.double(size), # size=as.integer(size),
-                 BIC=as.double(BIC),
-                 estimate.k=as.character(estimate.k),
-                 method=as.character(method))
+
+    # result <- .C("Cksegs_1d_dp", PACKAGE="Ckmeans.1d.dp",
+    #              data=as.double(x), length=as.integer(length(x)),
+    #              weight=as.double(y), weight_length=as.integer(length(y)),
+    #              Kmin=as.integer(k.min), Kmax=as.integer(k.max),
+    #              cluster=as.integer(clusters), centers=as.double(center),
+    #              withinss=as.double(withinss), size=as.double(size), # size=as.integer(size),
+    #              BIC=as.double(BIC),
+    #              estimate.k=as.character(estimate.k),
+    #              method=as.character(method))
+
+    result <- Cksegs_1d_dp(
+      as.double(x), as.integer(length(x)),
+      as.double(y), as.integer(length(y)),
+      as.integer(k.min), as.integer(k.max),
+      as.integer(clusters), as.double(center),
+      as.double(withinss), as.double(size), # size=as.integer(size),
+      as.double(BIC),
+      estimate.k,
+      method)
+
     class <- "Cksegs.1d.dp"
   }
 

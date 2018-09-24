@@ -31,121 +31,146 @@
  March 29, 2014. Haizhou Wang. Replaced "int *Ks" and "int *nK" by
  "int *minK" and "int *maxK".
  May 29, 2017. Joe Song. Change size from integer to double.
+ September 21, 2018. Joe Song. Changed from C to Rcpp interface.
  */
+
+#include <Rcpp.h>
+using namespace Rcpp;
 
 #include <string>
 #include <iostream>
-#include <R_ext/Rdynload.h>
 
 #include "Ckmeans.1d.dp.h"
 
 /*Wrapper function to call kmeans_1d_dp()*/
-extern "C" {
-  /*
-   x: An array containing input data to be clustered.
-   length: length of the one dimensional array.
-   minK: Minimum number of clusters.
-   maxK: Maximum number of clusters.
-   cluster:  An array of cluster IDs for each point in x.
-   centers:  An array of centers for each cluster.
-   withinss: An array of within-cluster sum of squares for each cluster.
-   size:     An array of (weighted) sizes of each cluster.
-   */
+/*
+ x: An array containing input data to be clustered.
+ length: length of the one dimensional array.
+ minK: Minimum number of clusters.
+ maxK: Maximum number of clusters.
+ cluster:  An array of cluster IDs for each point in x.
+ centers:  An array of centers for each cluster.
+ withinss: An array of within-cluster sum of squares for each cluster.
+ size:     An array of (weighted) sizes of each cluster.
+ */
 
-  void Ckmeans_1d_dp(double *x, int* length, double *y, int * ylength,
-                     int* minK, int *maxK, int* cluster,
-                     double* centers, double* withinss, double * size, // int* size,
-                     double* BICs,
-                     char ** estimate_k, char ** method)
-  {
-    // std::cout << method[0] << std::endl;
-
-    // Call C++ version one-dimensional clustering algorithm*/
-    if(*ylength != *length) { y = 0; }
-
-    kmeans_1d_dp(x, (size_t)*length, y, (size_t)(*minK), (size_t)(*maxK),
-                 cluster, centers, withinss, size, BICs,
-                 std::string(estimate_k[0]), std::string(method[0]),
-                 L2);
-
-    // Change the cluster numbering from 0-based to 1-based
-    for(size_t i=0; i< *length; ++i) {
-      cluster[i] ++;
-    }
-  }
-
-  void Ckmedian_1d_dp(double *x, int* length, double *y, int * ylength,
-                      int* minK, int *maxK, int* cluster,
-                      double* centers, double* withinss, double * size, // int* size,
-                      double* BICs,
-                      char ** estimate_k, char ** method)
-  {
-    // std::cout << method[0] << std::endl;
-
-    // Call C++ version one-dimensional clustering algorithm*/
-    if(*ylength != *length) { y = 0; }
-
-    kmeans_1d_dp(x, (size_t)*length, y,
-                 (size_t)(*minK), (size_t)(*maxK),
-                 cluster, centers, withinss, size, BICs,
-                 std::string(estimate_k[0]), std::string(method[0]),
-                 L1);
-
-    // Change the cluster numbering from 0-based to 1-based
-    for(size_t i=0; i< *length; ++i) {
-      cluster[i] ++;
-    }
-  }
-
-  void Cksegs_1d_dp(double *x, int* length, double *y, int * ylength,
-                    int* minK, int *maxK, int* cluster,
-                    double* centers, double* withinss, double * size, // int* size,
-                    double* BICs,
-                    char ** estimate_k, char ** method)
-  {
-    // std::cout << method[0] << std::endl;
-
-    // Call C++ version one-dimensional clustering algorithm*/
-    if(*ylength != *length) { y = 0; }
-
-    kmeans_1d_dp(x, (size_t)*length, y, (size_t)(*minK), (size_t)(*maxK),
-                 cluster, centers, withinss, size, BICs,
-                 std::string(estimate_k[0]), std::string(method[0]),
-                 L2Y);
-
-    // Change the cluster numbering from 0-based to 1-based
-    for(size_t i=0; i< *length; ++i) {
-      cluster[i] ++;
-    }
-  }
-
-} // End of extern "C"
-
-
-static const
-  R_CMethodDef cMethods[] = {
-    {"Ckmeans_1d_dp",  (DL_FUNC) & Ckmeans_1d_dp, 13},
-    {"Ckmeans_1d_dp",  (DL_FUNC) & Ckmedian_1d_dp, 13},
-    {"Ckmeans_1d_dp",  (DL_FUNC) & Cksegs_1d_dp, 13},
-    {NULL}
-  };
-
-static const
-  R_CallMethodDef callMethods[] = {
-    {"Ckmeans_1d_dp", (DL_FUNC) & Ckmeans_1d_dp, 13},
-    {"Ckmeans_1d_dp", (DL_FUNC) & Ckmedian_1d_dp, 13},
-    {"Ckmeans_1d_dp", (DL_FUNC) & Cksegs_1d_dp, 13},
-    {NULL} };
-
-void R_init_Ckmeans_1d_dp(DllInfo *info)
+// [[Rcpp::export]]
+List Ckmeans_1d_dp(const NumericVector & x, const size_t length,
+                   const NumericVector & y, const size_t ylength,
+                   const size_t minK, const size_t maxK,
+                   IntegerVector & cluster,
+                   NumericVector & centers,
+                   NumericVector & withinss,
+                   NumericVector & size, // int* size,
+                   NumericVector & BICs,
+                   const std::string & estimate_k, const std::string & method)
 {
-  /* Register the .C and .Call routines.
-   No .Fortran() or .External() routines,
-   so pass those arrays as NULL.
-   */
-  R_registerRoutines(info,
-                     cMethods, callMethods,
-                     NULL, NULL);
+  // std::cout << method[0] << std::endl;
 
-  R_useDynamicSymbols(info, TRUE);
+  const double * xp(x.begin()), * yp (y.begin());
+  double * center_p (centers.begin()), * sp (size.begin());
+  double * bp (BICs.begin()), * wp (withinss.begin());
+  int * cluster_p (cluster.begin());
+
+  // Call C++ version one-dimensional clustering algorithm*/
+  if(ylength != length) { yp = 0; }
+
+  kmeans_1d_dp(xp, length, yp, minK, maxK,
+               cluster_p, center_p, wp, sp, bp,
+               estimate_k, method, L2);
+
+  // Change the cluster numbering from 0-based to 1-based
+  for(size_t i=0; i < length; ++i) {
+    cluster[i] ++;
+  }
+
+  List result;
+  result["centers"] = centers;
+  result["cluster"] = cluster;
+  result["BIC"] = BICs;
+  result["withinss"] = withinss;
+  result["size"] = size;
+
+  return(result);
+}
+
+
+// [[Rcpp::export]]
+List Ckmedian_1d_dp(const NumericVector & x, const size_t length,
+                   const NumericVector & y, const size_t ylength,
+                   const size_t minK, const size_t maxK,
+                   IntegerVector & cluster,
+                   NumericVector & centers,
+                   NumericVector & withinss,
+                   NumericVector & size, // int* size,
+                   NumericVector & BICs,
+                   const std::string & estimate_k, const std::string & method)
+{
+  // std::cout << method[0] << std::endl;
+
+  const double * xp(x.begin()), * yp (y.begin());
+  double * center_p (centers.begin()), * sp (size.begin());
+  double * bp (BICs.begin()), * wp (withinss.begin());
+  int * cluster_p (cluster.begin());
+
+  // Call C++ version one-dimensional clustering algorithm*/
+  if(ylength != length) { yp = 0; }
+
+  kmeans_1d_dp(xp, length, yp, minK, maxK,
+               cluster_p, center_p, wp, sp, bp,
+               estimate_k, method, L1);
+
+  // Change the cluster numbering from 0-based to 1-based
+  for(size_t i=0; i < length; ++i) {
+    cluster[i] ++;
+  }
+  List result;
+  result["centers"] = centers;
+  result["cluster"] = cluster;
+  result["BIC"] = BICs;
+  result["withinss"] = withinss;
+  result["size"] = size;
+
+  return(result);
+}
+
+// [[Rcpp::export]]
+List Cksegs_1d_dp(const NumericVector & x, const size_t length,
+                   const NumericVector & y, const size_t ylength,
+                   const size_t minK, const size_t maxK,
+                   IntegerVector & cluster,
+                   NumericVector & centers,
+                   NumericVector & withinss,
+                   NumericVector & size, // int* size,
+                   NumericVector & BICs,
+                   const std::string & estimate_k, const std::string & method)
+{
+  // std::cout << method[0] << std::endl;
+
+  const double * xp(x.begin()), * yp (y.begin());
+  double * center_p (centers.begin()), * sp (size.begin());
+  double * bp (BICs.begin()), * wp (withinss.begin());
+  int * cluster_p (cluster.begin());
+
+  // Call C++ version one-dimensional clustering algorithm*/
+  if(ylength != length) { yp = 0; }
+
+  kmeans_1d_dp(xp, length, yp, minK, maxK,
+               cluster_p, center_p, wp, sp, bp,
+               estimate_k, method, L2Y);
+
+  // Change the cluster numbering from 0-based to 1-based
+  for(size_t i=0; i < length; ++i) {
+    cluster[i] ++;
+  }
+
+  List result;
+  result["centers"] = centers;
+  result["cluster"] = cluster;
+  result["BIC"] = BICs;
+  result["withinss"] = withinss;
+  result["size"] = size;
+
+  return(result);
+
 }

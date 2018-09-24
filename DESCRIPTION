@@ -1,12 +1,13 @@
 Package: Ckmeans.1d.dp
 Type: Package
-Version: 4.2.1
-Date: 2017-07-07
 Title: Optimal and Fast Univariate Clustering
+Version: 4.2.2
+Date: 2018-09-21
 Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
 		     email = "joemsong@cs.nmsu.edu"),
 	      person("Haizhou", "Wang", role = "aut"))
-Author: Joe Song [aut, cre], Haizhou Wang [aut]
+Author: Joe Song [aut, cre],
+  Haizhou Wang [aut]
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
 Description: Fast optimal univariate clustering and segementation
  by dynamic programming. Three types of problem including
@@ -21,12 +22,15 @@ Description: Fast optimal univariate clustering and segementation
  histograms that are adaptive to patterns in data. In contrast to
  heuristic methods, this package provides a powerful set of tools
  for univariate data analysis with guaranteed optimality.
+    Use four spaces when indenting paragraphs within the Description.
 License: LGPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports: Rcpp (>= 0.12.18)
+LinkingTo: Rcpp
 NeedsCompilation: yes
 Suggests: testthat, knitr, rmarkdown
-Depends: R (>= 2.10.0)
-LazyData: true
 VignetteBuilder: knitr
-Packaged: 2017-07-08 06:04:27 UTC; joemsong
+Packaged: 2018-09-21 20:38:43 UTC; joemsong
 Repository: CRAN
-Date/Publication: 2017-07-09 06:24:02 UTC
+Date/Publication: 2018-09-24 14:20:03 UTC
