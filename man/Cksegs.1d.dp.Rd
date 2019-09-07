@@ -65,10 +65,6 @@ The Bayesian information criterion (BIC) method to select optimal \code{k} is up
 The class has a print and a plot method: \code{\link{print.Cksegs.1d.dp}} and \code{\link{plot.Cksegs.1d.dp}}.
 }
 
-\references{
-Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
-}
-
 \seealso{
 \code{\link{plot.Cksegs.1d.dp}} and \code{\link{print.Cksegs.1d.dp}}.
 }

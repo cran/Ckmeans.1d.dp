@@ -1,36 +1,38 @@
 Package: Ckmeans.1d.dp
 Type: Package
-Title: Optimal and Fast Univariate Clustering
-Version: 4.2.2
-Date: 2018-09-21
+Title: Optimal, Fast, and Reproducible Univariate Clustering
+Version: 4.3.0
+Date: 2019-09-06
 Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
 		     email = "joemsong@cs.nmsu.edu"),
+	      person("Hua", "Zhong", role = "aut"),
 	      person("Haizhou", "Wang", role = "aut"))
 Author: Joe Song [aut, cre],
+  Hua Zhong [aut],
   Haizhou Wang [aut]
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
-Description: Fast optimal univariate clustering and segementation
- by dynamic programming. Three types of problem including
- univariate k-means, k-median, and k-segments are solved with
- guaranteed optimality and reproducibility. The core algorithm
- minimizes the sum of within-cluster distances using respective
- metrics. Its advantage over heuristic clustering algorithms in
- efficiency and accuracy is increasingly pronounced as the
- number of clusters k increases. Weighted k-means and unweighted
- k-segments algorithms can also optimally segment time series
- and perform peak calling. An auxiliary function generates
- histograms that are adaptive to patterns in data. In contrast to
- heuristic methods, this package provides a powerful set of tools
- for univariate data analysis with guaranteed optimality.
-    Use four spaces when indenting paragraphs within the Description.
+Description: Fast, optimal, and reproducible weighted univariate
+ clustering by dynamic programming. Four types of problem including
+ univariate k-means, k-median, k-segments, and multi-channel
+ weighted k-means are solved with guaranteed optimality and
+ reproducibility. The core algorithm minimizes the sum of (weighted)
+ within-cluster distances using respective metrics. Its advantage
+ over heuristic clustering in efficiency and accuracy is pronounced
+ at a large number of clusters k. Weighted k-means can also process
+ time series to perform peak calling. Multi-channel weighted k-means
+ groups multiple univariate signals into k clusters. An auxiliary
+ function generates histograms that are adaptive to patterns in data.
+ This package provides a powerful set of tools for univariate data
+ analysis with guaranteed optimality, efficiency, and reproducibility.
 License: LGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-Imports: Rcpp (>= 0.12.18)
+Imports: Rcpp, Rdpack
 LinkingTo: Rcpp
 NeedsCompilation: yes
 Suggests: testthat, knitr, rmarkdown
+RdMacros: Rdpack
 VignetteBuilder: knitr
-Packaged: 2018-09-21 20:38:43 UTC; joemsong
+Packaged: 2019-09-07 03:03:25 UTC; joesong
 Repository: CRAN
-Date/Publication: 2018-09-24 14:20:03 UTC
+Date/Publication: 2019-09-07 11:20:07 UTC

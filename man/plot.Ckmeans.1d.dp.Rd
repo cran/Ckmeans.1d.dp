@@ -46,10 +46,6 @@ The functions \code{plot.Ckmeans.1d.dp} and \code{plot.Ckmedian.1d.dp} visualize
 	An object of class "\code{Ckmeans.1d.dp}" or "\code{Ckmedian.1d.dp}" defined in \code{\link{Ckmeans.1d.dp}}.
 }
 
-\references{
-  Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
-}
-
 \examples{
 # Example: clustering data generated from a Gaussian
 #          mixture model of three components

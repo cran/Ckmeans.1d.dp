@@ -74,11 +74,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// MCW_main
+List MCW_main(const NumericVector& x, const NumericMatrix& y, size_t Kmin, size_t Kmax, const std::string estimate_k, const std::string method);
+RcppExport SEXP _Ckmeans_1d_dp_MCW_main(SEXP xSEXP, SEXP ySEXP, SEXP KminSEXP, SEXP KmaxSEXP, SEXP estimate_kSEXP, SEXP methodSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< size_t >::type Kmin(KminSEXP);
+    Rcpp::traits::input_parameter< size_t >::type Kmax(KmaxSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type estimate_k(estimate_kSEXP);
+    Rcpp::traits::input_parameter< const std::string >::type method(methodSEXP);
+    rcpp_result_gen = Rcpp::wrap(MCW_main(x, y, Kmin, Kmax, estimate_k, method));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_Ckmeans_1d_dp_Ckmeans_1d_dp", (DL_FUNC) &_Ckmeans_1d_dp_Ckmeans_1d_dp, 13},
     {"_Ckmeans_1d_dp_Ckmedian_1d_dp", (DL_FUNC) &_Ckmeans_1d_dp_Ckmedian_1d_dp, 13},
     {"_Ckmeans_1d_dp_Cksegs_1d_dp", (DL_FUNC) &_Ckmeans_1d_dp_Cksegs_1d_dp, 13},
+    {"_Ckmeans_1d_dp_MCW_main", (DL_FUNC) &_Ckmeans_1d_dp_MCW_main, 6},
     {NULL, NULL, 0}
 };
 

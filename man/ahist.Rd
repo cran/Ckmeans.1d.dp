@@ -74,10 +74,6 @@ If not provided with the \code{breaks} argument, breaks in the histogram are der
 An object of class \code{histogram} defined in \code{\link{hist}}. It has a S3 \code{plot} method \code{\link{plot.histogram}}.
 }
 
-\references{
-Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
-}
-
 \seealso{
   \code{\link{hist}} in package \pkg{\link{graphics}}.
 }

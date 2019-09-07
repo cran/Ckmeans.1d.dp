@@ -3,7 +3,7 @@
 \alias{Ckmeans.1d.dp}
 \alias{Ckmedian.1d.dp}
 
-\title{Optimal and Fast Univariate Clustering}
+\title{Optimal (Weighted) Univariate Clustering}
 
 \description{
 Perform optimal univariate \eqn{k}{k}-means or \eqn{k}{k}-median clustering in linear (fastest), loglinear, or quadratic (slowest) time.
@@ -72,10 +72,12 @@ When the sample size \var{n} is too large to create two \eqn{k \times n}{k x n} 
 	\item{yname}{a character string. The actual name of the \code{y} argument.}
 
 Each class has a print and a plot method, which are described along with \code{\link{print.Ckmeans.1d.dp}} and \code{\link{plot.Ckmeans.1d.dp}}.
+\insertNoCite{Wang2011Ckmeans}{Ckmeans.1d.dp}
 }
 
 \references{
-Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
+\insertAllCited{}
+% Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
 }
 
 \seealso{

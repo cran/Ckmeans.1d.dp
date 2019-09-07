@@ -1,13 +1,13 @@
 bibentry(bibtype="Article",
   header = "To cite package 'Ckmeans.1d.dp' in publications use:",
   key = "Wang2011Ckmeans",
-  title = "Ckmeans.1d.dp: Optimal $k$-means Clustering in One Dimension by Dynamic Programming",
+  title = "Ckmeans.1d.dp: Optimal $k$-means clustering in one dimension by dynamic programming",
   journal = "The R Journal",
   volume = "3",
   number = "2",
   pages = "29--33",
   year = "2011",
   author = c(person("Haizhou", "Wang"), person("Mingzhou", "Song")),
-  url="https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf",
+  url="https://doi.org/10.32614/RJ-2011-015",
   textVersion = "Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal k-means clustering in one dimension by dynamic programming. The R Journal 3(2), 29-33."
 )
