@@ -25,8 +25,7 @@
 #include <vector>
 #include <string>
 
-// typedef long double ldouble;
-typedef double ldouble;
+#include "precision.h"
 
 enum DISSIMILARITY {
   L1, L2, L2Y

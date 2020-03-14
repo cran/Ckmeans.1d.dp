@@ -1,7 +1,7 @@
 ---
 title: "Tutorial: Optimal univariate clustering"
 author: "Joe Song and Haizhou Wang"
-date: "`r Sys.Date()`"
+date: "Updated 2020-01-20"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Tutorial: Optimal univariate clustering}
@@ -70,10 +70,24 @@ y <- c(y1, y2)
 w <- y^8 # stress the peaks 
 res <- Ckmeans.1d.dp(t, k=c(1:10), w)
 plot(res)
-plot(t, w, main = "Time course segmentation / peak calling", 
+plot(t, w, main = "Time course clustering / peak calling", 
      col=res$cluster, pch=res$cluster, type="h", 
      xlab="Time t", ylab="Transformed intensity w")
 abline(v=res$centers, col="chocolate", lty="dashed")
 text(res$centers, max(w) * .95, cex=0.75, font=2,
      paste(round(res$size / sum(res$size) * 100), "/ 100"))
+```
+
+## 4. Obtaining midpoints between consecutive clusters
+
+It is often desirable to visualize boundaries between consecutive clusters. The `ahist()` function offers several ways to estimate cluster boundaries. The simplest is to use the midpoint between the two closest points in two consecutive clusters, as illustrated in the code below.  
+```{r, fig.height=4, fig.width=7}
+x <- c(7, 4, 1, 8, 15, 22, -1)
+k <- 3
+ckm <- Ckmeans.1d.dp(x, k=k)
+midpoints <- ahist(ckm, style="midpoints", data=x, plot=FALSE)$breaks[2:k]
+
+plot(ckm, main="Midpoints as cluster boundaries")
+abline(v=midpoints, col="RoyalBlue", lwd=3)
+legend("topright", "Midpoints", lwd=3, col="RoyalBlue")
 ```

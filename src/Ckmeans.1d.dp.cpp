@@ -97,6 +97,7 @@
  */
 
 #include "Ckmeans.1d.dp.h"
+#include "EWL2.h"
 
 #include <algorithm>
 #include <cmath>
@@ -224,10 +225,15 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
 
     size_t Kopt;
 
-    fill_dp_matrix(x_sorted, y_sorted, S, J, method, criterion);
-
     // Fill in dynamic programming matrix
     if(is_equally_weighted) {
+
+      if(criterion == L2) {
+        EWL2::fill_dp_matrix(x_sorted, y_sorted, S, J, method);
+      } else {
+        fill_dp_matrix(x_sorted, y_sorted, S, J, method, criterion);
+      }
+
       // Choose an optimal number of levels between Kmin and Kmax
       if(estimate_k=="BIC") {
         Kopt = select_levels(x_sorted, J, Kmin, Kmax, BIC);
@@ -236,6 +242,8 @@ void kmeans_1d_dp(const double *x, const size_t N, const double *y,
       }
 
     } else {
+
+      fill_dp_matrix(x_sorted, y_sorted, S, J, method, criterion);
 
       switch(criterion) {
       case L2Y:

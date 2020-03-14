@@ -24,7 +24,7 @@ Third parties have ported various versions of this package to JavaScript, MATLAB
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 4.3.0\cr
+Version: \tab 4.3.2\cr
 Initial release version: \tab 1.0\cr
 Initial release date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3)}

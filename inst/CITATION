@@ -8,6 +8,5 @@ bibentry(bibtype="Article",
   pages = "29--33",
   year = "2011",
   author = c(person("Haizhou", "Wang"), person("Mingzhou", "Song")),
-  url="https://doi.org/10.32614/RJ-2011-015",
-  textVersion = "Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal k-means clustering in one dimension by dynamic programming. The R Journal 3(2), 29-33."
+  url="https://doi.org/10.32614/RJ-2011-015"
 )

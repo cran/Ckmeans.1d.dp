@@ -1,5 +1,35 @@
 # NEWS
 
+## Version 4.3.2
+  2020-03-13
+  1. Changed the random data from uniform integer to standard normal
+  to avoid examples with multile optimal solutions occuring to
+  integers in test_MC_WUC.R.
+  
+  2020-01-20
+  1. Updated a vignette to illustrate how to find boundaires between
+  consecutive clusters.
+  
+  2020-01-03
+  1. Internally, a specialized version for unweighted Euclidean (L2)
+  distance based univariate clustering is added. In previous versions, 
+  unweighted and weighted multiple metric clustering algorithms were
+  implemented in a unified code framework, which is good for software
+  engineering but carries unnecessary overhead. The new specialized
+  version can speed up the unweighted L2 algorithm by about 20%. This
+  is perhaps the most popular task, thus benefiting most users. There
+  is no change in the user interface.
+  
+  2020-01-02
+  1. Created version 4.3.2 from 4.3.0
+  2. Revised CITATION file
+  3. Revised Readme.md file
+  
+## Version 4.3.1 (not publicly released)
+  
+  2019-12-08
+  1. Version 4.3.1 was created.
+
 ## Version 4.3.0
 
   2019-09-06

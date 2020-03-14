@@ -1,14 +1,16 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal, Fast, and Reproducible Univariate Clustering
-Version: 4.3.0
-Date: 2019-09-06
+Version: 4.3.2
+Date: 2020-03-14
 Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
+                     comment = c(ORCID = "0000-0002-6883-6547"),
 		     email = "joemsong@cs.nmsu.edu"),
-	      person("Hua", "Zhong", role = "aut"),
+	      person("Hua", "Zhong", role = "aut", 
+	             comment = c(ORCID = "0000-0003-1962-2603")),
 	      person("Haizhou", "Wang", role = "aut"))
-Author: Joe Song [aut, cre],
-  Hua Zhong [aut],
+Author: Joe Song [aut, cre] (<https://orcid.org/0000-0002-6883-6547>),
+  Hua Zhong [aut] (<https://orcid.org/0000-0003-1962-2603>),
   Haizhou Wang [aut]
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
 Description: Fast, optimal, and reproducible weighted univariate
@@ -33,6 +35,6 @@ NeedsCompilation: yes
 Suggests: testthat, knitr, rmarkdown
 RdMacros: Rdpack
 VignetteBuilder: knitr
-Packaged: 2019-09-07 03:03:25 UTC; joesong
+Packaged: 2020-03-14 16:52:09 UTC; joesong
 Repository: CRAN
-Date/Publication: 2019-09-07 11:20:07 UTC
+Date/Publication: 2020-03-14 17:50:02 UTC
