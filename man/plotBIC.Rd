@@ -36,7 +36,7 @@ plotBIC(
 }
 
 \details{
-The function visualizes the input data as sticks whose heights are the weights. It uses different colors to indicate optimal \var{k}-means clusters.
+The function visualizes the input data as sticks whose heights are the weights. It uses different colors to indicate optimal \var{k}-means clusters. The method to calcualte BIC based on Gaussian mixture models estimated on a univariate clustering is described in \insertCite{song2020wuc}{Ckmeans.1d.dp}.
 }
 
 \value{
@@ -54,6 +54,10 @@ plotBIC(res)
 y <- (rnorm(length(x)))^2
 res <- Ckmeans.1d.dp(x, y=y)
 plotBIC(res)
+}
+
+\references{
+\insertAllCited{}
 }
 
 \keyword{ univar }

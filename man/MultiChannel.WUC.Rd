@@ -19,7 +19,7 @@
   \item{k}{either an exact integer number of clusters, or a vector of length two specifying the minimum and maximum numbers of clusters to be examined. The default is \code{c(1,9)}. When \code{k} is a range, the actual number of clusters is determined by Bayesian information criterion (BIC).}
 }
 \details{
-  \code{MultiChannel.WUC} minimizes the total weighted within-cluster sum of squared distance. It uses the SMAWK algorithm \insertCite{aggarwal1987geometric}{Ckmeans.1d.dp} with modified data structure to speed up the dynamic programming to linear runtime. The method selects an optimal \code{k} based on an approximate Gaussian mixture model using the BIC.
+  \code{MultiChannel.WUC} minimizes the total weighted within-cluster sum of squared distance \insertCite{zhong2019modelfree}{Ckmeans.1d.dp}. It uses the SMAWK algorithm \insertCite{aggarwal1987geometric}{Ckmeans.1d.dp} with modified data structure to speed up the dynamic programming to linear runtime. The method selects an optimal \code{k} based on an approximate Gaussian mixture model using the BIC.
 }
 \value{
   A list object containing the following components:

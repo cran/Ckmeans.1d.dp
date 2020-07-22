@@ -5,17 +5,22 @@
 Optimal, Fast, and Reproducible Univariate Clustering
 }
 \description{
-This package provides fast optimal univariate clustering by dynamic programming. Four types of problem including univariate \eqn{k}{k}-means, \eqn{k}{k}-median, \eqn{k}{k}-segments, and multi-channel weighted \eqn{k}{k}-means are solved with guaranteed optimality and reproducibility. The core algorithm minimizes the (weighted) sum of within-cluster distances using respective metrics. Its advantage over heuristic clustering in efficiency and accuracy is increasingly pronounced as the number of clusters \eqn{k}{k} increases. Weighted \eqn{k}{k}-means can also optimally segment time series to perform peak calling. An auxiliary function generates histograms that are adaptive to patterns in data. This package provides a powerful set of tools for univariate data analysis with guaranteed optimality, efficiency, and reproducibility.
+This package provides a powerful set of tools for univariate data analysis with guaranteed optimality, efficiency, and reproducibility.
+Four problems including univariate \eqn{k}{k}-means, \eqn{k}{k}-median, \eqn{k}{k}-segments, and multi-channel weighted \eqn{k}{k}-means are solved with guaranteed optimality and reproducibility. The core algorithm minimizes the (weighted) sum of within-cluster distances using respective metrics. Its advantage over heuristic clustering in efficiency and accuracy is increasingly pronounced as the number of clusters \eqn{k}{k} increases. Weighted \eqn{k}{k}-means can also optimally segment time series to perform peak calling. An auxiliary function generates histograms that are adaptive to patterns in data.
 
-The Ckmeans.1d.dp algorithm clusters (weighted) univariate data given by a numeric vector \eqn{x}{x} into \eqn{k}{k} groups by dynamic programming \insertCite{Wang2011Ckmeans}{Ckmeans.1d.dp}. It guarantees the optimality of clustering---the total of within-cluster sums of squares is always the minimum given the number of clusters \eqn{k}{k}. In contrast, heuristic univariate clustering algorithms may be non-optimal or inconsistent from run to run. As unequal non-negative weights are supported for each point, the algorithm can also segment a time course using the time points as input and the values at each time point as weight. Utilizing the optimal clusters, a function can generate histograms adaptive to patterns in data. This method is numerically stable.
+The Ckmeans.1d.dp algorithm clusters (weighted) univariate data given by a numeric vector \eqn{x}{x} into \eqn{k}{k} groups by dynamic programming \insertCite{Wang2011Ckmeans,song2020wuc}{Ckmeans.1d.dp}. It guarantees the optimality of clustering---the total of within-cluster sums of squares is always the minimum given the number of clusters \eqn{k}{k}. In contrast, heuristic univariate clustering algorithms may be non-optimal or inconsistent from run to run. As non-negative weights are supported, the algorithm can partition a time course using time points as input and corresponding values as weight. Based on an optimal clustering, a function can generate histograms adaptive to patterns in data. The implementation of this algorithm is numerically stable.
 
-Apart from the time for sorting \eqn{x}{x}, the weighted univariate clustering algorithm takes a runtime of \eqn{O(kn)}{O(kn)}, linear in both sample size \eqn{n}{n} and the number of clusters \eqn{k}{k}. The new approach was first introduced into version 3.4.9 (not publicly released) on July 16, 2016, using a new divide-and-conquer strategy integrating a previous theoretical result on matrix search \insertCite{aggarwal1987geometric}{Ckmeans.1d.dp} and a novel in-place search space reduction method. Earlier versions since 3.4.6 used a divide-and-conquer strategy in dynamic programming to reduce the runtime from \eqn{O(kn^2)}{O(kn^2)} down to \eqn{O(kn\lg n)}{O(kn lg n)}. % Both fast algorithms take runtime comparable to heuristic \eqn{k}{k}-means.
+A linear time solution. Excluding the time for sorting \eqn{x}{x}, the weighted univariate clustering algorithm takes a runtime of \eqn{O(kn)}{O(kn)} \insertCite{song2020wuc}{Ckmeans.1d.dp}, linear in both sample size \eqn{n}{n} and the number of clusters \eqn{k}{k}. The approach was first introduced into version 3.4.9 (not publicly released) on July 16, 2016, using a new divide-and-conquer strategy integrating a previous theoretical result on matrix search \insertCite{aggarwal1987geometric}{Ckmeans.1d.dp} and a novel in-place search space reduction method \insertCite{song2020wuc}{Ckmeans.1d.dp}.
 
-\insertCite{Bellman1973;textual}{Ckmeans.1d.dp} first described a general dynamic programming strategy for solving univariate clustering problems with additive optimality measures. The strategy, however, did not address any specific characteristics of the \eqn{k}{k}-means problem and its implied general algorithm will have a time complexity of \eqn{O(kn^3)}{O(kn^3)} on an input of \eqn{n}{n} points.
+A log-linear time solution. Since version 3.4.6, a divide-and-conquer strategy that is simple to code reduces the runtime from \eqn{O(kn^2)}{O(kn^2)} down to \eqn{O(kn\lg n)}{O(kn lg n)} \insertCite{song2020wuc}{Ckmeans.1d.dp}.
+
+A quadratic time solution. Before version 3.4.6, Ckmeans.1d.dp uses an algorithm that runs in quadratic runtime \eqn{O(kn^2)}{O(kn^2)} \insertCite{Wang2011Ckmeans}{Ckmeans.1d.dp}.
+
+A cubic time solution. \insertCite{Bellman1973;textual}{Ckmeans.1d.dp} first described a general dynamic programming strategy for solving univariate clustering problems with additive optimality measures. The strategy, however, did not address any specific characteristics of the \eqn{k}{k}-means problem and its implied general algorithm will have a time complexity of \eqn{O(kn^3)}{O(kn^3)} on an input of \eqn{n}{n} points.
 
 The space complexity in all cases is \eqn{O(kn)}{O(kn)}.
 
-This package provides a powerful alternative to heuristic clustering and also new functionality for weighted clustering, segmentation, and peak calling with guaranteed optimality. It is practical for Ckmeans.1d.dp to cluster millions of sample points with optional weights in seconds using a single processor on a not very recent desktop computer.
+This package provides a powerful alternative to heuristic clustering and also new functionality for weighted clustering, segmentation, and peak calling with guaranteed optimality. It is practical for Ckmeans.1d.dp to find a few clusters on millions of sample points with optional weights in seconds using a single core on a typical desktop computer.
 
 Third parties have ported various versions of this package to JavaScript, MATLAB, Python, Ruby, SAS, and Scala.
 }
@@ -24,7 +29,7 @@ Third parties have ported various versions of this package to JavaScript, MATLAB
 \tabular{ll}{
 Package: \tab Ckmeans.1d.dp\cr
 Type: \tab Package\cr
-Version: \tab 4.3.2\cr
+Version: \tab 4.3.3\cr
 Initial release version: \tab 1.0\cr
 Initial release date: \tab 2010-10-26\cr
 License: \tab LGPL (>= 3)}

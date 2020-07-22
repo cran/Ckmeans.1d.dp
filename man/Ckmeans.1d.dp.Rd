@@ -41,11 +41,11 @@ Ckmedian.1d.dp(x, k=c(1,9), y=1,
 
 \code{Ckmedian.1d.dp} minimizes within-cluster sum of distance (L1). Only unweighted solution is implemented and guarantees optimality.
 
-In contrast to the heuristic \var{k}-means algorithms implemented in function \code{\link{kmeans}}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming (Wang and Song, 2011). It minimizes the total of within-cluster sums of squared distances (\var{withinss}) between each element and its corresponding cluster mean. When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be optimal and reproducible, and its advantage in efficiency and accuracy over heuristic \var{k}-means methods is most pronounced at large \var{k}.
+In contrast to the heuristic \var{k}-means algorithms implemented in function \code{\link{kmeans}}, this function optimally assigns elements in numeric vector \code{x} into \code{k} clusters by dynamic programming \insertCite{Wang2011Ckmeans,song2020wuc}{Ckmeans.1d.dp}. It minimizes the total of within-cluster sums of squared distances (\var{withinss}) between each element and its corresponding cluster mean. When a range is provided for \code{k}, the exact number of clusters is determined by Bayesian information criterion \insertCite{song2020wuc}{Ckmeans.1d.dp}. Different from the heuristic \var{k}-means algorithms whose results may be non-optimal or change from run to run, the result of Ckmeans.1d.dp is guaranteed to be optimal and reproducible, and its advantage in efficiency and accuracy over heuristic \var{k}-means methods is most pronounced at large \var{k}.
 
 The \code{estimate.k} argument specifies the method to select optimal \code{k} based on the Gaussian mixture model using the Bayesian information criterion (BIC). When \code{estimate.k="BIC"}, it effectively deals with variance estimation for a cluster with identical values. When \code{estimate.k="BIC 3.4.12"}, it uses the code in version 3.4.12 and earlier to estimate \code{k}.
 
-The \code{method} argument specifies one of three options to speed up the original dynamic programming taking a runtime cubic in sample size \var{n}. The default \code{"linear"} option, giving a total runtime of \eqn{O(n \lg n + kn)}{O(n lg n + kn)} or \eqn{O(kn)}{O(kn)} (if \code{x} is already sorted in ascending order) is the fastest option but uses the most memory (still \eqn{O(kn)}{O(kn)}); the \code{"loglinear"} option, with a runtime of \eqn{O(kn \lg n)}{O(kn lg n)}, is slightly slower but uses the least memory; the slowest \code{"quadratic"} option, with a runtime of \eqn{O(kn^2)}{O(kn^2)}, is provided for the purpose of testing on small data sets.
+The \code{method} argument specifies one of three options to speed up the original dynamic programming taking a runtime cubic in sample size \var{n}. The default \code{"linear"} option, giving a total runtime of \eqn{O(n \lg n + kn)}{O(n lg n + kn)} or \eqn{O(kn)}{O(kn)} (if \code{x} is already sorted in ascending order) is the fastest option but uses the most memory (still \eqn{O(kn)}{O(kn)}) \insertCite{song2020wuc}{Ckmeans.1d.dp}; the \code{"loglinear"} option, with a runtime of \eqn{O(kn \lg n)}{O(kn lg n)}, is slightly slower but uses the least memory \insertCite{song2020wuc}{Ckmeans.1d.dp}; the slowest \code{"quadratic"} option \insertCite{Wang2011Ckmeans}{Ckmeans.1d.dp}, with a runtime of \eqn{O(kn^2)}{O(kn^2)}, is provided for the purpose of testing on small data sets.
 
 When the sample size \var{n} is too large to create two \eqn{k \times n}{k x n} dynamic programming matrices in memory, we recommend the heuristic solutions implemented in the \code{\link{kmeans}} function in package \pkg{\link{stats}}.
 }
@@ -72,12 +72,10 @@ When the sample size \var{n} is too large to create two \eqn{k \times n}{k x n} 
 	\item{yname}{a character string. The actual name of the \code{y} argument.}
 
 Each class has a print and a plot method, which are described along with \code{\link{print.Ckmeans.1d.dp}} and \code{\link{plot.Ckmeans.1d.dp}}.
-\insertNoCite{Wang2011Ckmeans}{Ckmeans.1d.dp}
 }
 
 \references{
 \insertAllCited{}
-% Wang, H. and Song, M. (2011) Ckmeans.1d.dp: optimal \var{k}-means clustering in one dimension by dynamic programming. \emph{The R Journal} \bold{3}(2), 29--33. Retrieved from \url{https://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf}
 }
 
 \seealso{

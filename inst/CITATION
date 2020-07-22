@@ -8,5 +8,26 @@ bibentry(bibtype="Article",
   pages = "29--33",
   year = "2011",
   author = c(person("Haizhou", "Wang"), person("Mingzhou", "Song")),
-  url="https://doi.org/10.32614/RJ-2011-015"
+  doi = "10.32614/RJ-2011-015"
+)
+
+bibentry(bibtype="Article",
+  key = "song2020wuc",
+	author = c(person("Mingzhou", "Song"), person("Hua", "Zhong")),
+	journal = "Bioinformatics",
+	Month = "Jul",
+	Title = "Efficient weighted univariate clustering maps outstanding dysregulated genomic zones in human cancers.",
+	Year = "2020",
+	doi = "10.1093/bioinformatics/btaa613",
+	note = "[Published online ahead of print, 2020 Jul 3]"
+)
+
+bibentry(bibtype="PhdThesis",
+  header = "To cite package multichannel weighted clustering in publications use:",
+  key = "zhong2019modelfree",
+  author = person("Hua", "Zhong"),
+  year = "2019",
+  title ="Model-free Gene-to-zone Network Inference of Molecular Mechanisms in Biology",
+  school = "Department of Computer Science, New Mexico State University",
+  address = "Las Cruces, NM, USA"
 )
