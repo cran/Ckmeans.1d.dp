@@ -7,6 +7,7 @@
 #   Oct 16, 2016. Moved ahist() function to a new R file ahist.R
 #   May 29, 2017. Added two functions plot.Ckmedian.1d.dp() and
 #     plot.Cksegs.1d.dp
+#   Nov 4, 2020. Changed the plot type to histogram like
 
 plotBIC <-
   function(ck, xlab="Number of clusters k",
@@ -73,16 +74,17 @@ plot.Ckmeans.1d.dp <-
       y <- rep(y, length(x))
     }
 
-    graphics::plot(x, y, type="p",
+    graphics::plot(x, y, type="h",
                    xlab=xlab, ylab=ylab, main=main, sub=sub,
                    col=col.clusters[ck$cluster],
                    ...)
 
-    ks <- seq_along(ck$size)
-    sapply(ks, function(q) {
-      graphics::segments(x[ck$cluster == q], 0,
-                         x[ck$cluster == q], y[ck$cluster == q],
-                         col=col.clusters[q], ...) } )
+    # ks <- seq_along(ck$size)
+    # sapply(ks, function(q) {
+    #   graphics::segments(x[ck$cluster == q], 0,
+    #                      x[ck$cluster == q], y[ck$cluster == q],
+    #                      col=col.clusters[q], ...) } )
+    # }
 
     invisible(ck)
   }
@@ -129,16 +131,16 @@ plot.Cksegs.1d.dp <- function(x, xlab=NULL, ylab=NULL, main=NULL,
     y <- rep(y, length(x))
   }
 
-  graphics::plot(x, y, type="p",
+  graphics::plot(x, y, type="h",
                  xlab=xlab, ylab=ylab, main=main, sub=sub,
                  col=col.clusters[ck$cluster],
                  ...)
 
-  ks <- seq_along(ck$size)
-  sapply(ks, function(q) {
-    graphics::segments(min(x[ck$cluster == q]), mean(y[ck$cluster == q]),
-                       max(x[ck$cluster == q]), mean(y[ck$cluster == q]),
-                       col=col.clusters[q], ...) } )
+  #  ks <- seq_along(ck$size)
+  #  sapply(ks, function(q) {
+  #  graphics::segments(min(x[ck$cluster == q]), mean(y[ck$cluster == q]),
+  #                     max(x[ck$cluster == q]), mean(y[ck$cluster == q]),
+  #                     col=col.clusters[q], ...) } )
 
   invisible(ck)
 }

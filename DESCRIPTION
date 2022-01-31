@@ -1,41 +1,41 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal, Fast, and Reproducible Univariate Clustering
-Version: 4.3.3
-Date: 2020-07-21
-Authors@R: c(person("Joe", "Song", role = c("aut", "cre"),
-                     comment = c(ORCID = "0000-0002-6883-6547"),
-		     email = "joemsong@cs.nmsu.edu"),
-	      person("Hua", "Zhong", role = "aut", 
-	             comment = c(ORCID = "0000-0003-1962-2603")),
-	      person("Haizhou", "Wang", role = "aut"))
+Version: 4.3.4
+Date: 2022-01-30
+Authors@R: 
+  c(person("Joe", "Song", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-6883-6547"),
+		       email = "joemsong@cs.nmsu.edu"),
+	  person("Hua", "Zhong", role = "aut", 
+	         comment = c(ORCID = "0000-0003-1962-2603")),
+	  person("Haizhou", "Wang", role = "aut"))
 Author: Joe Song [aut, cre] (<https://orcid.org/0000-0002-6883-6547>),
   Hua Zhong [aut] (<https://orcid.org/0000-0003-1962-2603>),
   Haizhou Wang [aut]
 Maintainer: Joe Song <joemsong@cs.nmsu.edu>
 Description: Fast, optimal, and reproducible weighted univariate
- clustering by dynamic programming. Four problem are solved, including
+ clustering by dynamic programming. Four problems are solved, including
  univariate k-means (Wang & Song 2011) <doi:10.32614/RJ-2011-015>
  (Song & Zhong 2020) <doi:10.1093/bioinformatics/btaa613>, k-median,
  k-segments, and multi-channel weighted k-means. Dynamic programming
  is used to minimize the sum of (weighted) within-cluster distances
  using respective metrics. Its advantage over heuristic clustering in
  efficiency and accuracy is pronounced at a large number of clusters.
- Weighted k-means can also process time series to perform peak
- calling. Multi-channel weighted k-means groups multiple univariate
+ Multi-channel weighted k-means groups multiple univariate
  signals into k clusters. An auxiliary function generates histograms
  adaptive to patterns in data. This package provides a powerful set
  of tools for univariate data analysis with guaranteed optimality,
- efficiency, and reproducibility.
+ efficiency, and reproducibility, useful for peak calling on temporal,
+ spatial, and spectral data.
 License: LGPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 Imports: Rcpp, Rdpack (>= 0.6-1)
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Suggests: testthat, knitr, rmarkdown
+Suggests: testthat, knitr, rmarkdown, RColorBrewer
 RdMacros: Rdpack
 VignetteBuilder: knitr
-Packaged: 2020-07-22 03:03:50 UTC; joesong
+Packaged: 2022-01-31 00:45:01 UTC; joesong
 Repository: CRAN
-Date/Publication: 2020-07-22 13:42:15 UTC
+Date/Publication: 2022-01-31 01:10:02 UTC

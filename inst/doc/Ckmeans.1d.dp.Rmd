@@ -1,15 +1,23 @@
 ---
 title: "Tutorial: Optimal univariate clustering"
 author: "Joe Song and Haizhou Wang"
-date: "Updated 2020-01-20"
-output: rmarkdown::html_vignette
+date: "Updated 2020-11-07"
+output: 
+ rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Tutorial: Optimal univariate clustering}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-This tutorial illustrates applications of optimal univariate clustering function ```Ckmeans.1d.dp```. It clusters univariate data given the number of clusters $k$. It can estimate $k$ if not provided. It can also perform optimal weighted clustering when a weight vector is provided with the input univariate data. Weighted clustering can be used to analyze 1-D signals such as time series data. The corresponding clusters obtained from weighted clustering can be the basis for optimal time course segmentation or optimal peak calling. 
+Here, we illustrate optimal univariate clustering function ```Ckmeans.1d.dp```. It uses a given number of clusters $k$, or estimates $k$ if a range is provided. If $k$ is unspecified, a default range from 1 to 9 is used. It can also perform optimal weighted clustering when a non-negative weight vector is specified as input. Weighted clustering can be used to analyze signals such as time series data, spectral data, genetic or epigenetic events along a chromosome.
+
+```{r, message=FALSE}
+require(Ckmeans.1d.dp)
+require(RColorBrewer)
+```
 
 ## 1. Cluster univariate data given the number of clusters $k$
 
@@ -19,17 +27,16 @@ Cluster data generated from a Gaussian mixture model of three components.
 
 The number of clusters is provided.
 ```{r, fig.height=4, fig.width=7}
-require(Ckmeans.1d.dp)
 x <- c(rnorm(50, sd=0.3), rnorm(50, mean=1, sd=0.3), rnorm(50, mean=2, sd=0.3))
-# Divide x into 3 clusters
-k <- 3
+k <- 3 # Divide x into 3 clusters
 result <- Ckmeans.1d.dp(x, k)
-plot(result)
-plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
+colors <- brewer.pal(k, "Dark2")
+plot(result, col.clusters = colors)
+plot(x, col=colors[result$cluster], pch=result$cluster, cex=1.5,
      main="Optimal univariate clustering given k",
      sub=paste("Number of clusters given:", k))
-abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
-legend("bottomright", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
+abline(h=result$centers, col=colors, lty="dashed", lwd=2)
+legend("bottomright", paste("Cluster", 1:k), col=colors, pch=1:k, cex=1, bty="n")
 ```
 
 ## 2. Cluster univariate data with an estimated number of clusters $k$
@@ -38,17 +45,17 @@ legend("bottomright", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 
 Cluster data generated from a Gaussian mixture model of three components. The number of clusters is determined by Bayesian information criterion:
 ```{r, fig.height=4, fig.width=7}
-require(Ckmeans.1d.dp)
 x <- c(rnorm(50, mean=-1, sd=0.3), rnorm(50, mean=1, sd=1), rnorm(50, mean=2, sd=0.4))
 # Divide x into k clusters, k automatically selected (default: 1~9)
 result <- Ckmeans.1d.dp(x)
-plot(result)
 k <- max(result$cluster)
-plot(x, col=result$cluster, pch=result$cluster, cex=1.5,
+colors <- brewer.pal(k, "Dark2")
+plot(result, col.clusters = colors)
+plot(x, col=colors[result$cluster], pch=result$cluster, cex=1.5,
      main="Optimal univariate clustering with k estimated",
      sub=paste("Number of clusters is estimated to be", k))
-abline(h=result$centers, col=1:k, lty="dashed", lwd=2)
-legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
+abline(h=result$centers, col=colors, lty="dashed", lwd=2)
+legend("topleft", paste("Cluster", 1:k), col=colors, pch=1:k, cex=1, bty="n")
 ```
 
 ## 3. Optimal weighted univariate clustering for time series analysis
@@ -58,7 +65,6 @@ legend("topleft", paste("Cluster", 1:k), col=1:k, pch=1:k, cex=1.5, bty="n")
 We segment a time course to identify peaks using weighted clustering. The input data is the time stamp of obtaining each intensity measurement; the weight is the signal intensity.
 
 ```{r, fig.height=4, fig.width=7}
-require(Ckmeans.1d.dp)
 n <- 160
 t <- seq(0, 2*pi*2, length=n)
 n1 <- 1:(n/2)
@@ -69,11 +75,15 @@ y <- c(y1, y2)
 
 w <- y^8 # stress the peaks 
 res <- Ckmeans.1d.dp(t, k=c(1:10), w)
-plot(res)
+k <- max(res$cluster)
+colors <- brewer.pal(k, "Set1")
+plot(res, col.clusters = colors)
+grid()
 plot(t, w, main = "Time course clustering / peak calling", 
-     col=res$cluster, pch=res$cluster, type="h", 
+     col=colors[res$cluster], pch=res$cluster, type="h", 
      xlab="Time t", ylab="Transformed intensity w")
-abline(v=res$centers, col="chocolate", lty="dashed")
+grid()
+abline(v=res$centers, col="gray", lty="dashed")
 text(res$centers, max(w) * .95, cex=0.75, font=2,
      paste(round(res$size / sum(res$size) * 100), "/ 100"))
 ```
@@ -87,7 +97,9 @@ k <- 3
 ckm <- Ckmeans.1d.dp(x, k=k)
 midpoints <- ahist(ckm, style="midpoints", data=x, plot=FALSE)$breaks[2:k]
 
-plot(ckm, main="Midpoints as cluster boundaries")
-abline(v=midpoints, col="RoyalBlue", lwd=3)
-legend("topright", "Midpoints", lwd=3, col="RoyalBlue")
+colors <- brewer.pal(k, "Set2")
+plot(ckm, col.clusters = colors, lwd=5,
+     main="Midpoints as cluster boundaries")
+abline(v=midpoints, col="RoyalBlue", lwd=3, lty=2)
+legend("topright", "Midpoints", lwd=3, lty=2, col="RoyalBlue")
 ```

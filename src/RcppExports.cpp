@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // Ckmeans_1d_dp
 List Ckmeans_1d_dp(const NumericVector& x, const size_t length, const NumericVector& y, const size_t ylength, const size_t minK, const size_t maxK, IntegerVector& cluster, NumericVector& centers, NumericVector& withinss, NumericVector& size, NumericVector& BICs, const std::string& estimate_k, const std::string& method);
 RcppExport SEXP _Ckmeans_1d_dp_Ckmeans_1d_dp(SEXP xSEXP, SEXP lengthSEXP, SEXP ySEXP, SEXP ylengthSEXP, SEXP minKSEXP, SEXP maxKSEXP, SEXP clusterSEXP, SEXP centersSEXP, SEXP withinssSEXP, SEXP sizeSEXP, SEXP BICsSEXP, SEXP estimate_kSEXP, SEXP methodSEXP) {

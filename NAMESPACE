@@ -26,5 +26,5 @@ S3method(print, Cksegs.1d.dp)
 export(plot.Cksegs.1d.dp)
 S3method(plot, Cksegs.1d.dp)
 
-importFrom(Rdpack,reprompt)
+importFrom(Rdpack, reprompt)
 export(MultiChannel.WUC)

@@ -1,12 +1,53 @@
-# NEWS
+---
+title: NEWS
+---
 
-## Version 4.3.3
+### Version 4.3.4
+
+  2022-01-30
+
+  1. Created version 4.3.4 from 4.3.3.1
+
+### Version 4.3.3.1
+
+  2022-01-30
+  
+  1. Removed "LazyData: true" from DESCRIPTION.
+
+  2022-01-18
+  
+  1. Updated REFERENCES.bib, CITATION, and README.md.
+
+
+  2020-11-07
+  
+  1. Added table of contents and changed plot colors in vignette
+     "Tutorial: Optimal univariate clustering."
+  2. Added table of contents in vignette "Tutorial: Adaptive versus
+     regular histograms."
+
+  2020-11-04
+  
+  1. Sped up the plot.Ckmeans.1d.dp() function to use histogram-like
+     vertical lines. Previous versions drew a circle for each point,
+     taking excessive time for input with a large number of points.
+  2. Updated vignette "Tutorial: Optimal univariate clustering."
+  
+  2020-08-30
+  
+  1. Edited DESCRIPTION, CITATION.
+  
+  2020-07-25
+
+  1. Created version 4.3.3.1 from 4.3.3
+
+### Version 4.3.3
 
   2020-07-21
 
   1. Created version 4.3.3 from 4.3.2.1
 
-## Version 4.3.2.1 (not publicly released)
+### Version 4.3.2.1 (not publicly released)
 
   2020-07-18
   
@@ -19,7 +60,7 @@
   1. Created version 4.3.2.1 from 4.3.2
   2. Updated REFERENCES.bib, CITATION, and manual Rd files.
 
-## Version 4.3.2
+### Version 4.3.2
   2020-03-13
   
   1. Changed the random data from uniform integer to standard normal
@@ -48,13 +89,13 @@
   2. Revised CITATION file
   3. Revised Readme.md file
   
-## Version 4.3.1 (not publicly released)
+### Version 4.3.1 (not publicly released)
   
   2019-12-08
   
   1. Version 4.3.1 was created.
 
-## Version 4.3.0
+### Version 4.3.0
 
   2019-09-06
   
@@ -77,7 +118,7 @@
   6. Modified DESCRIPTION file.
   7. Added two imports in the NAMESPACE file.
 
-## Version 4.2.3 (not publicly released)
+### Version 4.2.3 (not publicly released)
   
   2018-09-26
   
@@ -89,21 +130,21 @@
   1. Version created to remove typos in DESCRIPTION.
   2. Updated vignette on weight scaling.
 
-## Version 4.2.2
+### Version 4.2.2
   
   2018-09-21
   
   1. Modified the package to use Rcpp interface instead of the
      old-style C interface.
 
-## Version 4.2.1
+### Version 4.2.1
   
   2017-06-10
   
   1. Added a new vignette "Tutorial: Linear weight scaling in cluster analysis".
   2. Re-organized manuals and updated documentation.
 
-## Version 4.2.0
+### Version 4.2.0
   
   2017-05-29
   
@@ -131,21 +172,21 @@
   2. Expanded k-median clustering to work with all possible
      methods. Only unweighted solution guarantees optimality.
 
-## Version 4.1.0
+### Version 4.1.0
   
   2017-03-02
   
   1. Introduced function Ckmedian.1d.dp() for k-median unweighted
      clustering.
 
-## Version 4.0.2
+### Version 4.0.2
 
   2017-02-16
   
   1. Fixed symbol encoding used in NEWS.
   2. Updated documentation.
 
-## Version 4.0.1
+### Version 4.0.1
   
   2017-02-16
   
@@ -153,17 +194,17 @@
      'R_useDynamicSymbols'.
   2. Fixed a memory leak issue: invalid read of size 8.
 
-## Version 4.0.0
+### Version 4.0.0
   
   2017-02-11
   
   1. Removed some examples for future use.
 
-## Version 3.4.15
+### Version 3.4.15
 
   1. Minor changes.
 
-## Version 3.4.14
+### Version 3.4.14
   
   2017-01-03
   
@@ -180,7 +221,7 @@
   2. Print out appropriate warning messages when input x does not have an
      appropriate type. ahist.R is modified.
 
-## Version 3.4.13
+### Version 3.4.13
   
   2016-12-19
   
@@ -266,7 +307,7 @@
      an argument estimate.k in fiction Ckmeans.1d.dp() to use the BIC method in
      version 3.4.12 or earlier to estimated k for compatibility.
 
-## Version 3.4.12
+### Version 3.4.12
   
   2016-08-20
   
@@ -276,7 +317,7 @@
      performance. This also fixed a bug in the previous loglinear-time weighted
      k-means implementation.
 
-## Version 3.4.9
+### Version 3.4.9
   
   2016-07-19
   
@@ -288,7 +329,7 @@
   1. Implemented linear recursive algorithm based on the method described in
   (Aggarwal et al., 1987)
 
-## Version 3.4.8
+### Version 3.4.8
   
   2016-06-01
   
@@ -298,7 +339,7 @@
 
      This implementation was later determined to be incorrect.
 
-## Version 3.4.7
+### Version 3.4.7
   
   2016-05-30
   
@@ -308,20 +349,20 @@
 
      This implementation was later determined to be incorrect.
 
-## Version 3.4.6
+### Version 3.4.6
   
   2016-05-25
   
   1. Implemented an O(kn lg n) algorithm, speeding up the program greatly.
 
-## Version 3.4.5
+### Version 3.4.5
   
   2016-05-22
   
   1. $s[j,i]$ is now computed in constant time based on pre-computed
      sums of input x and its squares from 0 to i.
 
-## Version 3.4.4
+### Version 3.4.4
   
   2016-05-22
   
@@ -336,14 +377,14 @@
      "betweenss" statistics to summarize the optimal clustering obtained.
   2. print.Ckmeans.1d.dp() print out the above statistics.
 
-## Version 3.4.3
+### Version 3.4.3
   
   2016-05-15
   
   1. Upgraded to support c++11
   2. Introduced optimal k-means clustering for weighted data
 
-## Version 3.4.2
+### Version 3.4.2
   
   2016-05-14
   
@@ -359,7 +400,7 @@
      increases after k=2.
   2. Integrated all test cases into one single file.
 
-## Version 3.4.0
+### Version 3.4.0
   
   2016-05-07
   
@@ -375,14 +416,14 @@
   3. Included a reference to the first description of the dynamic programming
      solution by Richard Bellman (1973).
 
-## Version 3.3.3
+### Version 3.3.3
   
   2016-05-03
   
   1. Fixed a bug on cluster assignment when there is only one cluster. This
      was a bug introduced in version 3.3.2.
 
-## Version 3.3.2
+### Version 3.3.2
   
   2016-05-03
   
@@ -393,14 +434,14 @@
   4. Optimized the code by reducing overhead. See 22% reduction in runtime to
      repeatedly cluster seven points into two clusters one million times.
 
-## Version 3.3.1 
+### Version 3.3.1 
   
   2015-02-10
   
   1. Fixed a problem that prevented Windows compilation (now forced the size_t
      type to unsigned long in max() function.
 
-## Version 3.3.0 
+### Version 3.3.0 
   
   2015-02-09
 
@@ -419,7 +460,7 @@
      in general.
   8. Started the NEWS file.
 
-## Version 3.02 
+### Version 3.02 
 
    2014-03-24 and earlier
 

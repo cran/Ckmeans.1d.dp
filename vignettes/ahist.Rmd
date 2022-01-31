@@ -1,8 +1,11 @@
 ---
 title: "Tutorial: Adaptive versus regular histograms"
 author: "Joe Song"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: "Updated 2020-11-07"
+output: 
+   rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Tutorial: Adaptive versus regular histograms}
   %\VignetteEngine{knitr::rmarkdown}

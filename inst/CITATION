@@ -18,12 +18,14 @@ bibentry(bibtype="Article",
 	Month = "Jul",
 	Title = "Efficient weighted univariate clustering maps outstanding dysregulated genomic zones in human cancers.",
 	Year = "2020",
-	doi = "10.1093/bioinformatics/btaa613",
-	note = "[Published online ahead of print, 2020 Jul 3]"
+	Volume = "36",
+	Number = "20",
+	Pages = "5027--5036",
+	doi = "10.1093/bioinformatics/btaa613"
 )
 
 bibentry(bibtype="PhdThesis",
-  header = "To cite package multichannel weighted clustering in publications use:",
+  header = "To cite multi-channel weighted clustering in publications use:",
   key = "zhong2019modelfree",
   author = person("Hua", "Zhong"),
   year = "2019",
