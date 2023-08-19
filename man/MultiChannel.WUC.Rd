@@ -49,10 +49,30 @@
   Hua Zhong and Mingzhou Song
 }
 \examples{
-  X <- sort(sample(x = c(1:100), size = 20, replace = TRUE))
-  Y <- matrix(sample(x = c(1:100), size = 40, replace = TRUE), ncol=2, nrow=length(X))
+  x <- sample(x = c(1:100), size = 20, replace = TRUE)
+  Y <- matrix(sample(x = c(1:100), size = 40, replace = TRUE), ncol=2, nrow=length(x))
 
-  res <- MultiChannel.WUC(x = X, y = Y, k = c(5:10))
+  res <- MultiChannel.WUC(x = x, y = Y, k = c(1:10))
+  plot(res)
+
+  n <- c(20, 20, 20)
+  x <- c(rnorm(n[1], mean=-6),
+         rnorm(n[2], mean=0),
+         rnorm(n[3], mean=6))
+
+  Y <- matrix(c(
+    rep(c(1,0,0), times=n[1]),
+    rep(c(0,1,0), times=n[2]),
+    rep(c(0,0,1), times=n[3])
+  ), byrow=TRUE, nrow=length(x))
+
+  res <- MultiChannel.WUC(x = x, y = Y, k = 3)
+
+  opar <- par(mar=c(3,3,2.5,1), mgp=c(1.5,0.5,0))
+  plot(res)
+  par(opar)
+
 }
-\keyword{ univar }
+
 \keyword{ cluster }
+\keyword{ distribution }

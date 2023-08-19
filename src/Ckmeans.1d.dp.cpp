@@ -126,7 +126,7 @@ size_t numberOfUnique(ForwardIterator first, ForwardIterator last)
 }
 
 static const double * px;
-bool compi(size_t i, size_t j)
+static bool compi(size_t i, size_t j)
 {
   return px[i] < px[j];
 }

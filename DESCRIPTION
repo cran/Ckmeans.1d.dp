@@ -1,8 +1,8 @@
 Package: Ckmeans.1d.dp
 Type: Package
 Title: Optimal, Fast, and Reproducible Univariate Clustering
-Version: 4.3.4
-Date: 2022-01-30
+Version: 4.3.5
+Date: 2023-08-19
 Authors@R: 
   c(person("Joe", "Song", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6883-6547"),
@@ -21,7 +21,7 @@ Description: Fast, optimal, and reproducible weighted univariate
  k-segments, and multi-channel weighted k-means. Dynamic programming
  is used to minimize the sum of (weighted) within-cluster distances
  using respective metrics. Its advantage over heuristic clustering in
- efficiency and accuracy is pronounced at a large number of clusters.
+ efficiency and accuracy is pronounced when there are many clusters.
  Multi-channel weighted k-means groups multiple univariate
  signals into k clusters. An auxiliary function generates histograms
  adaptive to patterns in data. This package provides a powerful set
@@ -36,6 +36,6 @@ NeedsCompilation: yes
 Suggests: testthat, knitr, rmarkdown, RColorBrewer
 RdMacros: Rdpack
 VignetteBuilder: knitr
-Packaged: 2022-01-31 00:45:01 UTC; joesong
+Packaged: 2023-08-19 17:13:22 UTC; joesong
 Repository: CRAN
-Date/Publication: 2022-01-31 01:10:02 UTC
+Date/Publication: 2023-08-19 18:12:31 UTC

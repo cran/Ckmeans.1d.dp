@@ -1,5 +1,7 @@
-importFrom(Rcpp, evalCpp)
 useDynLib(Ckmeans.1d.dp, .registration = TRUE)
+
+importFrom(Rcpp, evalCpp)
+importFrom(Rdpack, reprompt)
 
 #exportPattern("^[[:alpha:]]+")
 export(Ckmeans.1d.dp)
@@ -26,5 +28,8 @@ S3method(print, Cksegs.1d.dp)
 export(plot.Cksegs.1d.dp)
 S3method(plot, Cksegs.1d.dp)
 
-importFrom(Rdpack, reprompt)
+
 export(MultiChannel.WUC)
+
+export(plot.MultiChannelClusters)
+S3method(plot, MultiChannelClusters)

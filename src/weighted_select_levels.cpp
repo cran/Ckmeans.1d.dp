@@ -19,6 +19,8 @@
 
 // Joe Song
 // Created: May 21, 2016. Extracted from select_levels.cpp
+// Updated:
+//   April 1, 2022. Fixed weighted variance calculation.
 
 #include <algorithm>
 #include <cmath>
@@ -60,7 +62,13 @@ void shifted_data_variance_weighted(
     mean = sum / total_weight + median;
 
     if (n > 1) {
-      variance = (sumsq - sum * sum / total_weight) / (total_weight - 1);
+      // variance = (sumsq - sum * sum / total_weight) / (total_weight - 1);
+      // MS 4/1/2022 The above formula can be negative when
+      //   the total weight is small.
+      //
+      //   It is corrected to the following:
+      variance = (sumsq - sum * sum / total_weight) / ((n - 1) * total_weight / n);
+
     }
   }
 }
@@ -104,16 +112,16 @@ size_t select_levels_weighted(
     // Backtrack the matrix to determine boundaries between the bins.
     backtrack_weighted(x, y, J, counts, weights, (int)K);
 
-      
+
     // double totalweight = std::accumulate(weights.begin(), weights.begin() + K, 0, std::plus<double>());
-          
+
     double totalweight;
 
     totalweight = 0;
     for(size_t k=0; k<K; k++) {
       totalweight += weights[k];
     }
-    
+
 
     size_t indexLeft = 0;
     size_t indexRight;

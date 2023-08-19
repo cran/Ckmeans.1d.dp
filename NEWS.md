@@ -2,6 +2,64 @@
 title: NEWS
 ---
 
+### Version 4.3.5
+
+  2023-08-19
+  
+  1. Created version 4.3.5 from 4.3.4.2
+
+
+### Version 4.3.4.2
+
+  2023-08-19
+  
+  1. Updated Ckmeans.1d.dp-package.Rd to remove the table that listed the package current version and initial version, which is redundant. 
+  2. Dropped C++11 specification.
+  3. Added documentation for plot.MuliChannelClusters() function.
+  
+  2022-04-09
+  
+  1. Fixed MultiChannel.WUC() bug 1: input x is now checked for 
+     if being sorted. If not, sort x first and rearrange the weight
+     matrix Y accordingly.
+  2. Add S3 plot.MultiChannelClusters() to visualize results from
+     MultiChannel.WUC().
+  3. Updated MultiChannel.WUC() with more examples and added
+     visualization of results.
+  
+  2022-04-08
+  
+  1. MultiChannel.WUC() bug 3: Three well-separated clusters in three 
+     channels are not put into three clusters. 
+  2. Added test_that("Test number-of-clusters selection", {...}) to
+     illustrate bug 3.
+
+  2022-04-07
+
+  1. Created version 4.3.4.2 from 4.3.4.1
+  2. MultiChannel.WUC() bug 1: input x should be checked for 
+     if being sorted. If not, sort x first and rearrange the weight
+     matrix Y accordingly.
+  3. MultiChannel.WUC() bug 2: A normal cluster not split into two
+     parts correctly. See test case Example 2.
+  
+  
+### Version 4.3.4.1
+
+  2022-04-01
+
+  1. Created version 4.3.4.1 from 4.3.4
+  2. Fixed a bug in weighted variance calculation in
+  weighted_select_levels.cpp and MCW_functions.cpp. 
+  The bug led to negative variance for data with a small 
+  total weight less than 1. It affects on cluster number 
+  determination in weighted data for both the single and
+  multiple channel weighted clustering. However, the change
+  will cause a substantial change in number of clusters for
+  data with very low total weight, which we understand rare
+  in applications. Change in number of clusters when total
+  weight is large is unlikely.
+  
 ### Version 4.3.4
 
   2022-01-30
@@ -467,3 +525,7 @@ title: NEWS
   1. The program now automatically determines the number of clusters from a
      given range.
   2. The code is optimized for further speedup.
+  
+### Version 1.0
+  
+  2010-10-26. Version 1.0 is released to CRAN.

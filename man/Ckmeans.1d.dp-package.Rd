@@ -26,14 +26,6 @@ Third parties have ported various versions of this package to JavaScript, MATLAB
 }
 
 \details{
-\tabular{ll}{
-Package: \tab Ckmeans.1d.dp\cr
-Type: \tab Package\cr
-Version: \tab 4.3.3.1\cr
-Initial release version: \tab 1.0\cr
-Initial release date: \tab 2010-10-26\cr
-License: \tab LGPL (>= 3)}
-
 The most important function of this package is \code{\link{Ckmeans.1d.dp}} that implements optimal univariate clustering either weighted or unweighted. It also contains an adaptive histogram function \code{\link{ahist}}, plotting functions \code{\link{plot.Ckmeans.1d.dp}} and \code{\link{plotBIC}}, and a print function \code{\link{print.Ckmeans.1d.dp}}.
 }
 

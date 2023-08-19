@@ -214,7 +214,7 @@ ahist <- function(
       r <- Ckmeans.1d.dp(xs, k=k)
     }
 
-  } else if(class(x) == "Ckmeans.1d.dp") {
+  } else if(inherits(x, "Ckmeans.1d.dp")) {
     r <- x
     xname <- r$xname
     x <- data
